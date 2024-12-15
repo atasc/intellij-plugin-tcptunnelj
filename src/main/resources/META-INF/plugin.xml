@@ -5,16 +5,17 @@
     <vendor>atasc</vendor>
 
     <description>
-        TunnelliJ plugin works as a TCP tunnel and it useful for any network development.
+        NetTunnel plugin works as a TCP tunnel and it useful for any network development.
         It allows you to monitor, sniff TCP connections and display the content in a very
         effective way inside your IDE.
+        IT IS A FORK OF THE ORIGINAL PROJECT TUNNELLIJ (https://github.com/milanboruvka/tunnellij)
     </description>
 
     <version>$TUNNELLIJ_VERSION$</version>
 
     <depends>com.intellij.modules.platform</depends>
 
-    <resource-bundle>messages.MyBundle</resource-bundle>
+    <resource-bundle>messages.NetTunnelPluginBundle</resource-bundle>
 
     <extensions defaultExtensionNs="com.intellij">
         <toolWindow factoryClass="io.atasc.intellij.nettunnel.toolWindow.MyToolWindowFactory" id="MyToolWindow"/>

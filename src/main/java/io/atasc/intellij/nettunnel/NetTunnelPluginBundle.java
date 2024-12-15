@@ -7,7 +7,7 @@ import org.jetbrains.annotations.PropertyKey;
 public final class NetTunnelPluginBundle extends DynamicBundle {
 
   @NonNls
-  private static final String BUNDLE = "messages.MyBundle";
+  private static final String BUNDLE = "messages.NetTunnelPluginBundle";
 
   private static final NetTunnelPluginBundle INSTANCE = new NetTunnelPluginBundle();
 
