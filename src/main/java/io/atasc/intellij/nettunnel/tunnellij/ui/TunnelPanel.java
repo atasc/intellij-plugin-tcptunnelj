@@ -1,5 +1,6 @@
 package io.atasc.intellij.nettunnel.tunnellij.ui;
 
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.ui.Messages;
 import io.atasc.intellij.nettunnel.tunnellij.TunnelPlugin;
 import io.atasc.intellij.nettunnel.tunnellij.net.Call;
@@ -50,8 +51,11 @@ public class TunnelPanel extends JPanel {
 
         } catch (TunnelException e) {
 
-          Messages.showMessageDialog("Error when starting server: "
-              + e.getMessage(), "Error", Messages.getErrorIcon());
+//          Messages.showMessageDialog("Error when starting server: "
+//              + e.getMessage(), "Error", Messages.getErrorIcon());
+
+          showError(e);
+
           e.printStackTrace();
 
         }
@@ -62,6 +66,16 @@ public class TunnelPanel extends JPanel {
     Thread t = new Thread(r);
     t.start();
 
+  }
+
+  public void showError(Exception e) {
+    ApplicationManager.getApplication().invokeLater(() -> {
+      Messages.showMessageDialog(
+          "Error when starting server: " + e.getMessage(),
+          "Error",
+          Messages.getErrorIcon()
+      );
+    });
   }
 
   public void stop() throws Exception {
