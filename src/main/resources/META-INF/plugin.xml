@@ -1,8 +1,16 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
-    <id>com.github.atasc.intellijpluginnettunnel</id>
+    <id>io.atasc.intellij.nettunnel</id>
     <name>intellij-plugin-nettunnel</name>
     <vendor>atasc</vendor>
+
+    <description>
+        TunnelliJ plugin works as a TCP tunnel and it useful for any network development.
+        It allows you to monitor, sniff TCP connections and display the content in a very
+        effective way inside your IDE.
+    </description>
+
+    <version>$TUNNELLIJ_VERSION$</version>
 
     <depends>com.intellij.modules.platform</depends>
 
