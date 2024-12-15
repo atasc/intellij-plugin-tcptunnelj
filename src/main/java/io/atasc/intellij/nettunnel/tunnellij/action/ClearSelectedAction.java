@@ -13,13 +13,13 @@ import io.atasc.intellij.nettunnel.tunnellij.ui.TunnelPanel;
  */
 public class ClearSelectedAction extends AnAction {
 
-    public ClearSelectedAction() {
-        super("Remove selected call", "Remove selected call", Icons.ICON_REMOVE);
-    }
+  public ClearSelectedAction() {
+    super("Remove selected call", "Remove selected call", Icons.ICON_REMOVE);
+  }
 
-    public void actionPerformed(AnActionEvent event) {
-        Project project = (Project) event.getDataContext().getData("project");
-        TunnelPanel tunnelPanel = TunnelPlugin.getTunnelPanel(project);
-        tunnelPanel.clearSelected();
-    }
+  public void actionPerformed(AnActionEvent event) {
+    Project project = (Project) event.getDataContext().getData("project");
+    TunnelPanel tunnelPanel = TunnelPlugin.getTunnelPanel(project);
+    tunnelPanel.clearSelected();
+  }
 }

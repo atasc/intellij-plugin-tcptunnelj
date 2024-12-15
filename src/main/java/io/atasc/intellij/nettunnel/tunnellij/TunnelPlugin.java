@@ -1,36 +1,19 @@
 package io.atasc.intellij.nettunnel.tunnellij;
 
-import java.awt.BorderLayout;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.Properties;
-
-import javax.swing.UIManager;
-
-import io.atasc.intellij.nettunnel.tunnellij.action.AboutAction;
-import io.atasc.intellij.nettunnel.tunnellij.action.ClearAction;
-import io.atasc.intellij.nettunnel.tunnellij.action.ClearSelectedAction;
-import io.atasc.intellij.nettunnel.tunnellij.action.StartAction;
-import io.atasc.intellij.nettunnel.tunnellij.action.StopAction;
-import io.atasc.intellij.nettunnel.tunnellij.action.WrapAction;
-import io.atasc.intellij.nettunnel.tunnellij.ui.Icons;
-import io.atasc.intellij.nettunnel.tunnellij.ui.TunnelPanel;
-
-import com.intellij.openapi.actionSystem.ActionManager;
-import com.intellij.openapi.actionSystem.ActionToolbar;
-import com.intellij.openapi.actionSystem.AnAction;
-import com.intellij.openapi.actionSystem.DefaultActionGroup;
-import com.intellij.openapi.actionSystem.ToggleAction;
+import com.intellij.openapi.actionSystem.*;
 import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowAnchor;
 import com.intellij.openapi.wm.ToolWindowManager;
+import io.atasc.intellij.nettunnel.tunnellij.action.*;
+import io.atasc.intellij.nettunnel.tunnellij.ui.Icons;
+import io.atasc.intellij.nettunnel.tunnellij.ui.TunnelPanel;
+
+import javax.swing.*;
+import java.awt.*;
+import java.io.*;
+import java.util.Properties;
 
 /**
  * @author boruvka

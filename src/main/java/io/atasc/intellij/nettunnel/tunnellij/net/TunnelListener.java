@@ -6,12 +6,12 @@ package io.atasc.intellij.nettunnel.tunnellij.net;
  */
 public interface TunnelListener {
 
-    void newCall(Call call);
+  void newCall(Call call);
 
-    void endCall(Call call);
+  void endCall(Call call);
 
-    void tunnelStarted();
+  void tunnelStarted();
 
-    void tunnelStopped();
+  void tunnelStopped();
 
 }

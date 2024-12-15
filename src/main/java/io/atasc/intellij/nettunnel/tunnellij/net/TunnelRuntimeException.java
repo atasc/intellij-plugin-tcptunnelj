@@ -6,7 +6,7 @@ package io.atasc.intellij.nettunnel.tunnellij.net;
  */
 public class TunnelRuntimeException extends RuntimeException {
 
-    public TunnelRuntimeException(String message) {
-        super(message);
-    }
+  public TunnelRuntimeException(String message) {
+    super(message);
+  }
 }

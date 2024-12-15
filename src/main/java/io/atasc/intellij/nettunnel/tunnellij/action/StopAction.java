@@ -15,28 +15,28 @@ import io.atasc.intellij.nettunnel.tunnellij.ui.TunnelPanel;
  */
 public class StopAction extends AnAction {
 
-    public StopAction() {
-        super("Stop tunnellij", "Stop tunnellij", Icons.ICON_STOP);
-    }
+  public StopAction() {
+    super("Stop tunnellij", "Stop tunnellij", Icons.ICON_STOP);
+  }
 
-    public void actionPerformed(AnActionEvent event) {
-        Project project = (Project) event.getDataContext().getData("project");
-        TunnelPanel tunnelPanel = TunnelPlugin.getTunnelPanel(project);
-        try {
-            tunnelPanel.stop();
-        } catch (Exception e) {
-            e.printStackTrace();
-            Messages.showMessageDialog("Error when starting server: "
-                    + e.getMessage(), "Error", Messages.getErrorIcon());
-        }
+  public void actionPerformed(AnActionEvent event) {
+    Project project = (Project) event.getDataContext().getData("project");
+    TunnelPanel tunnelPanel = TunnelPlugin.getTunnelPanel(project);
+    try {
+      tunnelPanel.stop();
+    } catch (Exception e) {
+      e.printStackTrace();
+      Messages.showMessageDialog("Error when starting server: "
+          + e.getMessage(), "Error", Messages.getErrorIcon());
     }
+  }
 
-    public void update(AnActionEvent event) {
-        Project project = (Project) event.getDataContext().getData("project");
-        TunnelPanel tunnelPanel = TunnelPlugin.getTunnelPanel(project);
-        Presentation p = event.getPresentation();
-        p.setEnabled(tunnelPanel.isRunning());
-        p.setVisible(true);
-    }
+  public void update(AnActionEvent event) {
+    Project project = (Project) event.getDataContext().getData("project");
+    TunnelPanel tunnelPanel = TunnelPlugin.getTunnelPanel(project);
+    Presentation p = event.getPresentation();
+    p.setEnabled(tunnelPanel.isRunning());
+    p.setVisible(true);
+  }
 
 }
