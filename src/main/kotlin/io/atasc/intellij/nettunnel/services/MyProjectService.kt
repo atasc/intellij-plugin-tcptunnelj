@@ -1,9 +1,9 @@
-package com.github.atasc.intellijpluginnettunnel.services
+package io.atasc.intellij.nettunnel.services
 
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.diagnostic.thisLogger
 import com.intellij.openapi.project.Project
-import com.github.atasc.intellijpluginnettunnel.MyBundle
+import io.atasc.intellij.nettunnel.MyBundle
 
 @Service(Service.Level.PROJECT)
 class MyProjectService(project: Project) {

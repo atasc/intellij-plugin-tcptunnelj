@@ -1,4 +1,4 @@
-package com.github.atasc.intellijpluginnettunnel.listeners
+package io.atasc.intellij.nettunnel.listeners
 
 import com.intellij.openapi.application.ApplicationActivationListener
 import com.intellij.openapi.diagnostic.thisLogger

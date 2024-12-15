@@ -1,4 +1,4 @@
-package com.github.atasc.intellijpluginnettunnel
+package io.atasc.intellij.nettunnel
 
 import com.intellij.DynamicBundle
 import org.jetbrains.annotations.NonNls

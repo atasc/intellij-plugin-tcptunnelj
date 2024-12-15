@@ -1,4 +1,4 @@
-package com.github.atasc.intellijpluginnettunnel.toolWindow
+package io.atasc.intellij.nettunnel.toolWindow
 
 import com.intellij.openapi.components.service
 import com.intellij.openapi.diagnostic.thisLogger
@@ -8,8 +8,8 @@ import com.intellij.openapi.wm.ToolWindowFactory
 import com.intellij.ui.components.JBLabel
 import com.intellij.ui.components.JBPanel
 import com.intellij.ui.content.ContentFactory
-import com.github.atasc.intellijpluginnettunnel.MyBundle
-import com.github.atasc.intellijpluginnettunnel.services.MyProjectService
+import io.atasc.intellij.nettunnel.MyBundle
+import io.atasc.intellij.nettunnel.services.MyProjectService
 import javax.swing.JButton
 
 
