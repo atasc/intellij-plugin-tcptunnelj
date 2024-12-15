@@ -4,6 +4,7 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowFactory;
+import com.intellij.openapi.wm.ToolWindowManager;
 import com.intellij.ui.content.ContentFactory;
 import io.atasc.intellij.nettunnel.tunnellij.TunnelPlugin;
 
@@ -17,13 +18,14 @@ public class NetTunnelWindowFactory implements ToolWindowFactory {
 
   @Override
   public void createToolWindowContent(Project project, ToolWindow toolWindow) {
-    int windowToLoad = 3;
+    int windowToLoad = 1;
 
     switch (windowToLoad) {
       case 1 -> {
         NetTunnelWindow netTunnelWindow = new NetTunnelWindow(toolWindow);
         var content = ContentFactory.getInstance().createContent(netTunnelWindow.getContent(), null, false);
         toolWindow.getContentManager().addContent(content);
+        //ToolWindowManager toolWindowManager = ToolWindowManager.getInstance(project);
       }
       case 2 -> {
         CalendarToolWindowContent toolWindowContent = new CalendarToolWindowContent(toolWindow);
@@ -42,25 +44,4 @@ public class NetTunnelWindowFactory implements ToolWindowFactory {
   public boolean shouldBeAvailable(Project project) {
     return true;
   }
-
-//  public static class NetTunnelWindow {
-//
-//    private final NetTunnelProjectService service;
-//
-//    public NetTunnelWindow(ToolWindow toolWindow) {
-//      this.service = ServiceManager.getService(toolWindow.getProject(), NetTunnelProjectService.class);
-//    }
-//
-//    public JPanel getContent() {
-//      JBPanel<JBPanel<?>> panel = new JBPanel<>();
-//      JBLabel label = new JBLabel(NetTunnelPluginBundle.message("randomLabel", "?"));
-//
-//      panel.add(label);
-//      panel.add(new JButton(NetTunnelPluginBundle.message("shuffle")) {{
-//        addActionListener(e -> label.setText(NetTunnelPluginBundle.message("randomLabel", service.getRandomNumber())));
-//      }});
-//
-//      return panel;
-//    }
-//  }
 }

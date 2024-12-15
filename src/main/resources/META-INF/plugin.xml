@@ -1,27 +1,31 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
-    <id>io.atasc.intellij.nettunnel</id>
-    <name>intellij-plugin-nettunnel</name>
-    <vendor>atasc</vendor>
+  <id>io.atasc.intellij.nettunnel</id>
+  <name>intellij-plugin-nettunnel</name>
+  <vendor>atasc</vendor>
 
-    <description>
-        NetTunnel plugin works as a TCP tunnel and it useful for any network development.
-        It allows you to monitor, sniff TCP connections and display the content in a very
-        effective way inside your IDE.
-        IT IS A FORK OF THE ORIGINAL PROJECT TUNNELLIJ (https://github.com/milanboruvka/tunnellij)
-    </description>
+  <description>
+    NetTunnel plugin works as a TCP tunnel and it useful for any network development.
+    It allows you to monitor, sniff TCP connections and display the content in a very
+    effective way inside your IDE.
+    IT IS A FORK OF THE ORIGINAL PROJECT TUNNELLIJ (https://github.com/milanboruvka/tunnellij)
+  </description>
 
-    <version>$TUNNELLIJ_VERSION$</version>
+  <version>$TUNNELLIJ_VERSION$</version>
 
-    <depends>com.intellij.modules.platform</depends>
+  <depends>com.intellij.modules.platform</depends>
 
-    <resource-bundle>messages.NetTunnelPluginBundle</resource-bundle>
+  <resource-bundle>messages.NetTunnelPluginBundle</resource-bundle>
 
-    <extensions defaultExtensionNs="com.intellij">
-        <toolWindow factoryClass="io.atasc.intellij.nettunnel.toolWindow.NetTunnelWindowFactory" id="NetTunnel"/>
-    </extensions>
+  <extensions defaultExtensionNs="com.intellij">
+    <toolWindow factoryClass="io.atasc.intellij.nettunnel.toolWindow.NetTunnelWindowFactory" id="NetTunnel"
+                anchor="bottom" canCloseContents="false" hideOnEmptyContent="true"/>
+    <!--<toolWindow factoryClass="io.atasc.intellij.nettunnel.toolWindow.NetTunnelToolFactory" id="NetTunnel"/>-->
+    <!--<projectViewPane implementation="io.atasc.intellij.nettunnel.toolWindow.NetTunnelToolFactory"/>-->
+  </extensions>
 
-    <applicationListeners>
-        <listener class="io.atasc.intellij.nettunnel.listeners.NetTunnelApplicationActivationListener" topic="com.intellij.openapi.application.ApplicationActivationListener"/>
-    </applicationListeners>
+  <applicationListeners>
+    <listener class="io.atasc.intellij.nettunnel.listeners.NetTunnelApplicationActivationListener"
+              topic="com.intellij.openapi.application.ApplicationActivationListener"/>
+  </applicationListeners>
 </idea-plugin>
