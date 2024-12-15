@@ -5,6 +5,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowFactory;
 import com.intellij.ui.content.ContentFactory;
+import io.atasc.intellij.nettunnel.tunnellij.TunnelPlugin;
 
 public class NetTunnelWindowFactory implements ToolWindowFactory {
 
@@ -16,7 +17,7 @@ public class NetTunnelWindowFactory implements ToolWindowFactory {
 
   @Override
   public void createToolWindowContent(Project project, ToolWindow toolWindow) {
-    int windowToLoad = 1;
+    int windowToLoad = 3;
 
     switch (windowToLoad) {
       case 1 -> {
@@ -28,6 +29,10 @@ public class NetTunnelWindowFactory implements ToolWindowFactory {
         CalendarToolWindowContent toolWindowContent = new CalendarToolWindowContent(toolWindow);
         var content = ContentFactory.getInstance().createContent(toolWindowContent.getContentPanel(), "", false);
         toolWindow.getContentManager().addContent(content);
+      }
+      case 3 -> {
+        TunnelPlugin tunnelPlugin = new TunnelPlugin(project);
+        tunnelPlugin.projectOpened();
       }
     }
 

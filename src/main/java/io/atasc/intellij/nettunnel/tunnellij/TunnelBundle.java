@@ -12,8 +12,11 @@ public class TunnelBundle {
 
   public static java.util.ResourceBundle getBundle() {
       if (bundle == null) {
-          bundle = PropertyResourceBundle
-              .getBundle("net/boruvka/idea/tunnellij/TunnelPlugin");
+//          bundle = PropertyResourceBundle
+//              .getBundle("io/atasc/intellij/nettunnel/tunnellij/TunnelPlugin");
+
+         bundle = PropertyResourceBundle.getBundle("tunnellij.TunnelPlugin");
+        System.out.println(bundle.getString("TunnelliJ.version")); // Sostituisci "key1"
       }
     return bundle;
   }
