@@ -48,10 +48,11 @@ public class TunnelPlugin implements ProjectComponent {
     this.project = project;
   }
 
-  //Removed to avoid conflicts
-//  public void projectOpened() {
-//    initToolWindow();
-//  }
+  //Don't use this method
+  public void projectOpened() {
+    //Removed to avoid conflicts
+    //initToolWindow();
+  }
 
   public void projectClosed() {
     unregisterToolWindow();
@@ -83,21 +84,25 @@ public class TunnelPlugin implements ProjectComponent {
     }
   }
 
-  //Removed to avoid conflicts
-//  private void initToolWindow() {
-//    ToolWindowManager toolWindowManager = ToolWindowManager
-//        .getInstance(project);
-//    tunnelPanel = createTunnelPanel();
-//    tunnelWindow = toolWindowManager.registerToolWindow(TOOL_WINDOW_ID,
-//        tunnelPanel, ToolWindowAnchor.BOTTOM);
-//    tunnelWindow.setIcon(Icons.ICON_WATCH);
-//
-//    DefaultActionGroup actionGroup = initToolbarActionGroup();
-//    ActionToolbar toolBar = ActionManager.getInstance()
-//        .createActionToolbar("tunnellij.Toolbar", actionGroup, false);
-//
-//    tunnelPanel.add(toolBar.getComponent(), BorderLayout.WEST);
-//  }
+  private void initToolWindow() {
+    //Exit to avoid conflicts
+    if (true) {
+      return;
+    }
+
+    ToolWindowManager toolWindowManager = ToolWindowManager
+        .getInstance(project);
+    tunnelPanel = createTunnelPanel();
+    tunnelWindow = toolWindowManager.registerToolWindow(TOOL_WINDOW_ID,
+        tunnelPanel, ToolWindowAnchor.BOTTOM);
+    tunnelWindow.setIcon(Icons.ICON_WATCH);
+
+    DefaultActionGroup actionGroup = initToolbarActionGroup();
+    ActionToolbar toolBar = ActionManager.getInstance()
+        .createActionToolbar("tunnellij.Toolbar", actionGroup, false);
+
+    tunnelPanel.add(toolBar.getComponent(), BorderLayout.WEST);
+  }
 
   public TunnelPanel getContent() {
     tunnelPanel = createTunnelPanel();
