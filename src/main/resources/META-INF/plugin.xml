@@ -18,10 +18,10 @@
     <resource-bundle>messages.NetTunnelPluginBundle</resource-bundle>
 
     <extensions defaultExtensionNs="com.intellij">
-        <toolWindow factoryClass="io.atasc.intellij.nettunnel.toolWindow.MyToolWindowFactory" id="MyToolWindow"/>
+        <toolWindow factoryClass="io.atasc.intellij.nettunnel.toolWindow.NetTunnelWindowFactory" id="MyToolWindow"/>
     </extensions>
 
     <applicationListeners>
-        <listener class="io.atasc.intellij.nettunnel.listeners.MyApplicationActivationListener" topic="com.intellij.openapi.application.ApplicationActivationListener"/>
+        <listener class="io.atasc.intellij.nettunnel.listeners.NetTunnelApplicationActivationListener" topic="com.intellij.openapi.application.ApplicationActivationListener"/>
     </applicationListeners>
 </idea-plugin>

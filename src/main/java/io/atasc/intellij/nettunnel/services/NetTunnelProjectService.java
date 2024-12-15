@@ -8,15 +8,15 @@ import io.atasc.intellij.nettunnel.NetTunnelPluginBundle;
 import java.util.Random;
 
 @Service(Service.Level.PROJECT)
-public class MyProjectService {
+public class NetTunnelProjectService {
 
-  private static final Logger LOGGER = Logger.getInstance(MyProjectService.class);
+  private static final Logger LOGGER = Logger.getInstance(NetTunnelProjectService.class);
   private final Random random;
 
-  public MyProjectService(Project project) {
+  public NetTunnelProjectService(Project project) {
     this.random = new Random();
     LOGGER.info(NetTunnelPluginBundle.message("projectService", project.getName()));
-    LOGGER.warn("Don't forget to remove all non-needed sample code files with their corresponding registration entries in `plugin.xml`.");
+//    LOGGER.warn("Don't forget to remove all non-needed sample code files with their corresponding registration entries in `plugin.xml`.");
   }
 
   public int getRandomNumber() {

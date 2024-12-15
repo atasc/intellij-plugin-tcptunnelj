@@ -9,13 +9,13 @@ import com.intellij.ui.components.JBLabel;
 import com.intellij.ui.components.JBPanel;
 import com.intellij.ui.content.ContentFactory;
 import io.atasc.intellij.nettunnel.NetTunnelPluginBundle;
-import io.atasc.intellij.nettunnel.services.MyProjectService;
+import io.atasc.intellij.nettunnel.services.NetTunnelProjectService;
 
 import javax.swing.*;
 
-public class MyToolWindowFactory implements ToolWindowFactory {
+public class NetTunnelWindowFactory implements ToolWindowFactory {
 
-  private static final Logger LOGGER = Logger.getInstance(MyToolWindowFactory.class);
+  private static final Logger LOGGER = Logger.getInstance(NetTunnelWindowFactory.class);
 
   static {
     LOGGER.warn("Don't forget to remove all non-needed sample code files with their corresponding registration entries in `plugin.xml`.");
@@ -35,10 +35,10 @@ public class MyToolWindowFactory implements ToolWindowFactory {
 
   public static class MyToolWindow {
 
-    private final MyProjectService service;
+    private final NetTunnelProjectService service;
 
     public MyToolWindow(ToolWindow toolWindow) {
-      this.service = ServiceManager.getService(toolWindow.getProject(), MyProjectService.class);
+      this.service = ServiceManager.getService(toolWindow.getProject(), NetTunnelProjectService.class);
     }
 
     public JPanel getContent() {
