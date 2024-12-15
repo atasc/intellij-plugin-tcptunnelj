@@ -9,6 +9,8 @@ plugins {
     alias(libs.plugins.changelog) // Gradle Changelog Plugin
     alias(libs.plugins.qodana) // Gradle Qodana Plugin
     alias(libs.plugins.kover) // Gradle Kover Plugin
+    //id("org.jetbrains.intellij.platform") version "2.2.0"
+
 }
 
 group = providers.gradleProperty("pluginGroup").get()
