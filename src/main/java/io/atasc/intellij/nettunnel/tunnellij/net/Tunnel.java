@@ -49,9 +49,9 @@ public class Tunnel {
 
   public void removeTunnelListener(TunnelListener listener) {
     synchronized (listeners) {
-        if (listeners.contains(listener)) {
-            listeners.remove(listener);
-        }
+      if (listeners.contains(listener)) {
+        listeners.remove(listener);
+      }
     }
   }
 
@@ -224,9 +224,9 @@ public class Tunnel {
         } finally {
           try {
             writeTo.close();
-              if (logTo != null) {
-                  logTo.close();
-              }
+            if (logTo != null) {
+              logTo.close();
+            }
 
             source.close();
             dest.close();

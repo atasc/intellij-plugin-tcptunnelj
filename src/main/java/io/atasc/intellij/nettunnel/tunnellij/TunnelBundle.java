@@ -11,13 +11,13 @@ public class TunnelBundle {
   private static java.util.ResourceBundle bundle;
 
   public static java.util.ResourceBundle getBundle() {
-      if (bundle == null) {
+    if (bundle == null) {
 //          bundle = PropertyResourceBundle
 //              .getBundle("io/atasc/intellij/nettunnel/tunnellij/TunnelPlugin");
 
-         bundle = PropertyResourceBundle.getBundle("tunnellij.TunnelPlugin");
-        //System.out.println(bundle.getString("TunnelliJ.version")); // Sostituisci "key1"
-      }
+      bundle = PropertyResourceBundle.getBundle("tunnellij.TunnelPlugin");
+      //System.out.println(bundle.getString("TunnelliJ.version")); // Sostituisci "key1"
+    }
     return bundle;
   }
 }

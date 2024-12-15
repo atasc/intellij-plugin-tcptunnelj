@@ -4,7 +4,6 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowFactory;
-import com.intellij.openapi.wm.ToolWindowManager;
 import com.intellij.ui.content.ContentFactory;
 import io.atasc.intellij.nettunnel.tunnellij.TunnelPlugin;
 
@@ -25,7 +24,6 @@ public class NetTunnelWindowFactory implements ToolWindowFactory {
         NetTunnelWindow netTunnelWindow = new NetTunnelWindow(toolWindow);
         var content = ContentFactory.getInstance().createContent(netTunnelWindow.getContent(), null, false);
         toolWindow.getContentManager().addContent(content);
-        //ToolWindowManager toolWindowManager = ToolWindowManager.getInstance(project);
       }
       case 2 -> {
         CalendarToolWindowContent toolWindowContent = new CalendarToolWindowContent(toolWindow);
@@ -34,7 +32,6 @@ public class NetTunnelWindowFactory implements ToolWindowFactory {
       }
       case 3 -> {
         TunnelPlugin tunnelPlugin = new TunnelPlugin(project);
-//        tunnelPlugin.projectOpened();
         NetTunnelWindow netTunnelWindow = new NetTunnelWindow(toolWindow);
         var content = ContentFactory.getInstance().createContent(tunnelPlugin.getContent(), null, false);
         toolWindow.getContentManager().addContent(content);

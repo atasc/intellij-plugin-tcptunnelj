@@ -29,11 +29,11 @@ public class WrapAction extends ToggleAction {
     Project project = (Project) event.getDataContext().getData("project");
     TunnelPanel tunnelPanel = TunnelPlugin.getTunnelPanel(project);
 
-      if (selected) {
-          tunnelPanel.wrap();
-      } else {
-          tunnelPanel.unwrap();
-      }
+    if (selected) {
+      tunnelPanel.wrap();
+    } else {
+      tunnelPanel.unwrap();
+    }
 
   }
 }

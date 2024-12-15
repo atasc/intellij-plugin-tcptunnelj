@@ -122,11 +122,11 @@ class CallsListSelectionListener implements ListSelectionListener {
     JList list = (JList) e.getSource();
     Call call = (Call) list.getSelectedValue();
 
-      if (call != null) {
-          v.view(call);
-      } else {
-          v.clear();
-      }
+    if (call != null) {
+      v.view(call);
+    } else {
+      v.clear();
+    }
 
   }
 }
@@ -178,15 +178,15 @@ class ViewersPanel extends JPanel {
   public void view(Call call) {
 
     boolean asBytes = false;
-      if (call == null) {
-          return;
-      }
+    if (call == null) {
+      return;
+    }
 
     ByteArrayOutputStream leftBaos = (ByteArrayOutputStream) call
         .getOutputLogger();
-      if (leftBaos == null) {
-          return;
-      }
+    if (leftBaos == null) {
+      return;
+    }
 
     left.setText("");
 
@@ -200,9 +200,9 @@ class ViewersPanel extends JPanel {
       for (int i = 0; i < bytes.length; i++) {
         byte b = bytes[i];
         String s = Integer.toHexString(b).toUpperCase();
-          if (s.length() == 1) {
-              s = "0" + s;
-          }
+        if (s.length() == 1) {
+          s = "0" + s;
+        }
         left.append(s);
       }
     }
@@ -210,9 +210,9 @@ class ViewersPanel extends JPanel {
 
     ByteArrayOutputStream rightBaos = ((ByteArrayOutputStream) call
         .getInputLogger());
-      if (rightBaos == null) {
-          return;
-      }
+    if (rightBaos == null) {
+      return;
+    }
     right.setText(rightBaos.toString());
     right.setCaretPosition(0);
   }
