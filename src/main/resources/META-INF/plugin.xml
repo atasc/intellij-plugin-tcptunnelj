@@ -18,7 +18,7 @@
     <resource-bundle>messages.NetTunnelPluginBundle</resource-bundle>
 
     <extensions defaultExtensionNs="com.intellij">
-        <toolWindow factoryClass="io.atasc.intellij.nettunnel.toolWindow.NetTunnelWindowFactory" id="MyToolWindow"/>
+        <toolWindow factoryClass="io.atasc.intellij.nettunnel.toolWindow.NetTunnelWindowFactory" id="NetTunnel"/>
     </extensions>
 
     <applicationListeners>

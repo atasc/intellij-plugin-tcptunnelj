@@ -1,17 +1,10 @@
 package io.atasc.intellij.nettunnel.toolWindow;
 
-import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowFactory;
-import com.intellij.ui.components.JBLabel;
-import com.intellij.ui.components.JBPanel;
 import com.intellij.ui.content.ContentFactory;
-import io.atasc.intellij.nettunnel.NetTunnelPluginBundle;
-import io.atasc.intellij.nettunnel.services.NetTunnelProjectService;
-
-import javax.swing.*;
 
 public class NetTunnelWindowFactory implements ToolWindowFactory {
 
@@ -26,6 +19,10 @@ public class NetTunnelWindowFactory implements ToolWindowFactory {
     NetTunnelWindow netTunnelWindow = new NetTunnelWindow(toolWindow);
     var content = ContentFactory.getInstance().createContent(netTunnelWindow.getContent(), null, false);
     toolWindow.getContentManager().addContent(content);
+
+//    CalendarToolWindowContent toolWindowContent = new CalendarToolWindowContent(toolWindow);
+//    Content content = ContentFactory.getInstance().createContent(toolWindowContent.getContentPanel(), "", false);
+//    toolWindow.getContentManager().addContent(content);
   }
 
   @Override
