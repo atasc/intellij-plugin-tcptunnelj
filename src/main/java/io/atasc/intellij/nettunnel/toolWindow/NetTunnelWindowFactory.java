@@ -4,7 +4,6 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowFactory;
-import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentFactory;
 
 public class NetTunnelWindowFactory implements ToolWindowFactory {
@@ -17,13 +16,21 @@ public class NetTunnelWindowFactory implements ToolWindowFactory {
 
   @Override
   public void createToolWindowContent(Project project, ToolWindow toolWindow) {
-//    NetTunnelWindow netTunnelWindow = new NetTunnelWindow(toolWindow);
-//    var content = ContentFactory.getInstance().createContent(netTunnelWindow.getContent(), null, false);
-//    toolWindow.getContentManager().addContent(content);
+    int windowToLoad = 1;
 
-    CalendarToolWindowContent toolWindowContent = new CalendarToolWindowContent(toolWindow);
-    var content = ContentFactory.getInstance().createContent(toolWindowContent.getContentPanel(), "", false);
-    toolWindow.getContentManager().addContent(content);
+    switch (windowToLoad) {
+      case 1 -> {
+        NetTunnelWindow netTunnelWindow = new NetTunnelWindow(toolWindow);
+        var content = ContentFactory.getInstance().createContent(netTunnelWindow.getContent(), null, false);
+        toolWindow.getContentManager().addContent(content);
+      }
+      case 2 -> {
+        CalendarToolWindowContent toolWindowContent = new CalendarToolWindowContent(toolWindow);
+        var content = ContentFactory.getInstance().createContent(toolWindowContent.getContentPanel(), "", false);
+        toolWindow.getContentManager().addContent(content);
+      }
+    }
+
   }
 
   @Override
