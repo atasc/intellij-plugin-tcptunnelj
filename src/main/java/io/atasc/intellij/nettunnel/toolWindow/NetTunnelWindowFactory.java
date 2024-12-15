@@ -33,24 +33,24 @@ public class NetTunnelWindowFactory implements ToolWindowFactory {
     return true;
   }
 
-  public static class NetTunnelWindow {
-
-    private final NetTunnelProjectService service;
-
-    public NetTunnelWindow(ToolWindow toolWindow) {
-      this.service = ServiceManager.getService(toolWindow.getProject(), NetTunnelProjectService.class);
-    }
-
-    public JPanel getContent() {
-      JBPanel<JBPanel<?>> panel = new JBPanel<>();
-      JBLabel label = new JBLabel(NetTunnelPluginBundle.message("randomLabel", "?"));
-
-      panel.add(label);
-      panel.add(new JButton(NetTunnelPluginBundle.message("shuffle")) {{
-        addActionListener(e -> label.setText(NetTunnelPluginBundle.message("randomLabel", service.getRandomNumber())));
-      }});
-
-      return panel;
-    }
-  }
+//  public static class NetTunnelWindow {
+//
+//    private final NetTunnelProjectService service;
+//
+//    public NetTunnelWindow(ToolWindow toolWindow) {
+//      this.service = ServiceManager.getService(toolWindow.getProject(), NetTunnelProjectService.class);
+//    }
+//
+//    public JPanel getContent() {
+//      JBPanel<JBPanel<?>> panel = new JBPanel<>();
+//      JBLabel label = new JBLabel(NetTunnelPluginBundle.message("randomLabel", "?"));
+//
+//      panel.add(label);
+//      panel.add(new JButton(NetTunnelPluginBundle.message("shuffle")) {{
+//        addActionListener(e -> label.setText(NetTunnelPluginBundle.message("randomLabel", service.getRandomNumber())));
+//      }});
+//
+//      return panel;
+//    }
+//  }
 }
