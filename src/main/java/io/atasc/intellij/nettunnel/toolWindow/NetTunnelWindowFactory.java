@@ -18,13 +18,13 @@ public class NetTunnelWindowFactory implements ToolWindowFactory {
   private static final Logger LOGGER = Logger.getInstance(NetTunnelWindowFactory.class);
 
   static {
-    LOGGER.warn("Don't forget to remove all non-needed sample code files with their corresponding registration entries in `plugin.xml`.");
+    //LOGGER.warn("Don't forget to remove all non-needed sample code files with their corresponding registration entries in `plugin.xml`.");
   }
 
   @Override
   public void createToolWindowContent(Project project, ToolWindow toolWindow) {
-    MyToolWindow myToolWindow = new MyToolWindow(toolWindow);
-    var content = ContentFactory.getInstance().createContent(myToolWindow.getContent(), null, false);
+    NetTunnelWindow netTunnelWindow = new NetTunnelWindow(toolWindow);
+    var content = ContentFactory.getInstance().createContent(netTunnelWindow.getContent(), null, false);
     toolWindow.getContentManager().addContent(content);
   }
 
@@ -33,11 +33,11 @@ public class NetTunnelWindowFactory implements ToolWindowFactory {
     return true;
   }
 
-  public static class MyToolWindow {
+  public static class NetTunnelWindow {
 
     private final NetTunnelProjectService service;
 
-    public MyToolWindow(ToolWindow toolWindow) {
+    public NetTunnelWindow(ToolWindow toolWindow) {
       this.service = ServiceManager.getService(toolWindow.getProject(), NetTunnelProjectService.class);
     }
 
