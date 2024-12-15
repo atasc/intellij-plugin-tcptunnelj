@@ -98,6 +98,18 @@ public class TunnelPlugin implements ProjectComponent {
     tunnelPanel.add(toolBar.getComponent(), BorderLayout.WEST);
   }
 
+  public TunnelPanel getContent() {
+    tunnelPanel = createTunnelPanel();
+
+    DefaultActionGroup actionGroup = initToolbarActionGroup();
+    ActionToolbar toolBar = ActionManager.getInstance()
+        .createActionToolbar("tunnellij.Toolbar", actionGroup, false);
+
+    tunnelPanel.add(toolBar.getComponent(), BorderLayout.WEST);
+
+    return tunnelPanel;
+  }
+
   private void unregisterToolWindow() {
     ToolWindowManager toolWindowManager = ToolWindowManager
         .getInstance(project);

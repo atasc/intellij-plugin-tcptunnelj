@@ -18,7 +18,7 @@ public class NetTunnelWindowFactory implements ToolWindowFactory {
 
   @Override
   public void createToolWindowContent(Project project, ToolWindow toolWindow) {
-    int windowToLoad = 1;
+    int windowToLoad = 3;
 
     switch (windowToLoad) {
       case 1 -> {
@@ -34,7 +34,10 @@ public class NetTunnelWindowFactory implements ToolWindowFactory {
       }
       case 3 -> {
         TunnelPlugin tunnelPlugin = new TunnelPlugin(project);
-        tunnelPlugin.projectOpened();
+//        tunnelPlugin.projectOpened();
+        NetTunnelWindow netTunnelWindow = new NetTunnelWindow(toolWindow);
+        var content = ContentFactory.getInstance().createContent(tunnelPlugin.getContent(), null, false);
+        toolWindow.getContentManager().addContent(content);
       }
     }
 
