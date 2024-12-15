@@ -1,39 +1,32 @@
 package io.atasc.intellij.nettunnel.tunnellij.ui;
 
+import com.intellij.icons.AllIcons;
+
 import javax.swing.*;
 
-/**
- * @author boruvka
- * @since
- */
+//https://intellij-icons.jetbrains.design/#AllIcons-expui-codeWithMe-cwmPermissionView
 public class Icons {
 
-  // my icons
-  public static final ImageIcon ICON_WATCH = getIcon("icons/tunnellij.png");
+  // My icons (personalizzati)
+  public static final Icon ICON_WATCH = AllIcons.CodeWithMe.CwmPermissionView; // Sostituisce tunnellij.png
+  public static final Icon ICON_REMOVE = AllIcons.General.Remove;   // Sostituisce remove.png
+  public static final Icon ICON_CLEAR = AllIcons.Actions.GC;        // Sostituisce removeall.png
+  public static final Icon ICON_WRAP = AllIcons.Actions.ShowCode;   // Sostituisce wrap.png
 
-  public static final ImageIcon ICON_REMOVE = getIcon("icons/remove.png");
 
-  public static final ImageIcon ICON_CLEAR = getIcon("icons/removeall.png");
+  // IntelliJ icons
+  public static final Icon ICON_START = AllIcons.Actions.Execute;
+  public static final Icon ICON_STOP = AllIcons.Actions.Suspend;
+  public static final Icon ICON_HELP = AllIcons.Actions.Help;
 
-  public static final ImageIcon ICON_WRAP = getIcon("icons/wrap.png");
-
-  // Intellij icons
-  public static final ImageIcon ICON_START = getIcon("actions/execute.png");
-
-  public static final ImageIcon ICON_STOP = getIcon("actions/suspend.png");
-
-  public static final ImageIcon ICON_HELP = getIcon("actions/help.png");
-
-  private static ImageIcon getIcon(String file) {
+  private static ImageIcon getCustomIcon(String file) {
     try {
       java.net.URL url = Icons.class.getResource("/" + file);
-      ImageIcon icon = new ImageIcon(url);
-      return icon;
+      return new ImageIcon(url);
     } catch (Exception e) {
       e.printStackTrace();
       System.err.println("Cannot find icon " + file);
       return null;
     }
   }
-
 }
