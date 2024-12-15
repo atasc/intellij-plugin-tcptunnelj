@@ -32,7 +32,7 @@ public class NetTunnelWindowFactory implements ToolWindowFactory {
       }
       case 3 -> {
         TunnelPlugin tunnelPlugin = new TunnelPlugin(project);
-        NetTunnelWindow netTunnelWindow = new NetTunnelWindow(toolWindow);
+        //NetTunnelWindow netTunnelWindow = new NetTunnelWindow(toolWindow);
         var content = ContentFactory.getInstance().createContent(tunnelPlugin.getContent(), null, false);
         toolWindow.getContentManager().addContent(content);
       }
