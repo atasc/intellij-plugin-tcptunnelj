@@ -13,7 +13,7 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 
 /**
- * @author boruvka
+ * @author boruvka/atasc
  * @since
  */
 public class TunnelPanel extends JPanel {
@@ -50,14 +50,8 @@ public class TunnelPanel extends JPanel {
           tunnel.start();
 
         } catch (TunnelException e) {
-
-//          Messages.showMessageDialog("Error when starting server: "
-//              + e.getMessage(), "Error", Messages.getErrorIcon());
-
           showError(e);
-
           e.printStackTrace();
-
         }
       }
 
@@ -131,7 +125,7 @@ public class TunnelPanel extends JPanel {
       setLayout(new BorderLayout());
 
       subPanelAddress = new JPanel();
-      subPanelAddress.setBorder(new TitledBorder("properties"));
+      subPanelAddress.setBorder(new TitledBorder("Properties"));
 
       srcPort = new JTextField(TunnelPlugin.TunnelConfig.getSourcePort());
       srcPort.setInputVerifier(portNumberVerifier);
@@ -149,9 +143,9 @@ public class TunnelPanel extends JPanel {
       destHost.setHorizontalAlignment(JTextField.RIGHT);
       destHost.setColumns(24);
 
-      subPanelAddress.add(new JLabel("tunnel from localhost:"));
+      subPanelAddress.add(new JLabel("from"));
       subPanelAddress.add(srcPort);
-      subPanelAddress.add(new JLabel("to "));
+      subPanelAddress.add(new JLabel("to"));
       subPanelAddress.add(destHost);
       subPanelAddress.add(new JLabel(":"));
       subPanelAddress.add(destPort);
