@@ -43,6 +43,7 @@ public class TunnelPlugin implements ProjectComponent, Disposable, AutoCloseable
 
   public TunnelPlugin(Project project) {
     this.project = project;
+    TunnelConfig.setProjectName(project.getName());
   }
 
   public static TunnelPanel getTunnelPanel(Project project) {
@@ -87,13 +88,13 @@ public class TunnelPlugin implements ProjectComponent, Disposable, AutoCloseable
   @Override
   public void dispose() {
     //Called in TcpTunnelAppLifecycleListener
-    //TunnelPlugin.TunnelConfig.store();
+    //TunnelConfig.store();
   }
 
   @Override
   public void close() throws Exception {
     //Called in TcpTunnelAppLifecycleListener
-    //TunnelPlugin.TunnelConfig.store();
+    //TunnelConfig.store();
   }
 
   public synchronized void disposeComponent() {
@@ -153,14 +154,23 @@ public class TunnelPlugin implements ProjectComponent, Disposable, AutoCloseable
   }
 
   public static class TunnelConfig {
+    private static String projectName;
+
+    public static void setProjectName(String name) {
+      if (name != null) {
+        projectName = name.replace(" ", "_").toLowerCase();
+
+        SRC_PORT = projectName + ".tcptunnelj.src.port";
+        DST_HOST = projectName + ".tcptunnelj.dst.hostname";
+        DST_PORT = projectName + ".tcptunnelj.dst.port";
+      }
+    }
 
     public static final int BUFFER_LENGTH = 4096;
 
-    public static final String DST_HOST = "tcptunnelj.dst.hostname";
-
-    public static final String DST_PORT = "tcptunnelj.dst.port";
-
-    public static final String SRC_PORT = "tcptunnelj.src.port";
+    private static String SRC_PORT = projectName + ".tcptunnelj.src.port";
+    private static String DST_HOST = projectName + ".tcptunnelj.dst.hostname";
+    private static String DST_PORT = projectName + ".tcptunnelj.dst.port";
 
     public static String getDestinationString() {
       return PROPERTIES.getProperty(DST_HOST, "localhost");
