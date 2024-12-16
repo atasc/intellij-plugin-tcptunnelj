@@ -80,7 +80,7 @@ public class TunnelPlugin implements ProjectComponent {
 
     DefaultActionGroup actionGroup = initToolbarActionGroup();
     ActionToolbar toolBar = ActionManager.getInstance()
-        .createActionToolbar("tunnellij.Toolbar", actionGroup, false);
+        .createActionToolbar("tcptunnelj.Toolbar", actionGroup, false);
 
     tunnelPanel.add(toolBar.getComponent(), BorderLayout.WEST);
 
