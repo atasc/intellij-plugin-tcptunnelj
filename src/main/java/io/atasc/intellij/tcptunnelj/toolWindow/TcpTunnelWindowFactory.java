@@ -6,6 +6,7 @@ import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowFactory;
 import com.intellij.ui.content.ContentFactory;
 import io.atasc.intellij.tcptunnelj.tunnellij.TunnelPlugin;
+import io.atasc.intellij.tcptunnelj.tunnellij.ui.Icons;
 
 /**
  * @author atasc
@@ -28,6 +29,7 @@ public class TcpTunnelWindowFactory implements ToolWindowFactory {
         TcpTunnelWindow netTunnelWindow = new TcpTunnelWindow(toolWindow);
         var content = ContentFactory.getInstance().createContent(netTunnelWindow.getContent(), null, false);
         toolWindow.getContentManager().addContent(content);
+        toolWindow.setIcon(Icons.ICON_TOOL);
       }
       case 2 -> {
       }
@@ -35,6 +37,7 @@ public class TcpTunnelWindowFactory implements ToolWindowFactory {
         TunnelPlugin tunnelPlugin = new TunnelPlugin(project);
         var content = ContentFactory.getInstance().createContent(tunnelPlugin.getContent(), null, false);
         toolWindow.getContentManager().addContent(content);
+        toolWindow.setIcon(Icons.ICON_TOOL);
       }
     }
 

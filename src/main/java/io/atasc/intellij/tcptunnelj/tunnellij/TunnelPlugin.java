@@ -82,6 +82,9 @@ public class TunnelPlugin implements ProjectComponent {
     ActionToolbar toolBar = ActionManager.getInstance()
         .createActionToolbar("tcptunnelj.Toolbar", actionGroup, false);
 
+    // Specifica il target della toolbar
+    toolBar.setTargetComponent(tunnelPanel);
+
     tunnelPanel.add(toolBar.getComponent(), BorderLayout.WEST);
 
     return tunnelPanel;
