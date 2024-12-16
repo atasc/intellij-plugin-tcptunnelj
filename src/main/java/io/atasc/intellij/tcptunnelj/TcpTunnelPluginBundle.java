@@ -4,6 +4,10 @@ import com.intellij.DynamicBundle;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.PropertyKey;
 
+/**
+ * @author atasc
+ * @since
+ */
 public final class TcpTunnelPluginBundle extends DynamicBundle {
 
   @NonNls

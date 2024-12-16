@@ -7,6 +7,10 @@ import com.intellij.openapi.wm.ToolWindowFactory;
 import com.intellij.ui.content.ContentFactory;
 import io.atasc.intellij.tcptunnelj.tunnellij.TunnelPlugin;
 
+/**
+ * @author atasc
+ * @since
+ */
 public class TcpTunnelWindowFactory implements ToolWindowFactory {
 
   private static final Logger LOGGER = Logger.getInstance(TcpTunnelWindowFactory.class);

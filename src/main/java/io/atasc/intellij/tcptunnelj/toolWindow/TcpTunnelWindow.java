@@ -7,6 +7,10 @@ import io.atasc.intellij.tcptunnelj.TcpTunnelPluginBundle;
 
 import javax.swing.*;
 
+/**
+ * @author atasc
+ * @since
+ */
 public class TcpTunnelWindow {
   private final ToolWindow toolWindow;
   //private NetTunnelProjectService service;

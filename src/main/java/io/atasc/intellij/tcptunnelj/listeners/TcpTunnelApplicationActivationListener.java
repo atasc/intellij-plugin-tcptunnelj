@@ -4,6 +4,10 @@ import com.intellij.openapi.application.ApplicationActivationListener;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.wm.IdeFrame;
 
+/**
+ * @author atasc
+ * @since
+ */
 public class TcpTunnelApplicationActivationListener implements ApplicationActivationListener {
 
   private static final Logger LOGGER = Logger.getInstance(TcpTunnelApplicationActivationListener.class);
