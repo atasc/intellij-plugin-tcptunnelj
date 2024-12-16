@@ -23,11 +23,11 @@ public class TunnelPlugin implements ProjectComponent {
 
   public static Properties PROPERTIES;
 
-  private static final String PROPERTIES_FILE_NAME = "tunnellij.properties";
+  private static final String PROPERTIES_FILE_NAME = "tcptunnelj.properties";
 
   private static File PROPERTIES_FILE;
 
-  private static final String COMPONENT_NAME = "io.atasc.intellij.tcptunnel.tunnellij.TunnelWindow";
+  private static final String COMPONENT_NAME = "io.atasc.intellij.tcptunnelj.tunnellij.TunnelWindow";
 
   private static final String TOOL_WINDOW_ID = "TcpTunnelJ";
 

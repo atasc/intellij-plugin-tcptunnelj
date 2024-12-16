@@ -18,7 +18,7 @@
   <resource-bundle>messages.TcpTunnelPluginBundle</resource-bundle>
 
   <extensions defaultExtensionNs="com.intellij">
-    <toolWindow factoryClass="io.atasc.intellij.tcptunnelj.toolWindow.TcpTunnelWindowFactory" id="TcpTunnel"
+    <toolWindow factoryClass="io.atasc.intellij.tcptunnelj.toolWindow.TcpTunnelWindowFactory" id="TcpTunnelJ"
                 anchor="bottom" canCloseContents="false" hideOnEmptyContent="true"/>
     <!--<toolWindow factoryClass="io.atasc.intellij.nettunnel.toolWindow.NetTunnelToolFactory" id="NetTunnel"/>-->
     <!--<projectViewPane implementation="io.atasc.intellij.nettunnel.toolWindow.NetTunnelToolFactory"/>-->
