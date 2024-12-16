@@ -145,7 +145,7 @@ public class TunnelPanel extends JPanel {
       TunnelPlugin.TunnelConfig.setDestinationString(TunnelPlugin.TunnelConfig.getDestinationString());
       TunnelPlugin.TunnelConfig.setDestinationPort(TunnelPlugin.TunnelConfig.getDestinationPort());
 
-      subPanelAddress.add(new JLabel("from"));
+      subPanelAddress.add(new JLabel("from port"));
       subPanelAddress.add(srcPort);
       subPanelAddress.add(new JLabel("to"));
       subPanelAddress.add(destHost);
