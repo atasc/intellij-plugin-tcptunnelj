@@ -6,7 +6,7 @@ import com.intellij.psi.xml.XmlFile
 import com.intellij.testFramework.TestDataPath
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
 import com.intellij.util.PsiErrorElementUtil
-import io.atasc.intellij.nettunnel.services.NetTunnelProjectService
+import io.atasc.intellij.tcptunnel.services.TcpTunnelProjectService
 
 @TestDataPath("\$CONTENT_ROOT/src/test/testData")
 class MyPluginTest : BasePlatformTestCase() {
@@ -30,7 +30,7 @@ class MyPluginTest : BasePlatformTestCase() {
     }
 
     fun testProjectService() {
-        val projectService = project.service<NetTunnelProjectService>()
+        val projectService = project.service<TcpTunnelProjectService>()
 
         assertNotSame(projectService.getRandomNumber(), projectService.getRandomNumber())
     }
