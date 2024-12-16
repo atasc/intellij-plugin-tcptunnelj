@@ -132,16 +132,18 @@ public class TunnelPanel extends JPanel {
       srcPort.setHorizontalAlignment(JTextField.RIGHT);
       srcPort.setColumns(5);
 
-      destPort = new JTextField(TunnelPlugin.TunnelConfig
-          .getDestinationPort());
+      destHost = new JTextField(TunnelPlugin.TunnelConfig.getDestinationString());
+      destHost.setHorizontalAlignment(JTextField.RIGHT);
+      destHost.setColumns(24);
+
+      destPort = new JTextField(TunnelPlugin.TunnelConfig.getDestinationPort());
       destPort.setInputVerifier(portNumberVerifier);
       destPort.setHorizontalAlignment(JTextField.RIGHT);
       destPort.setColumns(5);
 
-      destHost = new JTextField(TunnelPlugin.TunnelConfig
-          .getDestinationString());
-      destHost.setHorizontalAlignment(JTextField.RIGHT);
-      destHost.setColumns(24);
+      TunnelPlugin.TunnelConfig.setSourcePort(TunnelPlugin.TunnelConfig.getSourcePort());
+      TunnelPlugin.TunnelConfig.setDestinationString(TunnelPlugin.TunnelConfig.getDestinationString());
+      TunnelPlugin.TunnelConfig.setDestinationPort(TunnelPlugin.TunnelConfig.getDestinationPort());
 
       subPanelAddress.add(new JLabel("from"));
       subPanelAddress.add(srcPort);

@@ -104,6 +104,8 @@ public class TunnelPlugin implements ProjectComponent, Disposable, AutoCloseable
   }
 
   public TunnelPanel getContent() {
+    initComponent();
+
     tunnelPanel = createTunnelPanel();
 
     DefaultActionGroup actionGroup = initToolbarActionGroup();
