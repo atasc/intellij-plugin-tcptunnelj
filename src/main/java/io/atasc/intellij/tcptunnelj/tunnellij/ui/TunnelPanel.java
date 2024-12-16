@@ -154,7 +154,6 @@ public class TunnelPanel extends JPanel {
     }
 
     public void setControlPanelEditable(boolean b) {
-
       TunnelPlugin.PROPERTIES.put(TunnelPlugin.TunnelConfig.DST_HOST,
           destHost.getText());
       TunnelPlugin.PROPERTIES.put(TunnelPlugin.TunnelConfig.DST_PORT,

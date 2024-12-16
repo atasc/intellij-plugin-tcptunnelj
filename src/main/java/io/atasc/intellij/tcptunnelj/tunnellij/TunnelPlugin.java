@@ -23,7 +23,7 @@ public class TunnelPlugin implements ProjectComponent {
 
   public static Properties PROPERTIES;
 
-  private static final String PROPERTIES_FILE_NAME = "tcptunnelj.properties";
+  private static final String PROPERTIES_FILE_NAME = ".tcptunnelj.properties";
 
   private static File PROPERTIES_FILE;
 
@@ -82,9 +82,7 @@ public class TunnelPlugin implements ProjectComponent {
     ActionToolbar toolBar = ActionManager.getInstance()
         .createActionToolbar("tcptunnelj.Toolbar", actionGroup, false);
 
-    // Specifica il target della toolbar
     toolBar.setTargetComponent(tunnelPanel);
-
     tunnelPanel.add(toolBar.getComponent(), BorderLayout.WEST);
 
     return tunnelPanel;

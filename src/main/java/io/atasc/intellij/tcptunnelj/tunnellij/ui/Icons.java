@@ -12,6 +12,7 @@ import javax.swing.*;
 public class Icons {
   //AllIcons.Expui.Actions.ShortcutFilter
   //AllIcons.Toolwindows.WebToolWindow;
+  //getCustomIcon("icons/pluginIcon.svg");
   public static final Icon ICON_TOOL = AllIcons.General.Web;
   public static final Icon ICON_WATCH = AllIcons.CodeWithMe.CwmPermissionView;
   public static final Icon ICON_REMOVE = AllIcons.General.Remove;
@@ -22,7 +23,7 @@ public class Icons {
   public static final Icon ICON_STOP = AllIcons.Actions.Suspend;
   public static final Icon ICON_HELP = AllIcons.Actions.Help;
 
-  private static ImageIcon getCustomIcon(String file) {
+  public static ImageIcon getCustomIcon(String file) {
     try {
       java.net.URL url = Icons.class.getResource("/" + file);
       return new ImageIcon(url);
