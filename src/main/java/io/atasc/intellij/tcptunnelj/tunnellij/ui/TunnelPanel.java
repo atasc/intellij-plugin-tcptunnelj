@@ -154,12 +154,17 @@ public class TunnelPanel extends JPanel {
     }
 
     public void setControlPanelEditable(boolean b) {
-      TunnelPlugin.PROPERTIES.put(TunnelPlugin.TunnelConfig.DST_HOST,
-          destHost.getText());
-      TunnelPlugin.PROPERTIES.put(TunnelPlugin.TunnelConfig.DST_PORT,
-          destPort.getText());
-      TunnelPlugin.PROPERTIES.put(TunnelPlugin.TunnelConfig.SRC_PORT,
-          srcPort.getText());
+      TunnelPlugin.TunnelConfig.setDestinationPort(destHost.getText());
+      TunnelPlugin.TunnelConfig.setSourcePort(destPort.getText());
+      TunnelPlugin.TunnelConfig.setSourcePort(srcPort.getText());
+      TunnelPlugin.TunnelConfig.store();
+
+//      TunnelPlugin.PROPERTIES.put(TunnelPlugin.TunnelConfig.DST_HOST,
+//          destHost.getText());
+//      TunnelPlugin.PROPERTIES.put(TunnelPlugin.TunnelConfig.DST_PORT,
+//          destPort.getText());
+//      TunnelPlugin.PROPERTIES.put(TunnelPlugin.TunnelConfig.SRC_PORT,
+//          srcPort.getText());
 
       srcPort.setEditable(b);
       destHost.setEditable(b);

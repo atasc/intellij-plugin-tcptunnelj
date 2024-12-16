@@ -1,5 +1,6 @@
 package io.atasc.intellij.tcptunnelj.tunnellij;
 
+import com.intellij.openapi.Disposable;
 import com.intellij.openapi.actionSystem.*;
 import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.openapi.project.Project;
@@ -17,13 +18,13 @@ import java.util.Properties;
  * @author boruvka/atasc
  * @since
  */
-public class TunnelPlugin implements ProjectComponent {
+public class TunnelPlugin implements ProjectComponent, Disposable, AutoCloseable {
 
   private static TunnelPanel tunnelPanel;
 
   public static Properties PROPERTIES;
 
-  private static final String PROPERTIES_FILE_NAME = "tcptunnelj.properties";
+  private static final String PROPERTIES_FILE_NAME = ".tcptunnelj.properties";
 
   private static File PROPERTIES_FILE;
 
@@ -42,6 +43,15 @@ public class TunnelPlugin implements ProjectComponent {
 
   public TunnelPlugin(Project project) {
     this.project = project;
+  }
+
+  public static TunnelPanel getTunnelPanel(Project project) {
+    return tunnelPanel;
+  }
+
+  @Override
+  public void projectOpened() {
+    ProjectComponent.super.projectOpened();
   }
 
   public void projectClosed() {
@@ -65,6 +75,16 @@ public class TunnelPlugin implements ProjectComponent {
     }
   }
 
+  @Override
+  public void dispose() {
+    TunnelPlugin.TunnelConfig.store();
+  }
+
+  @Override
+  public void close() throws Exception {
+    TunnelPlugin.TunnelConfig.store();
+  }
+
   public synchronized void disposeComponent() {
     try {
       OutputStream os = new FileOutputStream(PROPERTIES_FILE);
@@ -73,7 +93,6 @@ public class TunnelPlugin implements ProjectComponent {
       e.printStackTrace();
     }
   }
-
 
   public TunnelPanel getContent() {
     tunnelPanel = createTunnelPanel();
@@ -120,10 +139,6 @@ public class TunnelPlugin implements ProjectComponent {
     return actionGroup;
   }
 
-  public static TunnelPanel getTunnelPanel(Project project) {
-    return tunnelPanel;
-  }
-
   public static class TunnelConfig {
 
     public static final int BUFFER_LENGTH = 4096;
@@ -138,12 +153,33 @@ public class TunnelPlugin implements ProjectComponent {
       return PROPERTIES.getProperty(DST_HOST, "localhost");
     }
 
+    public static void setDestinationString(String destination) {
+      PROPERTIES.setProperty(DST_HOST, destination);
+    }
+
     public static String getDestinationPort() {
       return PROPERTIES.getProperty(DST_PORT, "6060");
     }
 
+    public static void setDestinationPort(String port) {
+      PROPERTIES.setProperty(DST_PORT, port);
+    }
+
     public static String getSourcePort() {
       return PROPERTIES.getProperty(SRC_PORT, "4444");
+    }
+
+    public static void setSourcePort(String port) {
+      PROPERTIES.setProperty(SRC_PORT, port);
+    }
+
+    public static synchronized void store() {
+      try {
+        OutputStream os = new FileOutputStream(PROPERTIES_FILE);
+        PROPERTIES.store(os, "TcpTunnel Plugin");
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
     }
   }
 
