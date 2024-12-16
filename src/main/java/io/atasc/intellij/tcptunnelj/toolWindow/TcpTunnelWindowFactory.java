@@ -2,6 +2,7 @@ package io.atasc.intellij.tcptunnelj.toolWindow;
 
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.util.IconLoader;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowAnchor;
 import com.intellij.openapi.wm.ToolWindowFactory;
@@ -66,7 +67,8 @@ public class TcpTunnelWindowFactory implements ToolWindowFactory {
   public @Nullable Icon getIcon() {
     //return ToolWindowFactory.super.getIcon();
     //Icon icon = Icons.ICON_TOOL;
-    Icon icon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/icons/icon.png")));
+    //Icon icon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/icons/icon.png")));
+    Icon icon = IconLoader.getIcon("/icons/icon.svg", TcpTunnelWindowFactory.class);
     return icon;
   }
 

@@ -23,7 +23,7 @@ public class TunnelPlugin implements ProjectComponent {
 
   public static Properties PROPERTIES;
 
-  private static final String PROPERTIES_FILE_NAME = ".tcptunnelj.properties";
+  private static final String PROPERTIES_FILE_NAME = "tcptunnelj.properties";
 
   private static File PROPERTIES_FILE;
 
