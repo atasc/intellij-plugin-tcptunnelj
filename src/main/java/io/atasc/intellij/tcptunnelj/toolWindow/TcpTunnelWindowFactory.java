@@ -30,13 +30,9 @@ public class TcpTunnelWindowFactory implements ToolWindowFactory {
         toolWindow.getContentManager().addContent(content);
       }
       case 2 -> {
-        CalendarToolWindowContent toolWindowContent = new CalendarToolWindowContent(toolWindow);
-        var content = ContentFactory.getInstance().createContent(toolWindowContent.getContentPanel(), "", false);
-        toolWindow.getContentManager().addContent(content);
       }
       case 3 -> {
         TunnelPlugin tunnelPlugin = new TunnelPlugin(project);
-        //NetTunnelWindow netTunnelWindow = new NetTunnelWindow(toolWindow);
         var content = ContentFactory.getInstance().createContent(tunnelPlugin.getContent(), null, false);
         toolWindow.getContentManager().addContent(content);
       }
