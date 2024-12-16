@@ -18,7 +18,7 @@ public class TcpTunnelProjectService {
 
   public TcpTunnelProjectService(Project project) {
     this.random = new Random();
-//    LOGGER.info(NetTunnelPluginBundle.message("projectService", project.getName()));
+//    LOGGER.info(TcpTunnelPluginBundle.message("projectService", project.getName()));
 //    LOGGER.warn("Don't forget to remove all non-needed sample code files with their corresponding registration entries in `plugin.xml`.");
   }
 

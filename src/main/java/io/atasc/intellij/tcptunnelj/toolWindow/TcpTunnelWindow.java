@@ -13,16 +13,16 @@ import javax.swing.*;
  */
 public class TcpTunnelWindow {
   private final ToolWindow toolWindow;
-  //private NetTunnelProjectService service;
+  //private TcpTunnelProjectService service;
 
   public TcpTunnelWindow(ToolWindow toolWindow) {
-    //this.service = ServiceManager.getService(toolWindow.getProject(), NetTunnelProjectService.class);
+    //this.service = ServiceManager.getService(toolWindow.getProject(), TcpTunnelProjectService.class);
     this.toolWindow = toolWindow;
   }
 
   public JPanel getContent() {
 //    if(this.service==null) {
-//      this.service = ServiceManager.getService(toolWindow.getProject(), NetTunnelProjectService.class);
+//      this.service = ServiceManager.getService(toolWindow.getProject(), TcpTunnelProjectService.class);
 //    }
 
     JBPanel<JBPanel<?>> panel = new JBPanel<>();
@@ -30,7 +30,7 @@ public class TcpTunnelWindow {
 
     panel.add(label);
     panel.add(new JButton(TcpTunnelPluginBundle.message("shuffle")) {{
-      //addActionListener(e -> label.setText(NetTunnelPluginBundle.message("randomLabel", service.getRandomNumber())));
+      //addActionListener(e -> label.setText(TcpTunnelPluginBundle.message("randomLabel", service.getRandomNumber())));
       addActionListener(e -> label.setText(TcpTunnelPluginBundle.message("randomLabel", 1)));
     }});
 

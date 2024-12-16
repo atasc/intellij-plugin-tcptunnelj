@@ -26,8 +26,8 @@ public class TcpTunnelWindowFactory implements ToolWindowFactory {
 
     switch (windowToLoad) {
       case 1 -> {
-        TcpTunnelWindow netTunnelWindow = new TcpTunnelWindow(toolWindow);
-        var content = ContentFactory.getInstance().createContent(netTunnelWindow.getContent(), null, false);
+        TcpTunnelWindow tcpTunnelWindow = new TcpTunnelWindow(toolWindow);
+        var content = ContentFactory.getInstance().createContent(tcpTunnelWindow.getContent(), null, false);
         toolWindow.getContentManager().addContent(content);
         toolWindow.setIcon(Icons.ICON_TOOL);
       }

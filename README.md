@@ -1,6 +1,6 @@
-# intellij-plugin-nettunnel
+# intellij-plugin-tcptunnelj
 
-![Build](https://github.com/atasc/intellij-plugin-nettunnel/workflows/Build/badge.svg)
+![Build](https://github.com/atasc/intellij-plugin-tcptunnelj/workflows/Build/badge.svg)
 [![Version](https://img.shields.io/jetbrains/plugin/v/MARKETPLACE_ID.svg)](https://plugins.jetbrains.com/plugin/MARKETPLACE_ID)
 [![Downloads](https://img.shields.io/jetbrains/plugin/d/MARKETPLACE_ID.svg)](https://plugins.jetbrains.com/plugin/MARKETPLACE_ID)
 
@@ -28,7 +28,7 @@ To keep everything working, do not remove `<!-- ... -->` sections.
 
 - Using the IDE built-in plugin system:
   
-  <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>Marketplace</kbd> > <kbd>Search for "intellij-plugin-nettunnel"</kbd> >
+  <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>Marketplace</kbd> > <kbd>Search for "intellij-plugin-tcptunnelj"</kbd> >
   <kbd>Install</kbd>
   
 - Using JetBrains Marketplace:
@@ -40,7 +40,7 @@ To keep everything working, do not remove `<!-- ... -->` sections.
 
 - Manually:
 
-  Download the [latest release](https://github.com/atasc/intellij-plugin-nettunnel/releases/latest) and install it manually using
+  Download the [latest release](https://github.com/atasc/intellij-plugin-tcptunnelj/releases/latest) and install it manually using
   <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>⚙️</kbd> > <kbd>Install plugin from disk...</kbd>
 
 
