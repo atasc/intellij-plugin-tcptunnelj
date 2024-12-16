@@ -79,6 +79,7 @@ public class TunnelPlugin implements ProjectComponent, Disposable, AutoCloseable
   @Override
   protected void finalize() throws Throwable {
     try {
+      tunnelPanel = null;
       System.out.println("Finalize called. Cleaning up resources.");
     } finally {
       super.finalize();
@@ -89,12 +90,14 @@ public class TunnelPlugin implements ProjectComponent, Disposable, AutoCloseable
   public void dispose() {
     //Called in TcpTunnelAppLifecycleListener
     //TunnelConfig.store();
+    tunnelPanel = null;
   }
 
   @Override
   public void close() throws Exception {
     //Called in TcpTunnelAppLifecycleListener
     //TunnelConfig.store();
+    tunnelPanel = null;
   }
 
   public synchronized void disposeComponent() {
@@ -109,14 +112,16 @@ public class TunnelPlugin implements ProjectComponent, Disposable, AutoCloseable
   public TunnelPanel getContent() {
     initComponent();
 
-    tunnelPanel = createTunnelPanel();
+    if (tunnelPanel == null) {
+      tunnelPanel = createTunnelPanel();
 
-    DefaultActionGroup actionGroup = initToolbarActionGroup();
-    ActionToolbar toolBar = ActionManager.getInstance()
-        .createActionToolbar("tcptunnelj.Toolbar", actionGroup, false);
+      DefaultActionGroup actionGroup = initToolbarActionGroup();
+      ActionToolbar toolBar = ActionManager.getInstance()
+          .createActionToolbar("tcptunnelj.Toolbar", actionGroup, false);
 
-    toolBar.setTargetComponent(tunnelPanel);
-    tunnelPanel.add(toolBar.getComponent(), BorderLayout.WEST);
+      toolBar.setTargetComponent(tunnelPanel);
+      tunnelPanel.add(toolBar.getComponent(), BorderLayout.WEST);
+    }
 
     return tunnelPanel;
   }
