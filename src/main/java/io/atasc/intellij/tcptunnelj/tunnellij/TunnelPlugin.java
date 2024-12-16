@@ -86,12 +86,14 @@ public class TunnelPlugin implements ProjectComponent, Disposable, AutoCloseable
 
   @Override
   public void dispose() {
-    TunnelPlugin.TunnelConfig.store();
+    //Called in TcpTunnelAppLifecycleListener
+    //TunnelPlugin.TunnelConfig.store();
   }
 
   @Override
   public void close() throws Exception {
-    TunnelPlugin.TunnelConfig.store();
+    //Called in TcpTunnelAppLifecycleListener
+    //TunnelPlugin.TunnelConfig.store();
   }
 
   public synchronized void disposeComponent() {
