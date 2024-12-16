@@ -11,7 +11,8 @@ import javax.swing.*;
 //https://intellij-icons.jetbrains.design/#AllIcons-expui-codeWithMe-cwmPermissionView
 public class Icons {
   //AllIcons.Expui.Actions.ShortcutFilter
-  public static final Icon ICON_TOOL = AllIcons.Toolwindows.WebToolWindow;
+  //AllIcons.Toolwindows.WebToolWindow;
+  public static final Icon ICON_TOOL = AllIcons.General.Web;
   public static final Icon ICON_WATCH = AllIcons.CodeWithMe.CwmPermissionView;
   public static final Icon ICON_REMOVE = AllIcons.General.Remove;
   public static final Icon ICON_CLEAR = AllIcons.Actions.GC;
