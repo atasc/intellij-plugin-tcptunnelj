@@ -16,7 +16,7 @@ import java.io.*;
 import java.util.Properties;
 
 /**
- * @author boruvka
+ * @author boruvka/atasc
  * @since
  */
 public class TunnelPlugin implements ProjectComponent {
@@ -31,12 +31,10 @@ public class TunnelPlugin implements ProjectComponent {
 
   private static final String COMPONENT_NAME = "io.atasc.intellij.tcptunnel.tunnellij.TunnelWindow";
 
-  private static final String TOOL_WINDOW_ID = TunnelBundle.getBundle()
-      .getString("TunnelliJ.version");
+  private static final String TOOL_WINDOW_ID = "TcpTunnel";
 
   static {
-    PROPERTIES_FILE = new File(System.getProperty("user.home"),
-        PROPERTIES_FILE_NAME);
+    PROPERTIES_FILE = new File(System.getProperty("user.home"), PROPERTIES_FILE_NAME);
     PROPERTIES = new Properties();
   }
 
@@ -46,12 +44,6 @@ public class TunnelPlugin implements ProjectComponent {
 
   public TunnelPlugin(Project project) {
     this.project = project;
-  }
-
-  //Don't use this method
-  public void projectOpened() {
-    //Removed to avoid conflicts
-    //initToolWindow();
   }
 
   public void projectClosed() {
@@ -78,31 +70,12 @@ public class TunnelPlugin implements ProjectComponent {
   public synchronized void disposeComponent() {
     try {
       OutputStream os = new FileOutputStream(PROPERTIES_FILE);
-      PROPERTIES.store(os, "TunnelliJ plugin");
+      PROPERTIES.store(os, "TcpTunnel Plugin");
     } catch (IOException e) {
       e.printStackTrace();
     }
   }
 
-  private void initToolWindow() {
-    //Exit to avoid conflicts
-    if (true) {
-      return;
-    }
-
-    ToolWindowManager toolWindowManager = ToolWindowManager
-        .getInstance(project);
-    tunnelPanel = createTunnelPanel();
-    tunnelWindow = toolWindowManager.registerToolWindow(TOOL_WINDOW_ID,
-        tunnelPanel, ToolWindowAnchor.BOTTOM);
-    tunnelWindow.setIcon(Icons.ICON_WATCH);
-
-    DefaultActionGroup actionGroup = initToolbarActionGroup();
-    ActionToolbar toolBar = ActionManager.getInstance()
-        .createActionToolbar("tunnellij.Toolbar", actionGroup, false);
-
-    tunnelPanel.add(toolBar.getComponent(), BorderLayout.WEST);
-  }
 
   public TunnelPanel getContent() {
     tunnelPanel = createTunnelPanel();
@@ -156,11 +129,11 @@ public class TunnelPlugin implements ProjectComponent {
 
     public static final int BUFFER_LENGTH = 4096;
 
-    public static final String DST_HOST = "tunnellij.dst.hostname";
+    public static final String DST_HOST = "tcptunnel.dst.hostname";
 
-    public static final String DST_PORT = "tunnellij.dst.port";
+    public static final String DST_PORT = "tcptunnel.dst.port";
 
-    public static final String SRC_PORT = "tunnellij.src.port";
+    public static final String SRC_PORT = "tcptunnel.src.port";
 
     public static String getDestinationString() {
       return PROPERTIES.getProperty(DST_HOST, "localhost");
