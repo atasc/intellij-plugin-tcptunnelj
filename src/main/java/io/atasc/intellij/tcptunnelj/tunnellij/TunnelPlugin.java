@@ -107,7 +107,7 @@ public class TunnelPlugin implements ProjectComponent {
     AnAction stopAction = new StopAction();
     AnAction clearAction = new ClearAction();
     AnAction clearSelectedAction = new ClearSelectedAction();
-    AnAction aboutAction = new AboutAction();
+    //AnAction aboutAction = new AboutAction();
     ToggleAction wrapAction = new WrapAction();
 
     actionGroup.add(startAction);
@@ -115,7 +115,7 @@ public class TunnelPlugin implements ProjectComponent {
     actionGroup.add(clearSelectedAction);
     actionGroup.add(clearAction);
     actionGroup.add(wrapAction);
-    actionGroup.add(aboutAction);
+    //actionGroup.add(aboutAction);
 
     return actionGroup;
   }
