@@ -8,7 +8,6 @@ import com.intellij.openapi.wm.ToolWindowFactory;
 import com.intellij.openapi.wm.ToolWindowManager;
 import com.intellij.ui.content.ContentFactory;
 import io.atasc.intellij.tcptunnelj.tunnellij.TunnelPlugin;
-import io.atasc.intellij.tcptunnelj.tunnellij.ui.Icons;
 import kotlin.Unit;
 import kotlin.coroutines.Continuation;
 import org.jetbrains.annotations.NotNull;
@@ -42,10 +41,12 @@ public class TcpTunnelWindowFactory implements ToolWindowFactory {
       case 2 -> {
       }
       case 3 -> {
-        TunnelPlugin tunnelPlugin = new TunnelPlugin(project);
-        var content = ContentFactory.getInstance().createContent(tunnelPlugin.getContent(), null, false);
-        toolWindow.getContentManager().addContent(content);
-        //toolWindow.setIcon(Icons.ICON_TOOL);
+        SwingUtilities.invokeLater(() -> {
+          TunnelPlugin tunnelPlugin = new TunnelPlugin(project);
+          var content = ContentFactory.getInstance().createContent(tunnelPlugin.getContent(), null, false);
+          toolWindow.getContentManager().addContent(content);
+          //toolWindow.setIcon(Icons.ICON_TOOL);
+        });
       }
     }
 

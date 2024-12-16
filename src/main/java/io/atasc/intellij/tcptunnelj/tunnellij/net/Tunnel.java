@@ -11,7 +11,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 /**
- * @author boruvka
+ * @author boruvka/atasc
  * @since
  */
 public class Tunnel {
@@ -24,7 +24,7 @@ public class Tunnel {
 
   private boolean shouldStop = false;
 
-  private LinkedList listeners = new LinkedList();
+  private LinkedList<TunnelListener> listeners = new LinkedList<>();
 
   private ServerSocket serverSocket = null;
 
@@ -57,9 +57,7 @@ public class Tunnel {
 
   private void fireCallNotifyEvent(Call call) {
     synchronized (listeners) {
-      Iterator it = listeners.iterator();
-      while (it.hasNext()) {
-        TunnelListener listener = (TunnelListener) it.next();
+      for (TunnelListener listener : listeners) {
         listener.newCall(call);
       }
     }
@@ -67,9 +65,7 @@ public class Tunnel {
 
   private void fireCallEndedEvent(Call call) {
     synchronized (listeners) {
-      Iterator it = listeners.iterator();
-      while (it.hasNext()) {
-        TunnelListener listener = (TunnelListener) it.next();
+      for (TunnelListener listener : listeners) {
         listener.endCall(call);
       }
     }
@@ -77,9 +73,7 @@ public class Tunnel {
 
   private void fireTunnelStarted() {
     synchronized (listeners) {
-      Iterator it = listeners.iterator();
-      while (it.hasNext()) {
-        TunnelListener listener = (TunnelListener) it.next();
+      for (TunnelListener listener : listeners) {
         listener.tunnelStarted();
       }
     }
@@ -87,13 +81,13 @@ public class Tunnel {
 
   private void fireTunnelStopped() {
     synchronized (listeners) {
-      Iterator it = listeners.iterator();
-      while (it.hasNext()) {
-        TunnelListener listener = (TunnelListener) it.next();
+      for (TunnelListener listener : listeners) {
         listener.tunnelStopped();
       }
     }
   }
+
+
 
   public boolean isRunning() {
     return isRunning;
