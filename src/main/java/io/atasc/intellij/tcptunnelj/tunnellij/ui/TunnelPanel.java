@@ -65,7 +65,7 @@ public class TunnelPanel extends JPanel {
   public void showError(Exception e) {
     ApplicationManager.getApplication().invokeLater(() -> {
       Messages.showMessageDialog(
-          "Error when starting server: " + e.getMessage(),
+          "Error starting server: " + e.getMessage(),
           "Error",
           Messages.getErrorIcon()
       );
