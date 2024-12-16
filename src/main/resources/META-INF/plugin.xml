@@ -1,6 +1,6 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
-  <id>io.atasc.intellij.tcptunnel</id>
+  <id>io.atasc.intellij.tcptunnelj</id>
   <name>intellij-plugin-nettunnel</name>
   <vendor>atasc</vendor>
 
@@ -18,14 +18,14 @@
   <resource-bundle>messages.TcpTunnelPluginBundle</resource-bundle>
 
   <extensions defaultExtensionNs="com.intellij">
-    <toolWindow factoryClass="io.atasc.intellij.tcptunnel.toolWindow.TcpTunnelWindowFactory" id="TcpTunnel"
+    <toolWindow factoryClass="io.atasc.intellij.tcptunnelj.toolWindow.TcpTunnelWindowFactory" id="TcpTunnel"
                 anchor="bottom" canCloseContents="false" hideOnEmptyContent="true"/>
     <!--<toolWindow factoryClass="io.atasc.intellij.nettunnel.toolWindow.NetTunnelToolFactory" id="NetTunnel"/>-->
     <!--<projectViewPane implementation="io.atasc.intellij.nettunnel.toolWindow.NetTunnelToolFactory"/>-->
   </extensions>
 
   <applicationListeners>
-    <listener class="io.atasc.intellij.tcptunnel.listeners.TcpTunnelApplicationActivationListener"
+    <listener class="io.atasc.intellij.tcptunnelj.listeners.TcpTunnelApplicationActivationListener"
               topic="com.intellij.openapi.application.ApplicationActivationListener"/>
   </applicationListeners>
 </idea-plugin>
