@@ -76,6 +76,15 @@ public class TunnelPlugin implements ProjectComponent, Disposable, AutoCloseable
   }
 
   @Override
+  protected void finalize() throws Throwable {
+    try {
+      System.out.println("Finalize called. Cleaning up resources.");
+    } finally {
+      super.finalize();
+    }
+  }
+
+  @Override
   public void dispose() {
     TunnelPlugin.TunnelConfig.store();
   }
@@ -176,7 +185,7 @@ public class TunnelPlugin implements ProjectComponent, Disposable, AutoCloseable
     public static synchronized void store() {
       try {
         OutputStream os = new FileOutputStream(PROPERTIES_FILE);
-        PROPERTIES.store(os, "TcpTunnel Plugin");
+        PROPERTIES.store(os, "TcpTunnelJ Plugin");
       } catch (IOException e) {
         e.printStackTrace();
       }

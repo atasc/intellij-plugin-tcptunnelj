@@ -1,5 +1,7 @@
 package io.atasc.intellij.tcptunnelj.toolWindow;
 
+import com.intellij.ide.AppLifecycleListener;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.IconLoader;
@@ -15,7 +17,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
-import java.util.Objects;
 
 /**
  * @author atasc
@@ -47,6 +48,8 @@ public class TcpTunnelWindowFactory implements ToolWindowFactory {
           var content = ContentFactory.getInstance().createContent(tunnelPlugin.getContent(), null, false);
           toolWindow.getContentManager().addContent(content);
           //toolWindow.setIcon(Icons.ICON_TOOL);
+
+          ApplicationManager.getApplication().getMessageBus().connect().subscribe(AppLifecycleListener.TOPIC, new TcpTunnelAppLifecycleListener());
         });
       }
     }
