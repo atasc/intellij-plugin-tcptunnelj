@@ -51,7 +51,8 @@ public class TcpTunnelWindowFactory implements ToolWindowFactory {
           toolWindow.getContentManager().addContent(content);
           //toolWindow.setIcon(Icons.ICON_TOOL);
 
-          ApplicationManager.getApplication().getMessageBus().connect().subscribe(AppLifecycleListener.TOPIC, new TcpTunnelAppLifecycleListener());
+          ApplicationManager.getApplication().getMessageBus().connect()
+              .subscribe(AppLifecycleListener.TOPIC, new TcpTunnelAppLifecycleListener());
         });
       }
     }
