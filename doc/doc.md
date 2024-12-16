@@ -1,3 +1,5 @@
+Useful links
+
 https://plugins.jetbrains.com/docs/intellij/plugin-github-template.html
 
 https://github.com/JetBrains/intellij-platform-plugin-template
@@ -11,4 +13,4 @@ https://github.com/milanboruvka/tunnellij
 https://plugins.jetbrains.com/docs/intellij/tool-windows.html
 
 
-icons https://intellij-icons.jetbrains.design/#AllIcons-expui-general-delete
+Icons: https://intellij-icons.jetbrains.design/#AllIcons-expui-general-delete
