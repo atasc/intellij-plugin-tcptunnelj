@@ -1,6 +1,8 @@
 package io.atasc.intellij.tcptunnelj.listeners;
 
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.project.ProjectManagerListener;
 import org.jetbrains.annotations.NotNull;
 
@@ -60,4 +62,12 @@ public class TcpTunnelProjectManagerListener implements ProjectManagerListener {
   public void projectClosingBeforeSave(@NotNull Project project) {
     ProjectManagerListener.super.projectClosingBeforeSave(project);
   }
+
+  public static void attachListener(Project project, ProjectManagerListener listener) {
+    ApplicationManager.getApplication()
+        .getMessageBus()
+        .connect(project) // Connessione al progetto corrente
+        .subscribe(ProjectManager.TOPIC, listener);
+  }
+
 }

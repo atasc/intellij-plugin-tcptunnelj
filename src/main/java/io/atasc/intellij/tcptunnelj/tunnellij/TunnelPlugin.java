@@ -4,8 +4,10 @@ import com.intellij.openapi.Disposable;
 import com.intellij.openapi.actionSystem.*;
 import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.project.ProjectManagerListener;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowManager;
+import io.atasc.intellij.tcptunnelj.listeners.TcpTunnelProjectManagerListener;
 import io.atasc.intellij.tcptunnelj.tunnellij.action.*;
 import io.atasc.intellij.tcptunnelj.tunnellij.ui.TunnelPanel;
 
@@ -46,6 +48,18 @@ public class TunnelPlugin implements ProjectComponent, Disposable, AutoCloseable
   public TunnelPlugin(Project project) {
     this.project = project;
     TunnelConfig.setProjectName(project.getName());
+
+    TcpTunnelProjectManagerListener.attachListener(project, new ProjectManagerListener() {
+      @Override
+      public void projectClosed(Project project) {
+        System.out.println("Project closed: " + project.getName());
+      }
+
+      @Override
+      public void projectClosing(Project project) {
+        System.out.println("Project closing: " + project.getName());
+      }
+    });
   }
 
   @Override
