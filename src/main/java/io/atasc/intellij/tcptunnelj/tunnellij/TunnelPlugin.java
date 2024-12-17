@@ -90,7 +90,7 @@ public class TunnelPlugin implements ProjectComponent, Disposable, AutoCloseable
   @Override
   protected void finalize() throws Throwable {
     try {
-      closeTheTunnel();
+      this.closeTheTunnel();
       this.tunnelPanel = null;
       System.out.println("Finalize called. Cleaning up resources.");
     } finally {
@@ -102,7 +102,7 @@ public class TunnelPlugin implements ProjectComponent, Disposable, AutoCloseable
   public void dispose() {
     //Called in TcpTunnelAppLifecycleListener
     //TunnelConfig.store();
-    closeTheTunnel();
+    this.closeTheTunnel();
     this.tunnelPanel = null;
   }
 
@@ -112,7 +112,7 @@ public class TunnelPlugin implements ProjectComponent, Disposable, AutoCloseable
   }
 
   public void projectClosed() {
-    closeTheTunnel();
+    this.closeTheTunnel();
     unregisterToolWindow();
   }
 
@@ -133,7 +133,7 @@ public class TunnelPlugin implements ProjectComponent, Disposable, AutoCloseable
   public void close() throws Exception {
     //Called in TcpTunnelAppLifecycleListener
     //TunnelConfig.store();
-    closeTheTunnel();
+    this.closeTheTunnel();
     this.tunnelPanel = null;
   }
 
