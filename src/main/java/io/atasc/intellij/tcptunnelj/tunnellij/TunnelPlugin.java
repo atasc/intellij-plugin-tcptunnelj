@@ -6,23 +6,22 @@ import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManagerListener;
 import com.intellij.openapi.wm.ToolWindowManager;
+import io.atasc.intellij.tcptunnelj.TunnelConfig;
 import io.atasc.intellij.tcptunnelj.listeners.TcpTunnelProjectManagerListener;
 import io.atasc.intellij.tcptunnelj.tunnellij.action.*;
 import io.atasc.intellij.tcptunnelj.tunnellij.ui.TunnelPanel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.*;
-import java.util.Properties;
 
 /**
  * @author boruvka/atasc
  * @since
  */
 public class TunnelPlugin implements ProjectComponent, Disposable, AutoCloseable {
-  public static Properties PROPERTIES;
-  private static final String PROPERTIES_FILE_NAME = ".tcptunnelj.properties";
-  private static File PROPERTIES_FILE;
+//  public static Properties PROPERTIES;
+//  private static final String PROPERTIES_FILE_NAME = ".tcptunnelj.properties";
+//  private static File PROPERTIES_FILE;
 
   private static final String COMPONENT_NAME = "io.atasc.intellij.tcptunnelj.tunnellij.TunnelWindow";
   private static final String TOOL_WINDOW_ID = "TcpTunnelJ";
@@ -30,6 +29,7 @@ public class TunnelPlugin implements ProjectComponent, Disposable, AutoCloseable
   //private ToolWindow tunnelWindow;
   private Project project;
   private TunnelPanel tunnelPanel;
+  private TunnelConfig tunnelConfig;
 
   public TunnelPanel getTunnelPanel() {
     return this.tunnelPanel;
@@ -40,14 +40,16 @@ public class TunnelPlugin implements ProjectComponent, Disposable, AutoCloseable
     return COMPONENT_NAME;
   }
 
-  static {
-    PROPERTIES_FILE = new File(System.getProperty("user.home"), PROPERTIES_FILE_NAME);
-    PROPERTIES = new Properties();
-  }
+//  static {
+//    PROPERTIES_FILE = new File(System.getProperty("user.home"), PROPERTIES_FILE_NAME);
+//    PROPERTIES = new Properties();
+//  }
 
   public TunnelPlugin(Project project) {
     this.project = project;
-    TunnelConfig.setProjectName(project.getName());
+
+    this.tunnelConfig = new TunnelConfig(project.getName());
+    //tunnelConfig.setProjectName();
 
     TcpTunnelProjectManagerListener.attachListener(project, new ProjectManagerListener() {
       @Override
@@ -117,16 +119,16 @@ public class TunnelPlugin implements ProjectComponent, Disposable, AutoCloseable
   }
 
   public synchronized void initComponent() {
-    if (PROPERTIES_FILE.exists()) {
-      try {
-        InputStream is = new FileInputStream(PROPERTIES_FILE);
-        PROPERTIES.load(is);
-      } catch (FileNotFoundException e) {
-        e.printStackTrace();
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
-    }
+//    if (PROPERTIES_FILE.exists()) {
+//      try {
+//        InputStream is = new FileInputStream(PROPERTIES_FILE);
+//        PROPERTIES.load(is);
+//      } catch (FileNotFoundException e) {
+//        e.printStackTrace();
+//      } catch (IOException e) {
+//        e.printStackTrace();
+//      }
+//    }
   }
 
   @Override
@@ -138,12 +140,14 @@ public class TunnelPlugin implements ProjectComponent, Disposable, AutoCloseable
   }
 
   public synchronized void disposeComponent() {
-    try {
-      OutputStream os = new FileOutputStream(PROPERTIES_FILE);
-      PROPERTIES.store(os, "TcpTunnel Plugin");
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+//    try {
+//      OutputStream os = new FileOutputStream(PROPERTIES_FILE);
+//      PROPERTIES.store(os, "TcpTunnel Plugin");
+//    } catch (IOException e) {
+//      e.printStackTrace();
+//    }
+
+    this.tunnelConfig.store();
   }
 
   public TunnelPanel getContent() {
@@ -179,8 +183,8 @@ public class TunnelPlugin implements ProjectComponent, Disposable, AutoCloseable
     toolWindowManager.unregisterToolWindow(TOOL_WINDOW_ID);
   }
 
-  private static TunnelPanel createTunnelPanel() {
-    TunnelPanel panel = new TunnelPanel();
+  private TunnelPanel createTunnelPanel() {
+    TunnelPanel panel = new TunnelPanel(this.tunnelConfig);
     panel.setBackground(UIManager.getColor("Tree.textBackground"));
     return panel;
   }
@@ -205,65 +209,5 @@ public class TunnelPlugin implements ProjectComponent, Disposable, AutoCloseable
     return actionGroup;
   }
 
-  public static class TunnelConfig {
-    private static String projectName;
-
-    public static String normalizeProjectName(String name) {
-      if (name != null) {
-        name = name.replace(" ", "_").toLowerCase();
-
-      }
-      return name;
-    }
-
-    public static void setProjectName(String name) {
-      if (name != null) {
-        projectName = normalizeProjectName(name);
-
-        SRC_PORT = projectName + ".tcptunnelj.src.port";
-        DST_HOST = projectName + ".tcptunnelj.dst.hostname";
-        DST_PORT = projectName + ".tcptunnelj.dst.port";
-      }
-    }
-
-    public static final int BUFFER_LENGTH = 4096;
-
-    private static String SRC_PORT = projectName + ".tcptunnelj.src.port";
-    private static String DST_HOST = projectName + ".tcptunnelj.dst.hostname";
-    private static String DST_PORT = projectName + ".tcptunnelj.dst.port";
-
-    public static String getDestinationString() {
-      return PROPERTIES.getProperty(DST_HOST, "localhost");
-    }
-
-    public static void setDestinationString(String destination) {
-      PROPERTIES.setProperty(DST_HOST, destination);
-    }
-
-    public static String getDestinationPort() {
-      return PROPERTIES.getProperty(DST_PORT, "6060");
-    }
-
-    public static void setDestinationPort(String port) {
-      PROPERTIES.setProperty(DST_PORT, port);
-    }
-
-    public static String getSourcePort() {
-      return PROPERTIES.getProperty(SRC_PORT, "4444");
-    }
-
-    public static void setSourcePort(String port) {
-      PROPERTIES.setProperty(SRC_PORT, port);
-    }
-
-    public static synchronized void store() {
-      try {
-        OutputStream os = new FileOutputStream(PROPERTIES_FILE);
-        PROPERTIES.store(os, "TcpTunnelJ Plugin");
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
-    }
-  }
 
 }

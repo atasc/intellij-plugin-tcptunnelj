@@ -1,5 +1,6 @@
 package io.atasc.intellij.tcptunnelj.tunnellij.net;
 
+import io.atasc.intellij.tcptunnelj.TunnelConfig;
 import io.atasc.intellij.tcptunnelj.tunnellij.TunnelPlugin;
 
 import java.io.IOException;
@@ -177,7 +178,7 @@ public class Tunnel {
 
     class Writer extends Thread {
 
-      final int BUFFER_SIZE = TunnelPlugin.TunnelConfig.BUFFER_LENGTH;
+      final int BUFFER_SIZE = TunnelConfig.BUFFER_LENGTH;
 
       InputStream readFrom;
 

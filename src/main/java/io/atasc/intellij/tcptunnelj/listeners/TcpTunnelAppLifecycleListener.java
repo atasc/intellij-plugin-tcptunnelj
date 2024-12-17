@@ -49,7 +49,7 @@ public class TcpTunnelAppLifecycleListener implements AppLifecycleListener {
   @Override
   public void appClosing() {
     System.out.println("Application is closing.");
-    TunnelPlugin.TunnelConfig.store();
+    //TunnelPlugin.TunnelConfig.store();
   }
 
   @Override

@@ -2,6 +2,7 @@ package io.atasc.intellij.tcptunnelj.tunnellij.ui;
 
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.ui.Messages;
+import io.atasc.intellij.tcptunnelj.TunnelConfig;
 import io.atasc.intellij.tcptunnelj.tunnellij.TunnelPlugin;
 import io.atasc.intellij.tcptunnelj.tunnellij.net.Call;
 import io.atasc.intellij.tcptunnelj.tunnellij.net.Tunnel;
@@ -17,18 +18,20 @@ import java.awt.*;
  * @since
  */
 public class TunnelPanel extends JPanel {
+  private TunnelConfig tunnelConfig;
 
   private CallsPanel list;
   private ControlPanel control;
   private Tunnel tunnel;
   private PortNumberVerifier portNumberVerifier;
 
-  public TunnelPanel() {
+  public TunnelPanel(TunnelConfig tunnelConfig) {
+this.tunnelConfig = tunnelConfig;
 
     setLayout(new BorderLayout());
 
     list = new CallsPanel();
-    control = new ControlPanel();
+    control = new ControlPanel(tunnelConfig);
     add(list, BorderLayout.CENTER);
     add(control, BorderLayout.SOUTH);
 
@@ -104,6 +107,7 @@ public class TunnelPanel extends JPanel {
   }
 
   class ControlPanel extends JPanel implements TunnelListener {
+    TunnelConfig tunnelConfig;
 
     private JPanel subPanelAddress;
 
@@ -113,8 +117,9 @@ public class TunnelPanel extends JPanel {
 
     private JTextField destPort;
 
-    public ControlPanel() {
+    public ControlPanel(TunnelConfig tunnelConfig) {
       super();
+      this.tunnelConfig = tunnelConfig;
       initComponents();
     }
 
@@ -124,23 +129,23 @@ public class TunnelPanel extends JPanel {
       subPanelAddress = new JPanel();
       subPanelAddress.setBorder(new TitledBorder("Properties"));
 
-      srcPort = new JTextField(TunnelPlugin.TunnelConfig.getSourcePort());
+      srcPort = new JTextField(this.tunnelConfig.getSourcePort());
       srcPort.setInputVerifier(portNumberVerifier);
       srcPort.setHorizontalAlignment(JTextField.RIGHT);
       srcPort.setColumns(5);
 
-      destHost = new JTextField(TunnelPlugin.TunnelConfig.getDestinationString());
+      destHost = new JTextField(this.tunnelConfig.getDestinationString());
       destHost.setHorizontalAlignment(JTextField.RIGHT);
       destHost.setColumns(24);
 
-      destPort = new JTextField(TunnelPlugin.TunnelConfig.getDestinationPort());
+      destPort = new JTextField(this.tunnelConfig.getDestinationPort());
       destPort.setInputVerifier(portNumberVerifier);
       destPort.setHorizontalAlignment(JTextField.RIGHT);
       destPort.setColumns(5);
 
-      TunnelPlugin.TunnelConfig.setSourcePort(TunnelPlugin.TunnelConfig.getSourcePort());
-      TunnelPlugin.TunnelConfig.setDestinationString(TunnelPlugin.TunnelConfig.getDestinationString());
-      TunnelPlugin.TunnelConfig.setDestinationPort(TunnelPlugin.TunnelConfig.getDestinationPort());
+      this.tunnelConfig.setSourcePort(this.tunnelConfig.getSourcePort());
+      this.tunnelConfig.setDestinationString(this.tunnelConfig.getDestinationString());
+      this.tunnelConfig.setDestinationPort(this.tunnelConfig.getDestinationPort());
 
       subPanelAddress.add(new JLabel("from port"));
       subPanelAddress.add(srcPort);
@@ -153,16 +158,16 @@ public class TunnelPanel extends JPanel {
     }
 
     public void setControlPanelEditable(boolean b) {
-      TunnelPlugin.TunnelConfig.setSourcePort(srcPort.getText());
-      TunnelPlugin.TunnelConfig.setDestinationString(destHost.getText());
-      TunnelPlugin.TunnelConfig.setDestinationPort(destPort.getText());
-      TunnelPlugin.TunnelConfig.store();
+      this.tunnelConfig.setSourcePort(srcPort.getText());
+      this.tunnelConfig.setDestinationString(destHost.getText());
+      this.tunnelConfig.setDestinationPort(destPort.getText());
+      this.tunnelConfig.store();
 
-//      TunnelPlugin.PROPERTIES.put(TunnelPlugin.TunnelConfig.DST_HOST,
+//      TunnelPlugin.PROPERTIES.put(this.tunnelConfig.DST_HOST,
 //          destHost.getText());
-//      TunnelPlugin.PROPERTIES.put(TunnelPlugin.TunnelConfig.DST_PORT,
+//      TunnelPlugin.PROPERTIES.put(this.tunnelConfig.DST_PORT,
 //          destPort.getText());
-//      TunnelPlugin.PROPERTIES.put(TunnelPlugin.TunnelConfig.SRC_PORT,
+//      TunnelPlugin.PROPERTIES.put(this.tunnelConfig.SRC_PORT,
 //          srcPort.getText());
 
       srcPort.setEditable(b);
