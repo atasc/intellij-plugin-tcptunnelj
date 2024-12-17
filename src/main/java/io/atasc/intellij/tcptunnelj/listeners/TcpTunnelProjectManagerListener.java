@@ -7,15 +7,15 @@ import com.intellij.openapi.project.ProjectManagerListener;
 import org.jetbrains.annotations.NotNull;
 
 public class TcpTunnelProjectManagerListener implements ProjectManagerListener {
-  @Override
-  public void projectOpened(@NotNull Project project) {
-    ProjectManagerListener.super.projectOpened(project);
-  }
-
-  @Override
-  public boolean canCloseProject(@NotNull Project project) {
-    return ProjectManagerListener.super.canCloseProject(project);
-  }
+//  @Override
+//  public void projectOpened(@NotNull Project project) {
+//    ProjectManagerListener.super.projectOpened(project);
+//  }
+//
+//  @Override
+//  public boolean canCloseProject(@NotNull Project project) {
+//    return ProjectManagerListener.super.canCloseProject(project);
+//  }
 
   public TcpTunnelProjectManagerListener() {
     super();
