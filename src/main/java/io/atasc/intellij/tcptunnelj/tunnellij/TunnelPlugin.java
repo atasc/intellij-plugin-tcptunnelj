@@ -149,7 +149,7 @@ public class TunnelPlugin implements ProjectComponent, Disposable, AutoCloseable
   private DefaultActionGroup initToolbarActionGroup() {
     DefaultActionGroup actionGroup = new DefaultActionGroup();
 
-    AnAction startAction = new StartAction();
+    AnAction startAction = new StartAction(this);
     AnAction stopAction = new StopAction();
     AnAction clearAction = new ClearAction();
     AnAction clearSelectedAction = new ClearSelectedAction();
@@ -169,9 +169,17 @@ public class TunnelPlugin implements ProjectComponent, Disposable, AutoCloseable
   public static class TunnelConfig {
     private static String projectName;
 
+    public static String normalizeProjectName(String name) {
+      if (name != null) {
+        name = name.replace(" ", "_").toLowerCase();
+
+      }
+      return name;
+    }
+
     public static void setProjectName(String name) {
       if (name != null) {
-        projectName = name.replace(" ", "_").toLowerCase();
+        projectName = normalizeProjectName(name);
 
         SRC_PORT = projectName + ".tcptunnelj.src.port";
         DST_HOST = projectName + ".tcptunnelj.dst.hostname";

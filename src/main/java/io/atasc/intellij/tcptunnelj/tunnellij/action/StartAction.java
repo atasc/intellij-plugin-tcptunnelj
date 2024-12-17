@@ -1,6 +1,5 @@
 package io.atasc.intellij.tcptunnelj.tunnellij.action;
 
-import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.Presentation;
 import com.intellij.openapi.project.Project;
@@ -13,12 +12,12 @@ import io.atasc.intellij.tcptunnelj.tunnellij.ui.TunnelPanel;
  * @author boruvka
  * @since
  */
-public class StartAction extends AnAction {
-
-  public StartAction() {
-    super("Start tunnellij", "Start tunnellij", Icons.ICON_START);
+public class StartAction extends BaseAction {
+  public StartAction(TunnelPlugin tunnelPlugin) {
+    super("Start tunnellij", "Start tunnellij", Icons.ICON_START, tunnelPlugin);
   }
 
+  @Override
   public void actionPerformed(AnActionEvent event) {
     Project project = (Project) event.getDataContext().getData("project");
     TunnelPanel tunnelPanel = TunnelPlugin.getTunnelPanel(project);
@@ -31,6 +30,7 @@ public class StartAction extends AnAction {
 
   }
 
+  @Override
   public void update(AnActionEvent event) {
     Project project = (Project) event.getDataContext().getData("project");
     TunnelPanel tunnelPanel = TunnelPlugin.getTunnelPanel(project);

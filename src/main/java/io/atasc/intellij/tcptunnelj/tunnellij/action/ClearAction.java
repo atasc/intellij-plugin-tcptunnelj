@@ -12,7 +12,6 @@ import io.atasc.intellij.tcptunnelj.tunnellij.ui.TunnelPanel;
  * @since
  */
 public class ClearAction extends AnAction {
-
   public ClearAction() {
     super("Remove all calls from list", "Remove all calls from list",
         Icons.ICON_CLEAR);
