@@ -19,61 +19,33 @@ import java.util.Properties;
  * @since
  */
 public class TunnelPlugin implements ProjectComponent, Disposable, AutoCloseable {
-
-  private static TunnelPanel tunnelPanel;
-
   public static Properties PROPERTIES;
-
   private static final String PROPERTIES_FILE_NAME = ".tcptunnelj.properties";
-
   private static File PROPERTIES_FILE;
 
   private static final String COMPONENT_NAME = "io.atasc.intellij.tcptunnelj.tunnellij.TunnelWindow";
-
   private static final String TOOL_WINDOW_ID = "TcpTunnelJ";
 
-  static {
-    PROPERTIES_FILE = new File(System.getProperty("user.home"), PROPERTIES_FILE_NAME);
-    PROPERTIES = new Properties();
-  }
-
   private ToolWindow tunnelWindow;
-
   private Project project;
-
-  public TunnelPlugin(Project project) {
-    this.project = project;
-    TunnelConfig.setProjectName(project.getName());
-  }
+  private static TunnelPanel tunnelPanel;
 
   public static TunnelPanel getTunnelPanel(Project project) {
     return tunnelPanel;
-  }
-
-  @Override
-  public void projectOpened() {
-    ProjectComponent.super.projectOpened();
-  }
-
-  public void projectClosed() {
-    unregisterToolWindow();
   }
 
   public String getComponentName() {
     return COMPONENT_NAME;
   }
 
-  public synchronized void initComponent() {
-    if (PROPERTIES_FILE.exists()) {
-      try {
-        InputStream is = new FileInputStream(PROPERTIES_FILE);
-        PROPERTIES.load(is);
-      } catch (FileNotFoundException e) {
-        e.printStackTrace();
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
-    }
+  static {
+    PROPERTIES_FILE = new File(System.getProperty("user.home"), PROPERTIES_FILE_NAME);
+    PROPERTIES = new Properties();
+  }
+
+  public TunnelPlugin(Project project) {
+    this.project = project;
+    TunnelConfig.setProjectName(project.getName());
   }
 
   @Override
@@ -91,6 +63,28 @@ public class TunnelPlugin implements ProjectComponent, Disposable, AutoCloseable
     //Called in TcpTunnelAppLifecycleListener
     //TunnelConfig.store();
     tunnelPanel = null;
+  }
+
+  @Override
+  public void projectOpened() {
+    ProjectComponent.super.projectOpened();
+  }
+
+  public void projectClosed() {
+    unregisterToolWindow();
+  }
+
+  public synchronized void initComponent() {
+    if (PROPERTIES_FILE.exists()) {
+      try {
+        InputStream is = new FileInputStream(PROPERTIES_FILE);
+        PROPERTIES.load(is);
+      } catch (FileNotFoundException e) {
+        e.printStackTrace();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
   }
 
   @Override

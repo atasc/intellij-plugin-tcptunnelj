@@ -19,11 +19,8 @@ import java.awt.*;
 public class TunnelPanel extends JPanel {
 
   private CallsPanel list;
-
   private ControlPanel control;
-
   private Tunnel tunnel;
-
   private PortNumberVerifier portNumberVerifier;
 
   public TunnelPanel() {
