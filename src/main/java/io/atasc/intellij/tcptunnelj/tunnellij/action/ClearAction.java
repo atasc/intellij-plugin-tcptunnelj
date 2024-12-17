@@ -1,6 +1,5 @@
 package io.atasc.intellij.tcptunnelj.tunnellij.action;
 
-import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.project.Project;
 import io.atasc.intellij.tcptunnelj.tunnellij.TunnelPlugin;
@@ -8,18 +7,21 @@ import io.atasc.intellij.tcptunnelj.tunnellij.ui.Icons;
 import io.atasc.intellij.tcptunnelj.tunnellij.ui.TunnelPanel;
 
 /**
- * @author boruvka
+ * @author boruvka/atasc
  * @since
  */
-public class ClearAction extends AnAction {
-  public ClearAction() {
+public class ClearAction extends BaseAction {
+  public ClearAction(TunnelPlugin tunnelPlugin) {
     super("Remove all calls from list", "Remove all calls from list",
-        Icons.ICON_CLEAR);
+        Icons.ICON_CLEAR, tunnelPlugin);
   }
 
+  @Override
   public void actionPerformed(AnActionEvent event) {
-    Project project = (Project) event.getDataContext().getData("project");
-    TunnelPanel tunnelPanel = TunnelPlugin.getTunnelPanel(project);
+    //Project project = (Project) event.getDataContext().getData("project");
+    //TunnelPanel tunnelPanel = TunnelPlugin.getTunnelPanel(project);
+
+    TunnelPanel tunnelPanel = this.tunnelPlugin.getTunnelPanel();
     tunnelPanel.clear();
   }
 }

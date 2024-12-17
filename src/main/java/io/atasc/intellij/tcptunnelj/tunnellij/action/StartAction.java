@@ -9,18 +9,22 @@ import io.atasc.intellij.tcptunnelj.tunnellij.ui.Icons;
 import io.atasc.intellij.tcptunnelj.tunnellij.ui.TunnelPanel;
 
 /**
- * @author boruvka
+ * @author boruvka/atasc
  * @since
  */
 public class StartAction extends BaseAction {
   public StartAction(TunnelPlugin tunnelPlugin) {
-    super("Start tunnellij", "Start tunnellij", Icons.ICON_START, tunnelPlugin);
+    super("Start tcp tunnel", "Start tcp tunnel",
+        Icons.ICON_START, tunnelPlugin);
   }
 
   @Override
   public void actionPerformed(AnActionEvent event) {
-    Project project = (Project) event.getDataContext().getData("project");
-    TunnelPanel tunnelPanel = TunnelPlugin.getTunnelPanel(project);
+    //Project project = (Project) event.getDataContext().getData("project");
+    //TunnelPanel tunnelPanel = TunnelPlugin.getTunnelPanel(project);
+
+    TunnelPanel tunnelPanel = this.tunnelPlugin.getTunnelPanel();
+
     try {
       tunnelPanel.start();
     } catch (Exception e) {
@@ -32,8 +36,11 @@ public class StartAction extends BaseAction {
 
   @Override
   public void update(AnActionEvent event) {
-    Project project = (Project) event.getDataContext().getData("project");
-    TunnelPanel tunnelPanel = TunnelPlugin.getTunnelPanel(project);
+    //Project project = (Project) event.getDataContext().getData("project");
+    //TunnelPanel tunnelPanel = TunnelPlugin.getTunnelPanel(project);
+
+    TunnelPanel tunnelPanel = this.tunnelPlugin.getTunnelPanel();
+
     Presentation p = event.getPresentation();
     p.setEnabled(!tunnelPanel.isRunning());
     p.setVisible(true);

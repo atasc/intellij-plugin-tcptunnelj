@@ -1,7 +1,7 @@
 package io.atasc.intellij.tcptunnelj.tunnellij.action;
 
-import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
+import io.atasc.intellij.tcptunnelj.tunnellij.TunnelPlugin;
 import io.atasc.intellij.tcptunnelj.tunnellij.ui.Icons;
 
 import javax.swing.*;
@@ -12,18 +12,20 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 /**
- * @author boruvka
+ * @author boruvka/atasc
  * @since
  */
-public class AboutAction extends AnAction {
+public class AboutAction extends BaseAction {
 
-  public AboutAction() {
-    super("Show About dialog", "Show About dialog", Icons.ICON_HELP);
+  public AboutAction(TunnelPlugin tunnelPlugin) {
+    super("Show About dialog", "Show About dialog",
+        Icons.ICON_HELP, tunnelPlugin);
   }
 
+  @Override
   public void actionPerformed(AnActionEvent event) {
-    InputStream is = getClass().getClassLoader().getResourceAsStream(
-        "readme.txt");
+    InputStream is = getClass().getClassLoader().getResourceAsStream("readme.txt");
+
     if (is != null) {
       BufferedReader br = new BufferedReader(new InputStreamReader(is));
       StringBuffer sb = new StringBuffer();
@@ -33,6 +35,7 @@ public class AboutAction extends AnAction {
           sb.append(s);
           sb.append("\n");
         }
+
         TextArea area = new TextArea(20, 80);
         area.setEditable(false);
         area.append(sb.toString());

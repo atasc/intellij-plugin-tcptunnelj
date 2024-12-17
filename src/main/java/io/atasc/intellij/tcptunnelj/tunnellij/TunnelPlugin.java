@@ -36,6 +36,10 @@ public class TunnelPlugin implements ProjectComponent, Disposable, AutoCloseable
     return tunnelPanel;
   }
 
+  public TunnelPanel getTunnelPanel() {
+    return tunnelPanel;
+  }
+
   public String getComponentName() {
     return COMPONENT_NAME;
   }
@@ -150,11 +154,11 @@ public class TunnelPlugin implements ProjectComponent, Disposable, AutoCloseable
     DefaultActionGroup actionGroup = new DefaultActionGroup();
 
     AnAction startAction = new StartAction(this);
-    AnAction stopAction = new StopAction();
-    AnAction clearAction = new ClearAction();
-    AnAction clearSelectedAction = new ClearSelectedAction();
-    //AnAction aboutAction = new AboutAction();
-    ToggleAction wrapAction = new WrapAction();
+    AnAction stopAction = new StopAction(this);
+    AnAction clearAction = new ClearAction(this);
+    AnAction clearSelectedAction = new ClearSelectedAction(this);
+    AnAction aboutAction = new AboutAction(this);
+    ToggleAction wrapAction = new WrapAction(this);
 
     actionGroup.add(startAction);
     actionGroup.add(stopAction);

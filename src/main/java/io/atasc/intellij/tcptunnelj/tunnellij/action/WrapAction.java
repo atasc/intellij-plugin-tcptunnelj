@@ -2,32 +2,36 @@ package io.atasc.intellij.tcptunnelj.tunnellij.action;
 
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.ToggleAction;
-import com.intellij.openapi.project.Project;
 import io.atasc.intellij.tcptunnelj.tunnellij.TunnelPlugin;
 import io.atasc.intellij.tcptunnelj.tunnellij.ui.Icons;
 import io.atasc.intellij.tcptunnelj.tunnellij.ui.TunnelPanel;
 
 /**
- * @author boruvka
+ * @author boruvka/atasc
  * @since
  */
 public class WrapAction extends ToggleAction {
-
-  public WrapAction() {
-    super("Wrap lines", "Wrap lines", Icons.ICON_WRAP);
-  }
-
+  private TunnelPlugin tunnelPlugin;
   private boolean selected = false;
 
+  public WrapAction(TunnelPlugin tunnelPlugin) {
+    super("Wrap lines", "Wrap lines", Icons.ICON_WRAP);
+    this.tunnelPlugin = tunnelPlugin;
+  }
+
+  @Override
   public boolean isSelected(AnActionEvent event) {
     return selected;
   }
 
+  @Override
   public void setSelected(AnActionEvent event, boolean b) {
     selected = b;
 
-    Project project = (Project) event.getDataContext().getData("project");
-    TunnelPanel tunnelPanel = TunnelPlugin.getTunnelPanel(project);
+    //Project project = (Project) event.getDataContext().getData("project");
+    //TunnelPanel tunnelPanel = TunnelPlugin.getTunnelPanel(project);
+
+    TunnelPanel tunnelPanel = this.tunnelPlugin.getTunnelPanel();
 
     if (selected) {
       tunnelPanel.wrap();

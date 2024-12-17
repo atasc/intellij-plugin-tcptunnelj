@@ -3,16 +3,19 @@ package io.atasc.intellij.tcptunnelj.tunnellij.action;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import io.atasc.intellij.tcptunnelj.tunnellij.TunnelPlugin;
-import io.atasc.intellij.tcptunnelj.tunnellij.ui.Icons;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 
+/**
+ * @author atasc
+ * @since
+ */
 public class BaseAction extends AnAction {
-  private TunnelPlugin tunnelPlugin;
+  protected TunnelPlugin tunnelPlugin;
 
   public BaseAction(String text, String description, Icon icon, TunnelPlugin tunnelPlugin) {
-    this( text,  description,  icon);
+    this(text, description, icon);
     this.tunnelPlugin = tunnelPlugin;
   }
 
