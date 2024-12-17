@@ -26,15 +26,6 @@ import javax.swing.*;
  */
 public class TcpTunnelWindowFactory implements ToolWindowFactory, Disposable {
   private static final Logger LOGGER = Logger.getInstance(TcpTunnelWindowFactory.class);
-//  private static TunnelPlugin activeTunnelPlugin;
-//
-//  public static TunnelPlugin getActiveTunnelPlugin() {
-//    return activeTunnelPlugin;
-//  }
-//
-//  public static void setActiveTunnelPlugin(TunnelPlugin plugin) {
-//    activeTunnelPlugin = plugin;
-//  }
 
   static {
     //LOGGER.warn("Don't forget to remove all non-needed sample code files with their corresponding registration entries in `plugin.xml`.");
@@ -43,7 +34,6 @@ public class TcpTunnelWindowFactory implements ToolWindowFactory, Disposable {
   @Override
   protected void finalize() throws Throwable {
     try {
-      //activeTunnelPlugin = null;
     } finally {
       super.finalize();
     }
@@ -51,7 +41,6 @@ public class TcpTunnelWindowFactory implements ToolWindowFactory, Disposable {
 
   @Override
   public void dispose() {
-    //activeTunnelPlugin = null;
   }
 
   @Override
@@ -71,11 +60,6 @@ public class TcpTunnelWindowFactory implements ToolWindowFactory, Disposable {
       }
       case 3 -> {
         SwingUtilities.invokeLater(() -> {
-//          if (activeTunnelPlugin == null) {
-//            //TunnelPlugin tunnelPlugin = new TunnelPlugin(project);
-//            activeTunnelPlugin = new TunnelPlugin(project);
-//          }
-
           TunnelPlugin tunnelPlugin = new TunnelPlugin(project);
 
           var content = ContentFactory.getInstance().createContent(tunnelPlugin.getContent(), null, false);

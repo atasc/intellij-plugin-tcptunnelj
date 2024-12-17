@@ -31,10 +31,6 @@ public class TunnelPlugin implements ProjectComponent, Disposable, AutoCloseable
   private Project project;
   private TunnelPanel tunnelPanel;
 
-//  public static TunnelPanel getTunnelPanel(Project project) {
-//    return tunnelPanel;
-//  }
-
   public TunnelPanel getTunnelPanel() {
     return tunnelPanel;
   }
@@ -137,6 +133,7 @@ public class TunnelPlugin implements ProjectComponent, Disposable, AutoCloseable
   public void close() throws Exception {
     //Called in TcpTunnelAppLifecycleListener
     //TunnelConfig.store();
+    closeTheTunnel();
     tunnelPanel = null;
   }
 
