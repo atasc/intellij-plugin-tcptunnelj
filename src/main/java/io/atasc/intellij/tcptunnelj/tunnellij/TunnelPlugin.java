@@ -5,7 +5,6 @@ import com.intellij.openapi.actionSystem.*;
 import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManagerListener;
-import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowManager;
 import io.atasc.intellij.tcptunnelj.listeners.TcpTunnelProjectManagerListener;
 import io.atasc.intellij.tcptunnelj.tunnellij.action.*;
@@ -28,7 +27,7 @@ public class TunnelPlugin implements ProjectComponent, Disposable, AutoCloseable
   private static final String COMPONENT_NAME = "io.atasc.intellij.tcptunnelj.tunnellij.TunnelWindow";
   private static final String TOOL_WINDOW_ID = "TcpTunnelJ";
 
-  private ToolWindow tunnelWindow;
+  //private ToolWindow tunnelWindow;
   private Project project;
   private TunnelPanel tunnelPanel;
 
@@ -40,6 +39,7 @@ public class TunnelPlugin implements ProjectComponent, Disposable, AutoCloseable
     return tunnelPanel;
   }
 
+  @Override
   public String getComponentName() {
     return COMPONENT_NAME;
   }
@@ -53,7 +53,10 @@ public class TunnelPlugin implements ProjectComponent, Disposable, AutoCloseable
     this.project = project;
     TunnelConfig.setProjectName(project.getName());
 
+    final TunnelPanel localTunnelPanel = this.getTunnelPanel();
+
     TcpTunnelProjectManagerListener.attachListener(project, new ProjectManagerListener() {
+
       @Override
       public void projectClosed(Project project) {
         System.out.println("Project closed: " + project.getName());
@@ -62,13 +65,47 @@ public class TunnelPlugin implements ProjectComponent, Disposable, AutoCloseable
       @Override
       public void projectClosing(Project project) {
         System.out.println("Project closing: " + project.getName());
+//        try {
+//          if (localTunnelPanel != null) {
+//            localTunnelPanel.stop();
+//          }
+//        } catch (Exception e) {
+//          throw new RuntimeException(e);
+//        }
+
+        closeTheTunnel();
       }
     });
+  }
+
+  public TunnelPlugin() {
+    super();
+  }
+
+  @Override
+  public int hashCode() {
+    return super.hashCode();
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    return super.equals(obj);
+  }
+
+  @Override
+  protected Object clone() throws CloneNotSupportedException {
+    return super.clone();
+  }
+
+  @Override
+  public String toString() {
+    return super.toString();
   }
 
   @Override
   protected void finalize() throws Throwable {
     try {
+      closeTheTunnel();
       tunnelPanel = null;
       System.out.println("Finalize called. Cleaning up resources.");
     } finally {
@@ -80,6 +117,7 @@ public class TunnelPlugin implements ProjectComponent, Disposable, AutoCloseable
   public void dispose() {
     //Called in TcpTunnelAppLifecycleListener
     //TunnelConfig.store();
+    closeTheTunnel();
     tunnelPanel = null;
   }
 
@@ -89,6 +127,7 @@ public class TunnelPlugin implements ProjectComponent, Disposable, AutoCloseable
   }
 
   public void projectClosed() {
+    closeTheTunnel();
     unregisterToolWindow();
   }
 
@@ -136,6 +175,16 @@ public class TunnelPlugin implements ProjectComponent, Disposable, AutoCloseable
     }
 
     return tunnelPanel;
+  }
+
+  private void closeTheTunnel() {
+    try {
+      if (this.tunnelPanel != null) {
+        this.tunnelPanel.stop();
+      }
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
   }
 
   private void unregisterToolWindow() {

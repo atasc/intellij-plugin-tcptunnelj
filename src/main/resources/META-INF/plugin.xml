@@ -24,6 +24,12 @@
 
   </extensions>
 
+  <project-components>
+    <component>
+      <implementation-class>io.atasc.intellij.tcptunnelj.tunnellij.TunnelPlugin</implementation-class>
+    </component>
+  </project-components>
+
   <applicationListeners>
 
     <listener class="io.atasc.intellij.tcptunnelj.listeners.TcpTunnelApplicationActivationListener"
