@@ -5,7 +5,6 @@ import com.intellij.openapi.actionSystem.*;
 import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManagerListener;
-import com.intellij.openapi.wm.ToolWindowManager;
 import io.atasc.intellij.tcptunnelj.TunnelConfig;
 import io.atasc.intellij.tcptunnelj.listeners.TcpTunnelProjectManagerListener;
 import io.atasc.intellij.tcptunnelj.tunnellij.action.*;
@@ -35,6 +34,7 @@ public class TunnelPlugin implements ProjectComponent, Disposable, AutoCloseable
   public String getComponentName() {
     return COMPONENT_NAME;
   }
+
   public TunnelPlugin(Project project) {
     this.project = project;
 

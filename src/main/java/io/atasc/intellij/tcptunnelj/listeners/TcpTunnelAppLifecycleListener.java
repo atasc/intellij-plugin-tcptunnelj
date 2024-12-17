@@ -2,7 +2,6 @@ package io.atasc.intellij.tcptunnelj.listeners;
 
 import com.intellij.ide.AppLifecycleListener;
 import com.intellij.openapi.project.Project;
-import io.atasc.intellij.tcptunnelj.tunnellij.TunnelPlugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;

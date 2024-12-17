@@ -1,7 +1,6 @@
 package io.atasc.intellij.tcptunnelj.tunnellij.net;
 
 import io.atasc.intellij.tcptunnelj.TunnelConfig;
-import io.atasc.intellij.tcptunnelj.tunnellij.TunnelPlugin;
 
 import java.io.IOException;
 import java.io.InputStream;

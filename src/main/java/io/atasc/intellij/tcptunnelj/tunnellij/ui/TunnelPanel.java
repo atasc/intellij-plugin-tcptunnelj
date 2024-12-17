@@ -3,7 +3,6 @@ package io.atasc.intellij.tcptunnelj.tunnellij.ui;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.ui.Messages;
 import io.atasc.intellij.tcptunnelj.TunnelConfig;
-import io.atasc.intellij.tcptunnelj.tunnellij.TunnelPlugin;
 import io.atasc.intellij.tcptunnelj.tunnellij.net.Call;
 import io.atasc.intellij.tcptunnelj.tunnellij.net.Tunnel;
 import io.atasc.intellij.tcptunnelj.tunnellij.net.TunnelException;
@@ -26,7 +25,7 @@ public class TunnelPanel extends JPanel {
   private PortNumberVerifier portNumberVerifier;
 
   public TunnelPanel(TunnelConfig tunnelConfig) {
-this.tunnelConfig = tunnelConfig;
+    this.tunnelConfig = tunnelConfig;
 
     setLayout(new BorderLayout());
 

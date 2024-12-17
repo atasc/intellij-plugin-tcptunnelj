@@ -2,7 +2,6 @@ package io.atasc.intellij.tcptunnelj.tunnellij.action;
 
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.Presentation;
-import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import io.atasc.intellij.tcptunnelj.tunnellij.TunnelPlugin;
 import io.atasc.intellij.tcptunnelj.tunnellij.ui.Icons;
