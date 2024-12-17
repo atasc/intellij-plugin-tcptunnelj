@@ -35,12 +35,6 @@ public class TunnelPlugin implements ProjectComponent, Disposable, AutoCloseable
   public String getComponentName() {
     return COMPONENT_NAME;
   }
-
-//  static {
-//    PROPERTIES_FILE = new File(System.getProperty("user.home"), PROPERTIES_FILE_NAME);
-//    PROPERTIES = new Properties();
-//  }
-
   public TunnelPlugin(Project project) {
     this.project = project;
 
@@ -98,8 +92,6 @@ public class TunnelPlugin implements ProjectComponent, Disposable, AutoCloseable
 
   @Override
   public void dispose() {
-    //Called in TcpTunnelAppLifecycleListener
-    //TunnelConfig.store();
     this.closeTheTunnel();
     this.tunnelPanel = null;
   }
@@ -115,34 +107,15 @@ public class TunnelPlugin implements ProjectComponent, Disposable, AutoCloseable
   }
 
   public synchronized void initComponent() {
-//    if (PROPERTIES_FILE.exists()) {
-//      try {
-//        InputStream is = new FileInputStream(PROPERTIES_FILE);
-//        PROPERTIES.load(is);
-//      } catch (FileNotFoundException e) {
-//        e.printStackTrace();
-//      } catch (IOException e) {
-//        e.printStackTrace();
-//      }
-//    }
   }
 
   @Override
   public void close() throws Exception {
-    //Called in TcpTunnelAppLifecycleListener
-    //TunnelConfig.store();
     this.closeTheTunnel();
     this.tunnelPanel = null;
   }
 
   public synchronized void disposeComponent() {
-//    try {
-//      OutputStream os = new FileOutputStream(PROPERTIES_FILE);
-//      PROPERTIES.store(os, "TcpTunnel Plugin");
-//    } catch (IOException e) {
-//      e.printStackTrace();
-//    }
-
     this.tunnelConfig.store();
   }
 
@@ -204,6 +177,5 @@ public class TunnelPlugin implements ProjectComponent, Disposable, AutoCloseable
 
     return actionGroup;
   }
-
 
 }
