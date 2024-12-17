@@ -1,4 +1,4 @@
-package io.atasc.intellij.tcptunnelj.toolWindow;
+package io.atasc.intellij.tcptunnelj.listeners;
 
 import com.intellij.ide.AppLifecycleListener;
 import com.intellij.openapi.project.Project;
@@ -39,6 +39,7 @@ public class TcpTunnelAppLifecycleListener implements AppLifecycleListener {
   @Override
   public void projectFrameClosed() {
     System.out.println("All project frames are closed.");
+    //TODO: dispose plugin->close socket
   }
 
   @Override
@@ -50,6 +51,7 @@ public class TcpTunnelAppLifecycleListener implements AppLifecycleListener {
   public void appClosing() {
     System.out.println("Application is closing.");
     TunnelPlugin.TunnelConfig.store();
+    //TODO: dispose plugin->close socket
   }
 
   @Override

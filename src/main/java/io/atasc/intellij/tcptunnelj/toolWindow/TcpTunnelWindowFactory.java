@@ -11,6 +11,7 @@ import com.intellij.openapi.wm.ToolWindowAnchor;
 import com.intellij.openapi.wm.ToolWindowFactory;
 import com.intellij.openapi.wm.ToolWindowManager;
 import com.intellij.ui.content.ContentFactory;
+import io.atasc.intellij.tcptunnelj.listeners.TcpTunnelAppLifecycleListener;
 import io.atasc.intellij.tcptunnelj.tunnellij.TunnelPlugin;
 import kotlin.Unit;
 import kotlin.coroutines.Continuation;
@@ -26,6 +27,14 @@ import javax.swing.*;
 public class TcpTunnelWindowFactory implements ToolWindowFactory, Disposable {
   private static final Logger LOGGER = Logger.getInstance(TcpTunnelWindowFactory.class);
   private static TunnelPlugin activeTunnelPlugin;
+
+  public static TunnelPlugin getActiveTunnelPlugin() {
+    return activeTunnelPlugin;
+  }
+
+  public static void setActiveTunnelPlugin(TunnelPlugin plugin) {
+    activeTunnelPlugin = plugin;
+  }
 
   static {
     //LOGGER.warn("Don't forget to remove all non-needed sample code files with their corresponding registration entries in `plugin.xml`.");

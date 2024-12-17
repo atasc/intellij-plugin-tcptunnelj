@@ -18,12 +18,19 @@
   <resource-bundle>messages.TcpTunnelPluginBundle</resource-bundle>
 
   <extensions defaultExtensionNs="com.intellij">
+
     <toolWindow factoryClass="io.atasc.intellij.tcptunnelj.toolWindow.TcpTunnelWindowFactory" id="TcpTunnelJ"
                 anchor="bottom" canCloseContents="false" hideOnEmptyContent="true"/>
+
   </extensions>
 
   <applicationListeners>
+
     <listener class="io.atasc.intellij.tcptunnelj.listeners.TcpTunnelApplicationActivationListener"
               topic="com.intellij.openapi.application.ApplicationActivationListener"/>
+
+    <listener class="io.atasc.intellij.tcptunnelj.listeners.TcpTunnelProjectManagerListener"
+              topic="com.intellij.openapi.project.ProjectManagerListener"/>
+
   </applicationListeners>
 </idea-plugin>
