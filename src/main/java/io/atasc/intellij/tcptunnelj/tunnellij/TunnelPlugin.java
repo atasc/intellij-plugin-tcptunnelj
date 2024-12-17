@@ -32,7 +32,7 @@ public class TunnelPlugin implements ProjectComponent, Disposable, AutoCloseable
   private TunnelPanel tunnelPanel;
 
   public TunnelPanel getTunnelPanel() {
-    return tunnelPanel;
+    return this.tunnelPanel;
   }
 
   @Override
@@ -91,7 +91,7 @@ public class TunnelPlugin implements ProjectComponent, Disposable, AutoCloseable
   protected void finalize() throws Throwable {
     try {
       closeTheTunnel();
-      tunnelPanel = null;
+      this.tunnelPanel = null;
       System.out.println("Finalize called. Cleaning up resources.");
     } finally {
       super.finalize();
@@ -103,7 +103,7 @@ public class TunnelPlugin implements ProjectComponent, Disposable, AutoCloseable
     //Called in TcpTunnelAppLifecycleListener
     //TunnelConfig.store();
     closeTheTunnel();
-    tunnelPanel = null;
+    this.tunnelPanel = null;
   }
 
   @Override
@@ -134,7 +134,7 @@ public class TunnelPlugin implements ProjectComponent, Disposable, AutoCloseable
     //Called in TcpTunnelAppLifecycleListener
     //TunnelConfig.store();
     closeTheTunnel();
-    tunnelPanel = null;
+    this.tunnelPanel = null;
   }
 
   public synchronized void disposeComponent() {
@@ -149,18 +149,18 @@ public class TunnelPlugin implements ProjectComponent, Disposable, AutoCloseable
   public TunnelPanel getContent() {
     initComponent();
 
-    if (tunnelPanel == null) {
-      tunnelPanel = createTunnelPanel();
+    if (this.tunnelPanel == null) {
+      this.tunnelPanel = createTunnelPanel();
 
       DefaultActionGroup actionGroup = initToolbarActionGroup();
       ActionToolbar toolBar = ActionManager.getInstance()
           .createActionToolbar("tcptunnelj.Toolbar", actionGroup, false);
 
-      toolBar.setTargetComponent(tunnelPanel);
-      tunnelPanel.add(toolBar.getComponent(), BorderLayout.WEST);
+      toolBar.setTargetComponent(this.tunnelPanel);
+      this.tunnelPanel.add(toolBar.getComponent(), BorderLayout.WEST);
     }
 
-    return tunnelPanel;
+    return this.tunnelPanel;
   }
 
   private void closeTheTunnel() {
@@ -175,7 +175,7 @@ public class TunnelPlugin implements ProjectComponent, Disposable, AutoCloseable
 
   private void unregisterToolWindow() {
     ToolWindowManager toolWindowManager = ToolWindowManager
-        .getInstance(project);
+        .getInstance(this.project);
     toolWindowManager.unregisterToolWindow(TOOL_WINDOW_ID);
   }
 
