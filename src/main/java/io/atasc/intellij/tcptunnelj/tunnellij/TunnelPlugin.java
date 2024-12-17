@@ -147,9 +147,9 @@ public class TunnelPlugin implements ProjectComponent, Disposable, AutoCloseable
   }
 
   private void unregisterToolWindow() {
-    ToolWindowManager toolWindowManager = ToolWindowManager
-        .getInstance(this.project);
-    toolWindowManager.unregisterToolWindow(TOOL_WINDOW_ID);
+//    ToolWindowManager toolWindowManager = ToolWindowManager
+//        .getInstance(this.project);
+//    toolWindowManager.unregisterToolWindow(TOOL_WINDOW_ID);
   }
 
   private TunnelPanel createTunnelPanel() {
