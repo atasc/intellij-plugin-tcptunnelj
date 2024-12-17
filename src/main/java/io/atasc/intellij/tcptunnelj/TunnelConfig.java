@@ -19,48 +19,6 @@ public class TunnelConfig {
 
   private static String projectName;
 
-  static {
-    PROPERTIES_FILE = new File(System.getProperty("user.home"), PROPERTIES_FILE_NAME);
-    PROPERTIES = new Properties();
-  }
-
-  public TunnelConfig(String projectName) {
-    this.init();
-    this.setProjectName(projectName);
-  }
-
-  public static String normalizeProjectName(String name) {
-    if (name != null) {
-      name = name.replace(" ", "_").toLowerCase();
-
-    }
-    return name;
-  }
-
-  private void setProjectName(String name) {
-    if (name != null) {
-      this.projectName = normalizeProjectName(name);
-
-      this.SRC_PORT = projectName + ".tcptunnelj.src.port";
-      this.DST_HOST = projectName + ".tcptunnelj.dst.hostname";
-      this.DST_PORT = projectName + ".tcptunnelj.dst.port";
-    }
-  }
-
-  public synchronized void init() {
-    if (PROPERTIES_FILE.exists()) {
-      try {
-        InputStream is = new FileInputStream(PROPERTIES_FILE);
-        PROPERTIES.load(is);
-      } catch (FileNotFoundException e) {
-        e.printStackTrace();
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
-    }
-  }
-
-
   public String getDestinationString() {
     return PROPERTIES.getProperty(DST_HOST, "localhost");
   }
@@ -85,6 +43,39 @@ public class TunnelConfig {
     PROPERTIES.setProperty(SRC_PORT, port);
   }
 
+  static {
+    PROPERTIES_FILE = new File(System.getProperty("user.home"), PROPERTIES_FILE_NAME);
+    PROPERTIES = new Properties();
+  }
+
+  public TunnelConfig(String projectName) {
+    this.init();
+    this.setProjectName(projectName);
+  }
+
+  public synchronized void init() {
+    if (PROPERTIES_FILE.exists()) {
+      try {
+        InputStream is = new FileInputStream(PROPERTIES_FILE);
+        PROPERTIES.load(is);
+      } catch (FileNotFoundException e) {
+        e.printStackTrace();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
+  }
+
+  private void setProjectName(String name) {
+    if (name != null) {
+      this.projectName = normalizeProjectName(name);
+
+      this.SRC_PORT = projectName + ".tcptunnelj.src.port";
+      this.DST_HOST = projectName + ".tcptunnelj.dst.hostname";
+      this.DST_PORT = projectName + ".tcptunnelj.dst.port";
+    }
+  }
+
   public synchronized void store() {
     try {
       OutputStream os = new FileOutputStream(PROPERTIES_FILE);
@@ -93,4 +84,13 @@ public class TunnelConfig {
       e.printStackTrace();
     }
   }
+
+  public static String normalizeProjectName(String name) {
+    if (name != null) {
+      name = name.replace(" ", "_").toLowerCase();
+
+    }
+    return name;
+  }
+
 }
