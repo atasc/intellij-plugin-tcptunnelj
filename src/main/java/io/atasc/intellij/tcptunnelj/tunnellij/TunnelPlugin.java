@@ -48,8 +48,8 @@ public class TunnelPlugin implements ProjectComponent, Disposable, AutoCloseable
   public TunnelPlugin(Project project) {
     this.project = project;
     TunnelConfig.setProjectName(project.getName());
-    TcpTunnelProjectManagerListener.attachListener(project, new ProjectManagerListener() {
 
+    TcpTunnelProjectManagerListener.attachListener(project, new ProjectManagerListener() {
       @Override
       public void projectClosed(Project project) {
         System.out.println("Project closed: " + project.getName());
