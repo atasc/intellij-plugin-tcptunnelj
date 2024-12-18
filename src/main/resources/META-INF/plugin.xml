@@ -5,10 +5,11 @@
   <vendor>atasc</vendor>
 
   <description>
-    TcpTunnelJ plugin works as a TCP tunnel and it useful for any network development.
-    It allows you to monitor, sniff TCP connections and display the content in a very
-    effective way inside your IDE.
-    IT IS A FORK OF THE ORIGINAL PROJECT TUNNELLIJ (https://github.com/milanboruvka/tunnellij)
+    TcpTunnelJ serves as a powerful TCP tunnel, making it an invaluable tool for network development. It allows
+    developers to monitor and intercept TCP connections while effectively displaying the captured data directly within
+    the IDE. This makes it an ideal solution for debugging and analyzing network communications.
+    This plugin is an enhanced and updated version of the original Tunnellij plugin [(available at Tunnellij GitHub
+    Repository], offering additional features and improvements to streamline your workflow.
   </description>
 
   <version>0.3.1</version>
