@@ -11,7 +11,7 @@
     IT IS A FORK OF THE ORIGINAL PROJECT TUNNELLIJ (https://github.com/milanboruvka/tunnellij)
   </description>
 
-  <version>0.3.0</version>
+  <version>0.3.1</version>
 
   <depends>com.intellij.modules.platform</depends>
 
