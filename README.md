@@ -1,10 +1,6 @@
 # intellij-plugin-tcptunnelj
 
-![Build](https://github.com/atasc/intellij-plugin-tcptunnelj/workflows/Build/badge.svg)
-[![Version](https://img.shields.io/jetbrains/plugin/v/MARKETPLACE_ID.svg)](https://plugins.jetbrains.com/plugin/MARKETPLACE_ID)
-[![Downloads](https://img.shields.io/jetbrains/plugin/d/MARKETPLACE_ID.svg)](https://plugins.jetbrains.com/plugin/MARKETPLACE_ID)
-
-## Template ToDo list
+## Description
 TcpTunnelJ works as a TCP tunnel, making it an essential tool for network development. It enables developers to monitor and intercept TCP connections while efficiently displaying the connection data directly within your IDE. This makes it a highly effective solution for debugging and analyzing network communication.
 It is an updated version of the original plugin Tunnellij (https://github.com/milanboruvka/tunnellij). 
 <!-- Plugin description end -->
