@@ -17,7 +17,7 @@ public class Icons {
   public static final Icon ICON_WATCH = AllIcons.CodeWithMe.CwmPermissionView;
   public static final Icon ICON_REMOVE = AllIcons.General.Remove;
   public static final Icon ICON_CLEAR = AllIcons.Actions.GC;
-  public static final Icon ICON_WRAP = AllIcons.Actions.ShowCode;
+  public static final Icon ICON_WRAP = AllIcons.Actions.ToggleSoftWrap;
 
   public static final Icon ICON_START = AllIcons.Actions.Execute;
   public static final Icon ICON_STOP = AllIcons.Actions.Suspend;

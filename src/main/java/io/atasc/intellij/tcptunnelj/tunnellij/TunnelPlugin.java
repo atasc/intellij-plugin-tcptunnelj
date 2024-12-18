@@ -60,26 +60,6 @@ public class TunnelPlugin implements ProjectComponent, Disposable, AutoCloseable
   }
 
   @Override
-  public int hashCode() {
-    return super.hashCode();
-  }
-
-  @Override
-  public boolean equals(Object obj) {
-    return super.equals(obj);
-  }
-
-  @Override
-  protected Object clone() throws CloneNotSupportedException {
-    return super.clone();
-  }
-
-  @Override
-  public String toString() {
-    return super.toString();
-  }
-
-  @Override
   protected void finalize() throws Throwable {
     try {
       this.closeTheTunnel();
@@ -110,7 +90,7 @@ public class TunnelPlugin implements ProjectComponent, Disposable, AutoCloseable
   }
 
   @Override
-  public void close() throws Exception {
+  public void close() {
     this.closeTheTunnel();
     this.tunnelPanel = null;
   }

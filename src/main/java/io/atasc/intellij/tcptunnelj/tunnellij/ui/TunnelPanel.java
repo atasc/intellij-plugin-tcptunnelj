@@ -19,8 +19,8 @@ import java.awt.*;
 public class TunnelPanel extends JPanel {
   private TunnelConfig tunnelConfig;
 
-  private CallsPanel list;
-  private ControlPanel control;
+  private CallsPanel callsPanel;
+  private ControlPanel controlPanel;
   private Tunnel tunnel;
   private PortNumberVerifier portNumberVerifier;
 
@@ -29,10 +29,11 @@ public class TunnelPanel extends JPanel {
 
     setLayout(new BorderLayout());
 
-    list = new CallsPanel();
-    control = new ControlPanel(tunnelConfig);
-    add(list, BorderLayout.CENTER);
-    add(control, BorderLayout.SOUTH);
+    callsPanel = new CallsPanel();
+    controlPanel = new ControlPanel(tunnelConfig);
+
+    add(callsPanel, BorderLayout.CENTER);
+    add(controlPanel, BorderLayout.SOUTH);
 
     portNumberVerifier = new PortNumberVerifier();
   }
@@ -41,11 +42,11 @@ public class TunnelPanel extends JPanel {
     Runnable r = new Runnable() {
 
       public void run() {
-        tunnel = new Tunnel(control.getSrcPort(),
-            control.getDestPort(), control.getDestHost());
+        tunnel = new Tunnel(controlPanel.getSrcPort(),
+            controlPanel.getDestPort(), controlPanel.getDestHost());
         try {
-          tunnel.addTunnelListener(list);
-          tunnel.addTunnelListener(control);
+          tunnel.addTunnelListener(callsPanel);
+          tunnel.addTunnelListener(controlPanel);
           tunnel.start();
 
         } catch (TunnelException e) {
@@ -84,19 +85,19 @@ public class TunnelPanel extends JPanel {
   }
 
   public void clear() {
-    list.clear();
+    callsPanel.clear();
   }
 
   public void clearSelected() {
-    list.clearSelected();
+    callsPanel.clearSelected();
   }
 
   public void wrap() {
-    list.wrap();
+    callsPanel.wrap();
   }
 
   public void unwrap() {
-    list.unwrap();
+    callsPanel.unwrap();
   }
 
   private boolean isRunning = false;
@@ -161,13 +162,6 @@ public class TunnelPanel extends JPanel {
       this.tunnelConfig.setDestinationString(destHost.getText());
       this.tunnelConfig.setDestinationPort(destPort.getText());
       this.tunnelConfig.store();
-
-//      TunnelPlugin.PROPERTIES.put(this.tunnelConfig.DST_HOST,
-//          destHost.getText());
-//      TunnelPlugin.PROPERTIES.put(this.tunnelConfig.DST_PORT,
-//          destPort.getText());
-//      TunnelPlugin.PROPERTIES.put(this.tunnelConfig.SRC_PORT,
-//          srcPort.getText());
 
       srcPort.setEditable(b);
       destHost.setEditable(b);
