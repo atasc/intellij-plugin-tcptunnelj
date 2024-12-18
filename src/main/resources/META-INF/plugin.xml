@@ -1,8 +1,8 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
-  <id>io.atasc.intellij.tcptunnelj</id>
-  <name>intellij-plugin-tcptunnelj</name>
-  <vendor>atasc</vendor>
+  <id>io.atasc.tcptunnelj</id>
+  <name>TcpTunnelJ</name>
+  <vendor>Andrea Tasca</vendor>
 
   <description>
     TcpTunnelJ serves as a powerful TCP tunnel, making it an invaluable tool for network development. It allows
