@@ -13,7 +13,7 @@ public class Icons {
   //AllIcons.Expui.Actions.ShortcutFilter
   //AllIcons.Toolwindows.WebToolWindow;
   //getCustomIcon("icons/pluginIcon.svg");
-  public static final Icon ICON_TOOL = AllIcons.General.Web;
+  public static final Icon ICON_TOOL = AllIcons.Nodes.Plugin;
   public static final Icon ICON_WATCH = AllIcons.Actions.Show;
   public static final Icon ICON_REMOVE = AllIcons.General.Remove;
   public static final Icon ICON_CLEAR = AllIcons.Actions.GC;
