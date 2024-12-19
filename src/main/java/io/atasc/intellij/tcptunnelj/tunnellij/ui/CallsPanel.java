@@ -12,20 +12,17 @@ import java.awt.event.KeyEvent;
 import java.io.ByteArrayOutputStream;
 
 /**
- * @author boruvka
+ * @author boruvka/atasc
  * @since
  */
 public class CallsPanel extends JPanel implements TunnelListener {
 
-  private JList list;
-
-  private DefaultListModel model;
-
-  private ViewersPanel viewers;
-
-  private JSplitPane splitPaneTopBottom;
-
   public static final int DIVIDER_SIZE = 2;
+
+  private JList list;
+  private DefaultListModel model;
+  private ViewersPanel viewers;
+  private JSplitPane splitPaneTopBottom;
 
   public CallsPanel() {
 
@@ -132,15 +129,12 @@ class CallsListSelectionListener implements ListSelectionListener {
 }
 
 class ViewersPanel extends JPanel {
+  private boolean removeChunk = true;
 
-  private JTextArea left;
-
-  private JTextArea right;
-
-  private JScrollPane leftScroll;
-
-  private JScrollPane rightScroll;
-
+  private JTextArea requestTxt;
+  private JTextArea responseTxt;
+  private JScrollPane requestScroll;
+  private JScrollPane responseScroll;
   private JSplitPane splitPaneLeftRight;
 
   public ViewersPanel() {
@@ -152,25 +146,25 @@ class ViewersPanel extends JPanel {
 
     setBackground(UIManager.getColor("Tree.textBackground"));
 
-    left = new JTextArea();
-    right = new JTextArea();
+    requestTxt = new JTextArea();
+    responseTxt = new JTextArea();
 
-    left.setEditable(true);
-    right.setEditable(true);
+    requestTxt.setEditable(true);
+    responseTxt.setEditable(true);
 
-    left.setBackground(UIManager.getColor("Tree.textBackground"));
-    right.setBackground(UIManager.getColor("Tree.textBackground"));
+    requestTxt.setBackground(UIManager.getColor("Tree.textBackground"));
+    responseTxt.setBackground(UIManager.getColor("Tree.textBackground"));
 
-    leftScroll = new JScrollPane(left);
-    rightScroll = new JScrollPane(right);
+    requestScroll = new JScrollPane(requestTxt);
+    responseScroll = new JScrollPane(responseTxt);
 
     splitPaneLeftRight = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
     splitPaneLeftRight.setDividerSize(CallsPanel.DIVIDER_SIZE);
     splitPaneLeftRight.setDividerLocation(0.50d);
     splitPaneLeftRight.setResizeWeight(0.50d);
 
-    splitPaneLeftRight.add(leftScroll, JSplitPane.LEFT);
-    splitPaneLeftRight.add(rightScroll, JSplitPane.RIGHT);
+    splitPaneLeftRight.add(requestScroll, JSplitPane.LEFT);
+    splitPaneLeftRight.add(responseScroll, JSplitPane.RIGHT);
 
     add(splitPaneLeftRight, BorderLayout.CENTER);
   }
@@ -182,56 +176,67 @@ class ViewersPanel extends JPanel {
       return;
     }
 
-    ByteArrayOutputStream leftBaos = (ByteArrayOutputStream) call
-        .getOutputLogger();
-    if (leftBaos == null) {
+    ByteArrayOutputStream requestBaos = (ByteArrayOutputStream) call.getOutputLogger();
+    if (requestBaos == null) {
       return;
     }
 
-    left.setText("");
+    requestTxt.setText("");
 
     if (!asBytes) {
-      left.setText(leftBaos.toString());
+      requestTxt.setText(requestBaos.toString());
 
     } else {
-      // TODO
-
-      byte[] bytes = leftBaos.toByteArray();
+      //request text
+      byte[] bytes = requestBaos.toByteArray();
       for (int i = 0; i < bytes.length; i++) {
         byte b = bytes[i];
         String s = Integer.toHexString(b).toUpperCase();
         if (s.length() == 1) {
           s = "0" + s;
         }
-        left.append(s);
+        requestTxt.append(s);
       }
     }
-    left.setCaretPosition(0);
+    requestTxt.setCaretPosition(0);
 
-    ByteArrayOutputStream rightBaos = ((ByteArrayOutputStream) call
-        .getInputLogger());
-    if (rightBaos == null) {
+    //response text
+    ByteArrayOutputStream responseBaos = ((ByteArrayOutputStream) call.getInputLogger());
+
+    if (responseBaos == null) {
       return;
     }
-    right.setText(rightBaos.toString());
-    right.setCaretPosition(0);
+
+    if (removeChunk) {
+      responseTxt.setText(
+          removeChunkedEncoding(responseBaos.toString())
+      );
+    } else {
+      responseTxt.setText(responseBaos.toString());
+    }
+    responseTxt.setCaretPosition(0);
+  }
+
+  public String removeChunkedEncoding(String response) {
+    // Usa una regex per identificare i chunk (numeri esadecimali seguiti da newline)
+    return response.replaceAll("(?m)^[0-9a-fA-F]+\\r?\\n", "");
   }
 
   public void wrap() {
-    left.setLineWrap(true);
-    left.setWrapStyleWord(true);
-    right.setLineWrap(true);
-    right.setWrapStyleWord(true);
+    requestTxt.setLineWrap(true);
+    requestTxt.setWrapStyleWord(true);
+    responseTxt.setLineWrap(true);
+    responseTxt.setWrapStyleWord(true);
   }
 
   public void unwrap() {
-    left.setLineWrap(false);
-    right.setLineWrap(false);
+    requestTxt.setLineWrap(false);
+    responseTxt.setLineWrap(false);
   }
 
   public void clear() {
-    left.setText("");
-    right.setText("");
+    requestTxt.setText("");
+    responseTxt.setText("");
   }
 
 }
