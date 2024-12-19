@@ -15,4 +15,6 @@ https://plugins.jetbrains.com/docs/intellij/tool-windows.html
 
 Icons: https://intellij-icons.jetbrains.design/#AllIcons-expui-general-delete
 
-Publish: https://plugins.jetbrains.com/docs/intellij/publishing-plugin.html#uploading-a-plugin-to-jetbrains-marketplace
+Publish: 
+https://plugins.jetbrains.com/docs/intellij/publishing-plugin.html#uploading-a-plugin-to-jetbrains-marketplace
+https://plugins.jetbrains.com/author/me
