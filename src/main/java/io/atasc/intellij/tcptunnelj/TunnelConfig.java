@@ -13,34 +13,34 @@ public class TunnelConfig {
   private static File PROPERTIES_FILE;
 
   public static final int BUFFER_LENGTH = 4096;
-  private String SRC_PORT = ".tcptunnelj.src.port";
-  private String DST_HOST = ".tcptunnelj.dst.hostname";
-  private String DST_PORT = ".tcptunnelj.dst.port";
+  private String srcPort = ".tcptunnelj.src.port";
+  private String dstHost = ".tcptunnelj.dst.hostname";
+  private String dstPort = ".tcptunnelj.dst.port";
 
   private static String projectName;
 
   public String getDestinationString() {
-    return PROPERTIES.getProperty(DST_HOST, "localhost");
+    return PROPERTIES.getProperty(dstHost, "localhost");
   }
 
   public void setDestinationString(String destination) {
-    PROPERTIES.setProperty(DST_HOST, destination);
+    PROPERTIES.setProperty(dstHost, destination);
   }
 
   public String getDestinationPort() {
-    return PROPERTIES.getProperty(DST_PORT, "6060");
+    return PROPERTIES.getProperty(dstPort, "6060");
   }
 
   public void setDestinationPort(String port) {
-    PROPERTIES.setProperty(DST_PORT, port);
+    PROPERTIES.setProperty(dstPort, port);
   }
 
   public String getSourcePort() {
-    return PROPERTIES.getProperty(SRC_PORT, "4444");
+    return PROPERTIES.getProperty(srcPort, "4444");
   }
 
   public void setSourcePort(String port) {
-    PROPERTIES.setProperty(SRC_PORT, port);
+    PROPERTIES.setProperty(srcPort, port);
   }
 
   static {
@@ -70,9 +70,9 @@ public class TunnelConfig {
     if (name != null) {
       this.projectName = normalizeProjectName(name);
 
-      this.SRC_PORT = projectName + ".tcptunnelj.src.port";
-      this.DST_HOST = projectName + ".tcptunnelj.dst.hostname";
-      this.DST_PORT = projectName + ".tcptunnelj.dst.port";
+      this.srcPort = projectName + ".tcptunnelj.src.port";
+      this.dstHost = projectName + ".tcptunnelj.dst.hostname";
+      this.dstPort = projectName + ".tcptunnelj.dst.port";
     }
   }
 
