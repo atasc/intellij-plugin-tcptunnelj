@@ -12,7 +12,6 @@ import java.awt.*;
  * @since
  */
 public class TcpTunnelApplicationActivationListener implements ApplicationActivationListener {
-
   private static final Logger LOGGER = Logger.getInstance(TcpTunnelApplicationActivationListener.class);
 
   public TcpTunnelApplicationActivationListener() {

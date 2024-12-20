@@ -10,7 +10,7 @@ import java.util.Date;
  * @since
  */
 public class CallStringFormatter {
-  static SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss.SS");
+  private static SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss.SS");
 
   public synchronized static String format(Call call) {
     StringBuffer sb = new StringBuffer();

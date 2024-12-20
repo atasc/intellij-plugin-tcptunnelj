@@ -16,12 +16,12 @@ import java.io.ByteArrayOutputStream;
  * @since
  */
 public class CallsPanel extends JPanel implements TunnelListener {
+  public static final int DIVIDER_SIZE = 2;
+
   private JList list;
   private DefaultListModel model;
   private ViewersPanel viewers;
   private JSplitPane splitPaneTopBottom;
-
-  public static final int DIVIDER_SIZE = 2;
 
   public CallsPanel() {
     setBackground(UIManager.getColor("Tree.textBackground"));

@@ -10,6 +10,8 @@ import java.io.OutputStream;
  * @since
  */
 public class Call {
+  public static final int CMD_LENGTH = 80;
+
   private long start;
   private long end = -1;
   private String srcHost;
@@ -18,8 +20,6 @@ public class Call {
   private int destPort;
   private ByteArrayOutputStream input;
   private ByteArrayOutputStream output;
-
-  public static final int CMD_LENGTH = 80;
 
   public Call(String srcHost, int srcPort, String destHost, int destPort) {
     this.start = System.currentTimeMillis();

@@ -9,10 +9,8 @@ import org.jetbrains.annotations.PropertyKey;
  * @since
  */
 public final class TcpTunnelPluginBundle extends DynamicBundle {
-
   @NonNls
   private static final String BUNDLE = "messages.TcpTunnelPluginBundle";
-
   private static final TcpTunnelPluginBundle INSTANCE = new TcpTunnelPluginBundle();
 
   private TcpTunnelPluginBundle() {

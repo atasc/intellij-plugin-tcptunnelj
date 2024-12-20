@@ -11,8 +11,8 @@ public class TunnelConfig {
   public static Properties PROPERTIES;
   private static final String PROPERTIES_FILE_NAME = ".tcptunnelj.properties";
   private static File PROPERTIES_FILE;
-
   public static final int BUFFER_LENGTH = 4096;
+
   private String srcPort = ".tcptunnelj.src.port";
   private String dstHost = ".tcptunnelj.dst.hostname";
   private String dstPort = ".tcptunnelj.dst.port";

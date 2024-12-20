@@ -12,8 +12,8 @@ import java.util.Random;
  */
 @Service(Service.Level.PROJECT)
 public class TcpTunnelProjectService {
-
   private static final Logger LOGGER = Logger.getInstance(TcpTunnelProjectService.class);
+
   private final Random random;
 
   public TcpTunnelProjectService(Project project) {

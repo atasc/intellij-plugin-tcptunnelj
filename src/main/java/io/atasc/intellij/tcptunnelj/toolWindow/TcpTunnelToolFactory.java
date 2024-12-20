@@ -11,7 +11,6 @@ import io.atasc.intellij.tcptunnelj.tunnellij.TunnelPlugin;
  * @since
  */
 public class TcpTunnelToolFactory implements ToolWindowFactory {
-
   private static final Logger LOGGER = Logger.getInstance(TcpTunnelToolFactory.class);
 
   static {
