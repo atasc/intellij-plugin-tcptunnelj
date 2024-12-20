@@ -215,8 +215,11 @@ class ViewersPanel extends JPanel {
   }
 
   public String removeChunkedEncoding(String response) {
-    // Usa una regex per identificare i chunk (numeri esadecimali seguiti da newline)
-    return response.replaceAll("(?m)^[0-9a-fA-F]+\\r?\\n", "");
+    // Use a regex to identify chunks (hexadecimal numbers followed by a newline)
+    if (response.contains("Transfer-Encoding: chunked")) {
+      return response.replaceAll("(?m)^[0-9a-fA-F]+\\r?\\n", "");
+    }
+    return response;
   }
 
   public void wrap() {
