@@ -6,15 +6,13 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * @author boruvka
+ * @author boruvka/atasc
  * @since
  */
 public class CallStringFormatter {
-
   static SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss.SS");
 
   public synchronized static String format(Call call) {
-
     StringBuffer sb = new StringBuffer();
     sb.append("[");
     sb.append(dateFormat.format(new Date(call.getStart())));
@@ -22,11 +20,10 @@ public class CallStringFormatter {
     if (call.getOutput() != null) {
       byte[] arr = call.getOutput().toByteArray();
       if (arr != null) {
-        int len = (arr.length > Call.CMD_LENGTH) ? Call.CMD_LENGTH
-            : arr.length;
+        int len = (arr.length > Call.CMD_LENGTH) ? Call.CMD_LENGTH : arr.length;
         byte[] text = new byte[len];
         System.arraycopy(arr, 0, text, 0, len);
-        sb.append("] " + new String(text) + "...");
+        sb.append("] ").append(new String(text)).append("...");
       }
     }
 
@@ -40,20 +37,24 @@ public class CallStringFormatter {
     sb.append(call.getDestPort());
     sb.append(", output: ");
 
-    sb.append((call.getOutput() == null) ? " ? B" : call.getOutput()
-        .toByteArray().length
-        + " B");
+    sb.append((call.getOutput() == null) ? " ? B" : formatSize(call.getOutput().toByteArray().length));
 
     sb.append(", input: ");
-    sb.append((call.getInput() == null) ? " ? B" : call.getInput()
-        .toByteArray().length
-        + " B");
+    sb.append((call.getInput() == null) ? " ? B" : formatSize(call.getInput().toByteArray().length));
 
     if (call.getEnd() != -1) {
-      sb.append(", duration: " + (call.getEnd() - call.getStart())
-          + " ms");
+      sb.append(", duration: ").append(call.getEnd() - call.getStart()).append(" ms");
     }
 
     return sb.toString();
+  }
+
+  private static String formatSize(int bytes) {
+    if (bytes >= 1024) {
+      double kb = bytes / 1024.0;
+      return String.format("%.2f KB", kb);
+    } else {
+      return bytes + " B";
+    }
   }
 }
