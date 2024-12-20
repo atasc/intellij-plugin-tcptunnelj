@@ -43,7 +43,8 @@ public class CallStringFormatter {
     sb.append((call.getInput() == null) ? " ? B" : formatSize(call.getInput().toByteArray().length));
 
     if (call.getEnd() != -1) {
-      sb.append(", duration: ").append(call.getEnd() - call.getStart()).append(" ms");
+      long durationMs = call.getEnd() - call.getStart();
+      sb.append(", duration: ").append(formatDuration(durationMs));
     }
 
     return sb.toString();
@@ -55,6 +56,15 @@ public class CallStringFormatter {
       return String.format("%.2f KB", kb);
     } else {
       return bytes + " B";
+    }
+  }
+
+  private static String formatDuration(long durationMs) {
+    if (durationMs > 1000) {
+      double seconds = durationMs / 1000.0;
+      return String.format("%.2f seconds", seconds);
+    } else {
+      return durationMs + " ms";
     }
   }
 }
