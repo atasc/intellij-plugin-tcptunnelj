@@ -14,19 +14,12 @@ import java.util.LinkedList;
  * @since
  */
 public class Tunnel {
-
   private int srcPort;
-
   private int destPort;
-
   private String destHost = "localhost";
-
   private boolean shouldStop = false;
-
   private LinkedList<TunnelListener> listeners = new LinkedList<>();
-
   private ServerSocket serverSocket = null;
-
   private boolean isRunning = false;
 
   public Tunnel(int srcPort, int destPort) {
@@ -176,16 +169,12 @@ public class Tunnel {
     }
 
     class Writer extends Thread {
+      InputStream readFrom;
+      OutputStream writeTo;
+      OutputStream logTo;
+      Call call;
 
       final int BUFFER_SIZE = TunnelConfig.BUFFER_LENGTH;
-
-      InputStream readFrom;
-
-      OutputStream writeTo;
-
-      OutputStream logTo;
-
-      Call call;
 
       public Writer(Call call, InputStream readFrom,
                     OutputStream writeTo, OutputStream logTo) {
@@ -198,7 +187,6 @@ public class Tunnel {
       public void run() {
 
         try {
-
           byte[] buffer = new byte[BUFFER_SIZE];
 
           int n;

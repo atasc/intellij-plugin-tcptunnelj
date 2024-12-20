@@ -16,16 +16,14 @@ import java.io.ByteArrayOutputStream;
  * @since
  */
 public class CallsPanel extends JPanel implements TunnelListener {
-
-  public static final int DIVIDER_SIZE = 2;
-
   private JList list;
   private DefaultListModel model;
   private ViewersPanel viewers;
   private JSplitPane splitPaneTopBottom;
 
-  public CallsPanel() {
+  public static final int DIVIDER_SIZE = 2;
 
+  public CallsPanel() {
     setBackground(UIManager.getColor("Tree.textBackground"));
     model = new DefaultListModel();
     list = new JList(model);
@@ -108,11 +106,10 @@ public class CallsPanel extends JPanel implements TunnelListener {
 }
 
 class CallsListSelectionListener implements ListSelectionListener {
-
-  private ViewersPanel v;
+  private ViewersPanel viewersPanel;
 
   public CallsListSelectionListener(ViewersPanel v) {
-    this.v = v;
+    this.viewersPanel = v;
   }
 
   public void valueChanged(ListSelectionEvent e) {
@@ -120,9 +117,9 @@ class CallsListSelectionListener implements ListSelectionListener {
     Call call = (Call) list.getSelectedValue();
 
     if (call != null) {
-      v.view(call);
+      viewersPanel.view(call);
     } else {
-      v.clear();
+      viewersPanel.clear();
     }
 
   }

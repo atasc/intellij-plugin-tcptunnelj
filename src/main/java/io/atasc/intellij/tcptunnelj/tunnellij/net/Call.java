@@ -6,27 +6,20 @@ import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 
 /**
- * @author boruvka
+ * @author boruvka/atasc
  * @since
  */
 public class Call {
   private long start;
-
   private long end = -1;
-
   private String srcHost;
-
   private String destHost;
-
   private int srcPort;
-
   private int destPort;
+  private ByteArrayOutputStream input;
+  private ByteArrayOutputStream output;
 
   public static final int CMD_LENGTH = 80;
-
-  private ByteArrayOutputStream input;
-
-  private ByteArrayOutputStream output;
 
   public Call(String srcHost, int srcPort, String destHost, int destPort) {
     this.start = System.currentTimeMillis();
