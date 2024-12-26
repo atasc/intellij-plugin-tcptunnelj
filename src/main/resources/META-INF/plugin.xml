@@ -12,7 +12,7 @@
     Repository], offering additional features and improvements to streamline your workflow.
   </description>
 
-  <version>0.3.7</version>
+  <version>0.3.9</version>
 
   <depends>com.intellij.modules.platform</depends>
 
