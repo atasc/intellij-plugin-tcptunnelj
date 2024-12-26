@@ -30,10 +30,10 @@ public class TcpTunnelAppLifecycleListener implements AppLifecycleListener {
     AppLifecycleListener.super.welcomeScreenDisplayed();
   }
 
-  @Override
-  public void appStarted() {
-    AppLifecycleListener.super.appStarted();
-  }
+//  @Override
+//  public void appStarted() {
+//    AppLifecycleListener.super.appStarted();
+//  }
 
   @Override
   public void projectFrameClosed() {

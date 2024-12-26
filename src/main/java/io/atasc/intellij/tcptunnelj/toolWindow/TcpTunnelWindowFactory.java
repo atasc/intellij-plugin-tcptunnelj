@@ -80,19 +80,19 @@ public class TcpTunnelWindowFactory implements ToolWindowFactory, Disposable {
     return true;
   }
 
-  @Override
-  public @Nullable ToolWindowAnchor getAnchor() {
-    return ToolWindowFactory.super.getAnchor();
-  }
+//  @Override
+//  public @Nullable ToolWindowAnchor getAnchor() {
+//    return ToolWindowFactory.super.getAnchor();
+//  }
 
-  @Override
-  public @Nullable Icon getIcon() {
-    //return ToolWindowFactory.super.getIcon();
-    //Icon icon = Icons.ICON_TOOL;
-    //Icon icon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/icons/icon.png")));
-    Icon icon = IconLoader.getIcon("/icons/icon.svg", TcpTunnelWindowFactory.class);
-    return icon;
-  }
+//  @Override
+//  public @Nullable Icon getIcon() {
+//    //return ToolWindowFactory.super.getIcon();
+//    //Icon icon = Icons.ICON_TOOL;
+//    //Icon icon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/icons/icon.png")));
+//    Icon icon = IconLoader.getIcon("/icons/icon.svg", TcpTunnelWindowFactory.class);
+//    return icon;
+//  }
 
   @Override
   public boolean isDoNotActivateOnStart() {
@@ -114,10 +114,10 @@ public class TcpTunnelWindowFactory implements ToolWindowFactory, Disposable {
     return ToolWindowFactory.super.isApplicableAsync(project, $completion);
   }
 
-  @Override
-  public @Nullable Object manage(@NotNull ToolWindow toolWindow, @NotNull ToolWindowManager toolWindowManager, @NotNull Continuation<? super Unit> $completion) {
-    return ToolWindowFactory.super.manage(toolWindow, toolWindowManager, $completion);
-  }
+//  @Override
+//  public @Nullable Object manage(@NotNull ToolWindow toolWindow, @NotNull ToolWindowManager toolWindowManager, @NotNull Continuation<? super Unit> $completion) {
+//    return ToolWindowFactory.super.manage(toolWindow, toolWindowManager, $completion);
+//  }
 
   @Override
   protected Object clone() throws CloneNotSupportedException {

@@ -18,3 +18,5 @@ Icons: https://intellij-icons.jetbrains.design/#AllIcons-expui-general-delete
 Publish: 
 https://plugins.jetbrains.com/docs/intellij/publishing-plugin.html#uploading-a-plugin-to-jetbrains-marketplace
 https://plugins.jetbrains.com/author/me
+
+Internal api: https://plugins.jetbrains.com/docs/intellij/api-internal.html#intellij-platform
