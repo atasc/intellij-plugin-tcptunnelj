@@ -23,6 +23,8 @@
     <toolWindow factoryClass="io.atasc.intellij.tcptunnelj.toolWindow.TcpTunnelWindowFactory" id="TcpTunnelJ"
                 anchor="bottom" canCloseContents="false" hideOnEmptyContent="true"/>
 
+    <toolWindow icon="/icons/toolWindow.svg"/>
+
   </extensions>
 
   <project-components>
