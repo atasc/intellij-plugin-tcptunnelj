@@ -20,3 +20,7 @@ https://plugins.jetbrains.com/docs/intellij/publishing-plugin.html#uploading-a-p
 https://plugins.jetbrains.com/author/me
 
 Internal api: https://plugins.jetbrains.com/docs/intellij/api-internal.html#intellij-platform
+
+Plugin logo: 
+https://plugins.jetbrains.com/docs/intellij/plugin-icon-file.html#adding-plugin-logo-files-to-a-plugin-project
+https://plugins.jetbrains.com/docs/intellij/icons.html#new-ui-icon-colors
