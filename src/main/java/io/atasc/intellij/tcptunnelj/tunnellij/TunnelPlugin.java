@@ -17,7 +17,7 @@ import java.awt.*;
  * @author boruvka/atasc
  * @since
  */
-public class TunnelPlugin implements ProjectComponent, Disposable, AutoCloseable {
+public class TunnelPlugin implements Disposable, AutoCloseable {
   private static final String COMPONENT_NAME = "io.atasc.intellij.tcptunnelj.tunnellij.TunnelWindow";
   private static final String TOOL_WINDOW_ID = "TcpTunnelJ";
 
@@ -30,10 +30,10 @@ public class TunnelPlugin implements ProjectComponent, Disposable, AutoCloseable
     return this.tunnelPanel;
   }
 
-  @Override
-  public String getComponentName() {
-    return COMPONENT_NAME;
-  }
+//  @Override
+//  public String getComponentName() {
+//    return COMPONENT_NAME;
+//  }
 
   public TunnelPlugin(Project project) {
     this.project = project;
@@ -76,10 +76,10 @@ public class TunnelPlugin implements ProjectComponent, Disposable, AutoCloseable
     this.tunnelPanel = null;
   }
 
-  @Override
-  public void projectOpened() {
-    ProjectComponent.super.projectOpened();
-  }
+//  @Override
+//  public void projectOpened() {
+//    ProjectComponent.super.projectOpened();
+//  }
 
   public void projectClosed() {
     this.closeTheTunnel();

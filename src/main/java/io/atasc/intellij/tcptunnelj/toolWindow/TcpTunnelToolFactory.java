@@ -20,7 +20,7 @@ public class TcpTunnelToolFactory implements ToolWindowFactory {
   @Override
   public void createToolWindowContent(Project project, ToolWindow toolWindow) {
     TunnelPlugin tunnelPlugin = new TunnelPlugin(project);
-    tunnelPlugin.projectOpened();
+    //tunnelPlugin.projectOpened();
   }
 
   @Override
