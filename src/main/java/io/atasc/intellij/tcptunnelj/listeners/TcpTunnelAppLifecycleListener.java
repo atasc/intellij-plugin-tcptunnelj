@@ -76,8 +76,8 @@ public class TcpTunnelAppLifecycleListener implements AppLifecycleListener {
     return super.toString();
   }
 
-  @Override
-  protected void finalize() throws Throwable {
-    super.finalize();
-  }
+//  @Override
+//  protected void finalize() throws Throwable {
+//    super.finalize();
+//  }
 }

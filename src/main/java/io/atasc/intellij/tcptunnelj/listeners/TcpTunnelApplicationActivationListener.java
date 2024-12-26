@@ -38,10 +38,10 @@ public class TcpTunnelApplicationActivationListener implements ApplicationActiva
     return super.toString();
   }
 
-  @Override
-  protected void finalize() throws Throwable {
-    super.finalize();
-  }
+//  @Override
+//  protected void finalize() throws Throwable {
+//    super.finalize();
+//  }
 
   @Override
   public void applicationActivated(IdeFrame ideFrame) {

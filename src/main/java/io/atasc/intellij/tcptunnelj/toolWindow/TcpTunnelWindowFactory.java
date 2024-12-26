@@ -31,13 +31,13 @@ public class TcpTunnelWindowFactory implements ToolWindowFactory, Disposable {
     //LOGGER.warn("Don't forget to remove all non-needed sample code files with their corresponding registration entries in `plugin.xml`.");
   }
 
-  @Override
-  protected void finalize() throws Throwable {
-    try {
-    } finally {
-      super.finalize();
-    }
-  }
+//  @Override
+//  protected void finalize() throws Throwable {
+//    try {
+//    } finally {
+//      super.finalize();
+//    }
+//  }
 
   @Override
   public void dispose() {
@@ -94,25 +94,25 @@ public class TcpTunnelWindowFactory implements ToolWindowFactory, Disposable {
 //    return icon;
 //  }
 
-  @Override
-  public boolean isDoNotActivateOnStart() {
-    return ToolWindowFactory.super.isDoNotActivateOnStart();
-  }
+//  @Override
+//  public boolean isDoNotActivateOnStart() {
+//    return ToolWindowFactory.super.isDoNotActivateOnStart();
+//  }
 
   @Override
   public void init(@NotNull ToolWindow toolWindow) {
     ToolWindowFactory.super.init(toolWindow);
   }
 
-  @Override
-  public boolean isApplicable(@NotNull Project project) {
-    return ToolWindowFactory.super.isApplicable(project);
-  }
+//  @Override
+//  public boolean isApplicable(@NotNull Project project) {
+//    return ToolWindowFactory.super.isApplicable(project);
+//  }
 
-  @Override
-  public @Nullable Object isApplicableAsync(@NotNull Project project, @NotNull Continuation<? super Boolean> $completion) {
-    return ToolWindowFactory.super.isApplicableAsync(project, $completion);
-  }
+//  @Override
+//  public @Nullable Object isApplicableAsync(@NotNull Project project, @NotNull Continuation<? super Boolean> $completion) {
+//    return ToolWindowFactory.super.isApplicableAsync(project, $completion);
+//  }
 
 //  @Override
 //  public @Nullable Object manage(@NotNull ToolWindow toolWindow, @NotNull ToolWindowManager toolWindowManager, @NotNull Continuation<? super Unit> $completion) {

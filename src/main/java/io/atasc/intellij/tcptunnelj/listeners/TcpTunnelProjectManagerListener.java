@@ -41,10 +41,10 @@ public class TcpTunnelProjectManagerListener implements ProjectManagerListener {
     return super.toString();
   }
 
-  @Override
-  protected void finalize() throws Throwable {
-    super.finalize();
-  }
+//  @Override
+//  protected void finalize() throws Throwable {
+//    super.finalize();
+//  }
 
   @Override
   public void projectClosed(@NotNull Project project) {

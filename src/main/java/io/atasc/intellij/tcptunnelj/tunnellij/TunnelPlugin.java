@@ -59,16 +59,16 @@ public class TunnelPlugin implements ProjectComponent, Disposable, AutoCloseable
     super();
   }
 
-  @Override
-  protected void finalize() throws Throwable {
-    try {
-      this.closeTheTunnel();
-      this.tunnelPanel = null;
-      System.out.println("Finalize called. Cleaning up resources.");
-    } finally {
-      super.finalize();
-    }
-  }
+//  @Override
+//  protected void finalize() throws Throwable {
+//    try {
+//      this.closeTheTunnel();
+//      this.tunnelPanel = null;
+//      System.out.println("Finalize called. Cleaning up resources.");
+//    } finally {
+//      super.finalize();
+//    }
+//  }
 
   @Override
   public void dispose() {
