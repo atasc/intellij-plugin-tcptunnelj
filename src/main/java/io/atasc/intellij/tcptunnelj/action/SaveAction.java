@@ -29,33 +29,41 @@ public class SaveAction extends BaseAction {
 
   @Override
   public void actionPerformed(AnActionEvent event) {
-    TunnelPanel tunnelPanel = this.tunnelPlugin.getTunnelPanel();
+    try {
+      TunnelPanel tunnelPanel = this.tunnelPlugin.getTunnelPanel();
 
-    JFileChooser fileChooser = new JFileChooser();
-    fileChooser.setDialogTitle("Save Log File");
-    fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Log Files (*.log)", "log"));
+      String callList = tunnelPanel.callListToString();
 
-    // Set default file name
-    fileChooser.setSelectedFile(new File("tcptunnelj.log"));
+      JFileChooser fileChooser = new JFileChooser();
+      fileChooser.setDialogTitle("Save Log File");
+      fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Log Files (*.log)", "log"));
 
-    int userSelection = fileChooser.showSaveDialog(null);
+      // Set default file name
+      fileChooser.setSelectedFile(new File("tcptunnelj.log"));
 
-    if (userSelection == JFileChooser.APPROVE_OPTION) {
-      File fileToSave = fileChooser.getSelectedFile();
+      int userSelection = fileChooser.showSaveDialog(null);
 
-      // Ensure the file has a .log extension
-      if (!fileToSave.getName().toLowerCase().endsWith(".log")) {
-        fileToSave = new File(fileToSave.getAbsolutePath() + ".log");
+      if (userSelection == JFileChooser.APPROVE_OPTION) {
+        File fileToSave = fileChooser.getSelectedFile();
+
+        // Ensure the file has a .log extension
+        if (!fileToSave.getName().toLowerCase().endsWith(".log")) {
+          fileToSave = new File(fileToSave.getAbsolutePath() + ".log");
+        }
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileToSave))) {
+          writer.write(callList);
+          Messages.showMessageDialog("Log file saved successfully!", "Success", Messages.getInformationIcon());
+        } catch (IOException e) {
+          e.printStackTrace();
+          Messages.showMessageDialog("Error while saving log file: " + e.getMessage(), "Error", Messages.getErrorIcon());
+        }
       }
-
-      try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileToSave))) {
-        writer.write("ciao mondo");
-        Messages.showMessageDialog("Log file saved successfully!", "Success", Messages.getInformationIcon());
-      } catch (IOException e) {
-        e.printStackTrace();
-        Messages.showMessageDialog("Error while saving log file: " + e.getMessage(), "Error", Messages.getErrorIcon());
-      }
+    } catch (Exception e) {
+      e.printStackTrace();
+      Messages.showMessageDialog("Error while saving log file: " + e.getMessage(), "Error", Messages.getErrorIcon());
     }
+
   }
 
   public void actionPerformedX(AnActionEvent event) {

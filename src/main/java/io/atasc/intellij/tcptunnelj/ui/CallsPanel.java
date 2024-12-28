@@ -81,7 +81,6 @@ public class CallsPanel extends JPanel implements TunnelListener {
       list.repaint();
       viewers.repaint();
     }
-
   }
 
   public void wrap() {
@@ -103,6 +102,15 @@ public class CallsPanel extends JPanel implements TunnelListener {
     }
   }
 
+  public String callListToString() {
+    ListModel model = list.getModel(); // Get the list model
+    for (int i = 0; i < model.getSize(); i++) {
+      Object element = model.getElementAt(i); // Retrieve each element
+      System.out.println(element); // Perform your desired action here
+    }
+
+    return "Hello World!";
+  }
 }
 
 class CallsListSelectionListener implements ListSelectionListener {
@@ -238,5 +246,4 @@ class ViewersPanel extends JPanel {
     requestTxt.setText("");
     responseTxt.setText("");
   }
-
 }
