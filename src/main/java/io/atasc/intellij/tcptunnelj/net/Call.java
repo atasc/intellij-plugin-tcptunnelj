@@ -79,4 +79,12 @@ public class Call {
     return output;
   }
 
+  public static String removeChunkedEncoding(String response) {
+    // Use a regex to identify chunks (hexadecimal numbers followed by a newline)
+    if (response.contains("Transfer-Encoding: chunked")) {
+      return response.replaceAll("(?m)^[0-9a-fA-F]+\\r?\\n", "");
+    }
+    return response;
+  }
+
 }

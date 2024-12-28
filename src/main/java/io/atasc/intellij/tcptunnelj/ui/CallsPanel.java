@@ -102,14 +102,76 @@ public class CallsPanel extends JPanel implements TunnelListener {
     }
   }
 
-  public String callListToString() {
+  public String getCallListToString() {
+    String newLine = System.lineSeparator();
+    StringBuilder builder = new StringBuilder();
     ListModel model = list.getModel(); // Get the list model
     for (int i = 0; i < model.getSize(); i++) {
-      Object element = model.getElementAt(i); // Retrieve each element
-      System.out.println(element); // Perform your desired action here
+      Call call = (Call) model.getElementAt(i); // Retrieve each element
+      String callString = "/**************************************************/" + newLine + newLine;
+      callString += this.getCallString(call) + newLine;
+      callString += "/**************************************************/" + newLine + newLine;
+      //System.out.println(call); // Perform your desired action here
+      builder.append(callString);
     }
 
-    return "Hello World!";
+    return builder.toString();
+  }
+
+  public String getCallString(Call call) {
+    StringBuilder requestTxt = new StringBuilder();
+    StringBuilder responseTxt = new StringBuilder();
+    boolean removeChunk = true;
+
+    boolean asBytes = false;
+    if (call == null) {
+      return "";
+    }
+
+    ByteArrayOutputStream requestBaos = (ByteArrayOutputStream) call.getOutputLogger();
+    if (requestBaos == null) {
+      return "";
+    }
+
+    if (!asBytes) {
+      requestTxt.append(requestBaos.toString());
+
+    } else {
+      //request text
+      byte[] bytes = requestBaos.toByteArray();
+      for (int i = 0; i < bytes.length; i++) {
+        byte b = bytes[i];
+        String s = Integer.toHexString(b).toUpperCase();
+        if (s.length() == 1) {
+          s = "0" + s;
+        }
+        requestTxt.append(s);
+      }
+    }
+
+    //response text
+    ByteArrayOutputStream responseBaos = ((ByteArrayOutputStream) call.getInputLogger());
+
+//  if (responseBaos == null) {
+//    return "";
+//  }
+
+    if (removeChunk) {
+      responseTxt.append(Call.removeChunkedEncoding(responseBaos.toString())
+      );
+    } else {
+      responseTxt.append(responseBaos.toString());
+    }
+
+    String newLine = System.lineSeparator();
+    String rq = requestTxt.toString();
+    String rs = responseTxt.toString();
+
+    String r = "CALl: " + call.toString() + newLine;
+    r += "REQUEST:" + newLine + rq;
+    r += "RESPONSE:" + newLine + rs;
+
+    return r;
   }
 }
 
@@ -214,7 +276,7 @@ class ViewersPanel extends JPanel {
 
     if (removeChunk) {
       responseTxt.setText(
-          removeChunkedEncoding(responseBaos.toString())
+          Call.removeChunkedEncoding(responseBaos.toString())
       );
     } else {
       responseTxt.setText(responseBaos.toString());
@@ -222,13 +284,13 @@ class ViewersPanel extends JPanel {
     responseTxt.setCaretPosition(0);
   }
 
-  public String removeChunkedEncoding(String response) {
-    // Use a regex to identify chunks (hexadecimal numbers followed by a newline)
-    if (response.contains("Transfer-Encoding: chunked")) {
-      return response.replaceAll("(?m)^[0-9a-fA-F]+\\r?\\n", "");
-    }
-    return response;
-  }
+//  public static String removeChunkedEncoding(String response) {
+//    // Use a regex to identify chunks (hexadecimal numbers followed by a newline)
+//    if (response.contains("Transfer-Encoding: chunked")) {
+//      return response.replaceAll("(?m)^[0-9a-fA-F]+\\r?\\n", "");
+//    }
+//    return response;
+//  }
 
   public void wrap() {
     requestTxt.setLineWrap(true);

@@ -32,7 +32,7 @@ public class SaveAction extends BaseAction {
     try {
       TunnelPanel tunnelPanel = this.tunnelPlugin.getTunnelPanel();
 
-      String callList = tunnelPanel.callListToString();
+      String callList = tunnelPanel.getCallListToString();
 
       JFileChooser fileChooser = new JFileChooser();
       fileChooser.setDialogTitle("Save Log File");

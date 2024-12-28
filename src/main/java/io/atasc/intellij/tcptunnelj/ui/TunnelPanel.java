@@ -92,8 +92,8 @@ public class TunnelPanel extends JPanel {
     callsPanel.clearSelected();
   }
 
-  public String callListToString() {
-    return callsPanel.callListToString();
+  public String getCallListToString() {
+    return callsPanel.getCallListToString();
   }
 
   public void wrap() {
