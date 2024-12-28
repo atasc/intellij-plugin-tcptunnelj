@@ -22,6 +22,7 @@ public class Icons {
   public static final Icon ICON_START = AllIcons.Actions.Execute;
   public static final Icon ICON_STOP = AllIcons.Actions.Suspend;
   public static final Icon ICON_HELP = AllIcons.Actions.Help;
+  public static final Icon ICON_SAVE = AllIcons.Actions.MenuSaveall;
 
   public static ImageIcon getCustomIcon(String file) {
     try {

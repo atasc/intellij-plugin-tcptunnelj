@@ -143,14 +143,16 @@ public class TunnelPlugin implements Disposable, AutoCloseable {
     AnAction stopAction = new StopAction(this);
     AnAction clearAction = new ClearAction(this);
     AnAction clearSelectedAction = new ClearSelectedAction(this);
-    //AnAction aboutAction = new AboutAction(this);
     ToggleAction wrapAction = new WrapAction(this);
+    AnAction saveAction = new StopAction(this);
+    //AnAction aboutAction = new AboutAction(this);
 
     actionGroup.add(startAction);
     actionGroup.add(stopAction);
     actionGroup.add(clearSelectedAction);
     actionGroup.add(clearAction);
     actionGroup.add(wrapAction);
+    actionGroup.add(saveAction);
     //actionGroup.add(aboutAction);
 
     return actionGroup;
