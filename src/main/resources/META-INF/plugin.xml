@@ -21,7 +21,7 @@
   <extensions defaultExtensionNs="com.intellij">
 
     <toolWindow factoryClass="io.atasc.intellij.tcptunnelj.toolWindow.TcpTunnelWindowFactory" id="TcpTunnelJ"
-                anchor="bottom" canCloseContents="false" icon="io.atasc.intellij.tcptunnelj.icons.MyIcons.ToolWindow"/>
+                anchor="bottom" canCloseContents="false" icon="/icons/toolWindow.svg"/>
   </extensions>
 
   <project-components>
