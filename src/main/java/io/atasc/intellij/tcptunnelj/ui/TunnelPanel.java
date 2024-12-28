@@ -92,6 +92,10 @@ public class TunnelPanel extends JPanel {
     callsPanel.clearSelected();
   }
 
+  public int getCallListSize() {
+    return callsPanel.getCallListSize();
+  }
+
   public String getCallListToString() {
     return callsPanel.getCallListToString();
   }

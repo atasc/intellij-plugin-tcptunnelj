@@ -102,6 +102,10 @@ public class CallsPanel extends JPanel implements TunnelListener {
     }
   }
 
+  public int getCallListSize() {
+    return list.getModel().getSize();
+  }
+
   public String getCallListToString() {
     String newLine = System.lineSeparator();
     StringBuilder builder = new StringBuilder();

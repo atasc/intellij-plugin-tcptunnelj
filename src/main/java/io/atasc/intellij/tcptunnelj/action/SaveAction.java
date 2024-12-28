@@ -1,6 +1,7 @@
 package io.atasc.intellij.tcptunnelj.action;
 
 import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.actionSystem.Presentation;
 import com.intellij.openapi.fileChooser.FileChooser;
 import com.intellij.openapi.fileChooser.FileChooserDescriptor;
 import com.intellij.openapi.ui.Messages;
@@ -100,6 +101,11 @@ public class SaveAction extends BaseAction {
 
   @Override
   public void update(AnActionEvent event) {
+    TunnelPanel tunnelPanel = this.tunnelPlugin.getTunnelPanel();
+
+    Presentation p = event.getPresentation();
+    p.setEnabled(!tunnelPanel.isRunning() && tunnelPanel.getCallListSize() > 0);
+    p.setVisible(true);
   }
 
 }
