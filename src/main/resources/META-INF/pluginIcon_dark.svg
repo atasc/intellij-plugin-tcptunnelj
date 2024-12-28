@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg width="40px" height="40px" viewBox="0 0 40 40" fill="none" version="1.1" id="svg4"
+     xmlns="http://www.w3.org/2000/svg" xmlns:bx="https://boxy-svg.com">
+  <defs>
+    <linearGradient id="color-0" bx:pinned="true" gradientUnits="userSpaceOnUse">
+      <stop style="stop-color: #CED0D6;"/>
+    </linearGradient>
+  </defs>
+  <path fill-rule="evenodd" clip-rule="evenodd"
+        d="M 27.501 9.499 L 17.502 9.499 C 13.359 9.499 10.001 12.858 10.001 17.001 L 10.001 21.999 C 10.001 26.141 13.359 29.501 17.502 29.501 L 27.501 29.501 L 27.501 27 L 27.501 24.501 L 27.501 14.5 L 27.501 12.001 L 27.501 9.499 Z M 30.001 12.001 L 30.001 9.499 C 30.001 8.12 28.882 7 27.501 7 L 17.502 7 C 12.839 7 8.925 10.186 7.815 14.5 L 2.501 14.5 C 1.119 14.5 0 15.62 0 17.001 L 0 21.999 C 0 23.381 1.119 24.501 2.501 24.501 L 7.815 24.501 C 8.925 28.812 12.839 32 17.502 32 L 27.501 32 C 28.882 32 30.001 30.88 30.001 29.501 L 30.001 27 L 38.75 27 C 39.44 27 40 26.441 40 25.749 C 40 25.059 39.44 24.501 38.75 24.501 L 30.001 24.501 L 30.001 14.5 L 38.75 14.5 C 39.44 14.5 40 13.942 40 13.249 C 40 12.559 39.44 12.001 38.75 12.001 L 30.001 12.001 Z M 7.501 17.001 L 7.501 21.999 L 2.501 21.999 L 2.501 17.001 L 7.501 17.001 Z"
+        id="path2"
+        style="stroke: rgba(108, 112, 126, 0); transform-origin: 40px 32px; fill: url(&quot;#color-0&quot;);"/>
+</svg>
