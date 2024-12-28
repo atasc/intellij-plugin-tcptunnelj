@@ -1,7 +1,11 @@
 package io.atasc.intellij.tcptunnelj.action;
 
 import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.fileChooser.FileChooser;
+import com.intellij.openapi.fileChooser.FileChooserDescriptor;
 import com.intellij.openapi.ui.Messages;
+import com.intellij.openapi.vfs.LocalFileSystem;
+import com.intellij.openapi.vfs.VirtualFile;
 import io.atasc.intellij.tcptunnelj.TunnelPlugin;
 import io.atasc.intellij.tcptunnelj.ui.Icons;
 import io.atasc.intellij.tcptunnelj.ui.TunnelPanel;
@@ -53,6 +57,38 @@ public class SaveAction extends BaseAction {
       }
     }
   }
+
+  public void actionPerformedX(AnActionEvent event) {
+    TunnelPanel tunnelPanel = this.tunnelPlugin.getTunnelPanel();
+
+    // Create a FileChooserDescriptor for saving files
+    FileChooserDescriptor fileChooserDescriptor = new FileChooserDescriptor(false, false, false, false, false, true)
+        .withTitle("Save Log File")
+        .withDescription("Choose a location to save the log file")
+        .withFileFilter(virtualFile -> virtualFile.getName().endsWith(".log"));
+
+    // Suggest default file name
+    VirtualFile defaultFile = LocalFileSystem.getInstance().refreshAndFindFileByPath(System.getProperty("user.home"));
+    if (defaultFile != null) {
+      FileChooser.chooseFile(fileChooserDescriptor, event.getProject(), defaultFile, chosenFile -> {
+        // Ensure file has the correct .log extension
+        String filePath = chosenFile.getPath();
+        if (!filePath.toLowerCase().endsWith(".log")) {
+          filePath += ".log";
+        }
+
+        // Save the file
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+          writer.write("ciao mondo");
+          Messages.showMessageDialog("Log file saved successfully at: " + filePath, "Success", Messages.getInformationIcon());
+        } catch (IOException e) {
+          e.printStackTrace();
+          Messages.showMessageDialog("Error while saving log file: " + e.getMessage(), "Error", Messages.getErrorIcon());
+        }
+      });
+    }
+  }
+
 
   @Override
   public void update(AnActionEvent event) {
