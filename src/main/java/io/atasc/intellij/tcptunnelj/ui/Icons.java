@@ -1,4 +1,4 @@
-package io.atasc.intellij.tcptunnelj.tunnellij.ui;
+package io.atasc.intellij.tcptunnelj.ui;
 
 import com.intellij.icons.AllIcons;
 

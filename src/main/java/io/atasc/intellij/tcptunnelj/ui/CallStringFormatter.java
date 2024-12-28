@@ -1,6 +1,6 @@
-package io.atasc.intellij.tcptunnelj.tunnellij.ui;
+package io.atasc.intellij.tcptunnelj.ui;
 
-import io.atasc.intellij.tcptunnelj.tunnellij.net.Call;
+import io.atasc.intellij.tcptunnelj.net.Call;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

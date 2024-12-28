@@ -1,10 +1,10 @@
-package io.atasc.intellij.tcptunnelj.tunnellij.action;
+package io.atasc.intellij.tcptunnelj.action;
 
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.ToggleAction;
-import io.atasc.intellij.tcptunnelj.tunnellij.TunnelPlugin;
-import io.atasc.intellij.tcptunnelj.tunnellij.ui.Icons;
-import io.atasc.intellij.tcptunnelj.tunnellij.ui.TunnelPanel;
+import io.atasc.intellij.tcptunnelj.TunnelPlugin;
+import io.atasc.intellij.tcptunnelj.ui.Icons;
+import io.atasc.intellij.tcptunnelj.ui.TunnelPanel;
 
 /**
  * @author boruvka/atasc

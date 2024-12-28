@@ -1,12 +1,12 @@
-package io.atasc.intellij.tcptunnelj.tunnellij.ui;
+package io.atasc.intellij.tcptunnelj.ui;
 
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.ui.Messages;
 import io.atasc.intellij.tcptunnelj.TunnelConfig;
-import io.atasc.intellij.tcptunnelj.tunnellij.net.Call;
-import io.atasc.intellij.tcptunnelj.tunnellij.net.Tunnel;
-import io.atasc.intellij.tcptunnelj.tunnellij.net.TunnelException;
-import io.atasc.intellij.tcptunnelj.tunnellij.net.TunnelListener;
+import io.atasc.intellij.tcptunnelj.net.Call;
+import io.atasc.intellij.tcptunnelj.net.Tunnel;
+import io.atasc.intellij.tcptunnelj.net.TunnelException;
+import io.atasc.intellij.tcptunnelj.net.TunnelListener;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;

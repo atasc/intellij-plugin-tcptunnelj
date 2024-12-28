@@ -1,14 +1,12 @@
-package io.atasc.intellij.tcptunnelj.tunnellij;
+package io.atasc.intellij.tcptunnelj;
 
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.actionSystem.*;
-import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManagerListener;
-import io.atasc.intellij.tcptunnelj.TunnelConfig;
+import io.atasc.intellij.tcptunnelj.action.*;
 import io.atasc.intellij.tcptunnelj.listeners.TcpTunnelProjectManagerListener;
-import io.atasc.intellij.tcptunnelj.tunnellij.action.*;
-import io.atasc.intellij.tcptunnelj.tunnellij.ui.TunnelPanel;
+import io.atasc.intellij.tcptunnelj.ui.TunnelPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,7 +16,7 @@ import java.awt.*;
  * @since
  */
 public class TunnelPlugin implements Disposable, AutoCloseable {
-  private static final String COMPONENT_NAME = "io.atasc.intellij.tcptunnelj.tunnellij.TunnelWindow";
+  private static final String COMPONENT_NAME = "io.atasc.intellij.tcptunnelj.TunnelWindow";
   private static final String TOOL_WINDOW_ID = "TcpTunnelJ";
 
   //private ToolWindow tunnelWindow;

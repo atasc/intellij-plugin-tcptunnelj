@@ -1,6 +1,6 @@
-package io.atasc.intellij.tcptunnelj.tunnellij.net;
+package io.atasc.intellij.tcptunnelj.net;
 
-import io.atasc.intellij.tcptunnelj.tunnellij.ui.CallStringFormatter;
+import io.atasc.intellij.tcptunnelj.ui.CallStringFormatter;
 
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;

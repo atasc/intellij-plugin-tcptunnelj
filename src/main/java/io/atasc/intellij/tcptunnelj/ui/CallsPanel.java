@@ -1,7 +1,7 @@
-package io.atasc.intellij.tcptunnelj.tunnellij.ui;
+package io.atasc.intellij.tcptunnelj.ui;
 
-import io.atasc.intellij.tcptunnelj.tunnellij.net.Call;
-import io.atasc.intellij.tcptunnelj.tunnellij.net.TunnelListener;
+import io.atasc.intellij.tcptunnelj.net.Call;
+import io.atasc.intellij.tcptunnelj.net.TunnelListener;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;

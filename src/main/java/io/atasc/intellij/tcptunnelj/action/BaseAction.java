@@ -1,8 +1,8 @@
-package io.atasc.intellij.tcptunnelj.tunnellij.action;
+package io.atasc.intellij.tcptunnelj.action;
 
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
-import io.atasc.intellij.tcptunnelj.tunnellij.TunnelPlugin;
+import io.atasc.intellij.tcptunnelj.TunnelPlugin;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;

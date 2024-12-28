@@ -1,21 +1,20 @@
-package io.atasc.intellij.tcptunnelj.tunnellij.action;
+package io.atasc.intellij.tcptunnelj.action;
 
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.Presentation;
 import com.intellij.openapi.ui.Messages;
-import io.atasc.intellij.tcptunnelj.tunnellij.TunnelPlugin;
-import io.atasc.intellij.tcptunnelj.tunnellij.ui.Icons;
-import io.atasc.intellij.tcptunnelj.tunnellij.ui.TunnelPanel;
+import io.atasc.intellij.tcptunnelj.TunnelPlugin;
+import io.atasc.intellij.tcptunnelj.ui.Icons;
+import io.atasc.intellij.tcptunnelj.ui.TunnelPanel;
 
 /**
  * @author boruvka/atasc
  * @since
  */
-public class StopAction extends BaseAction {
-
-  public StopAction(TunnelPlugin tunnelPlugin) {
-    super("Stop tcp tunnel", "Stop tcp tunnel",
-        Icons.ICON_STOP, tunnelPlugin);
+public class StartAction extends BaseAction {
+  public StartAction(TunnelPlugin tunnelPlugin) {
+    super("Start tcp tunnel", "Start tcp tunnel",
+        Icons.ICON_START, tunnelPlugin);
   }
 
   @Override
@@ -26,12 +25,12 @@ public class StopAction extends BaseAction {
     TunnelPanel tunnelPanel = this.tunnelPlugin.getTunnelPanel();
 
     try {
-      tunnelPanel.stop();
+      tunnelPanel.start();
     } catch (Exception e) {
-      e.printStackTrace();
       Messages.showMessageDialog("Error when starting server: "
           + e.getMessage(), "Error", Messages.getErrorIcon());
     }
+
   }
 
   @Override
@@ -42,8 +41,7 @@ public class StopAction extends BaseAction {
     TunnelPanel tunnelPanel = this.tunnelPlugin.getTunnelPanel();
 
     Presentation p = event.getPresentation();
-    p.setEnabled(tunnelPanel.isRunning());
+    p.setEnabled(!tunnelPanel.isRunning());
     p.setVisible(true);
   }
-
 }

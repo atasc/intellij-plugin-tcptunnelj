@@ -4,7 +4,7 @@
 <!-- Plugin description -->
 TcpTunnelJ serves as a powerful TCP tunnel, making it an invaluable tool for network development. It allows developers to monitor and intercept TCP connections while effectively displaying the captured data directly within the IDE. This makes it an ideal solution for debugging and analyzing network communications.
 
-This plugin is an enhanced and updated version of the original Tunnellij plugin [(available at Tunnellij GitHub Repository](https://github.com/milanboruvka/tunnellij)), offering additional features and improvements to streamline your workflow.
+This plugin is an enhanced and updated version of the original TunnelliJ plugin [(available at TunnelliJ GitHub Repository](https://github.com/milanboruvka/tunnellij)), offering additional features and improvements to streamline your workflow.
 <!-- Plugin description end -->
 
 ## Installation

@@ -1,4 +1,4 @@
-package io.atasc.intellij.tcptunnelj.tunnellij.net;
+package io.atasc.intellij.tcptunnelj.net;
 
 /**
  * @author boruvka

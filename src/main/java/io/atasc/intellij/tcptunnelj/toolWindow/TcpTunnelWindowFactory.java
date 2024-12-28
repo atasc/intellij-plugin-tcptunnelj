@@ -5,18 +5,12 @@ import com.intellij.openapi.Disposable;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.IconLoader;
 import com.intellij.openapi.wm.ToolWindow;
-import com.intellij.openapi.wm.ToolWindowAnchor;
 import com.intellij.openapi.wm.ToolWindowFactory;
-import com.intellij.openapi.wm.ToolWindowManager;
 import com.intellij.ui.content.ContentFactory;
 import io.atasc.intellij.tcptunnelj.listeners.TcpTunnelAppLifecycleListener;
-import io.atasc.intellij.tcptunnelj.tunnellij.TunnelPlugin;
-import kotlin.Unit;
-import kotlin.coroutines.Continuation;
+import io.atasc.intellij.tcptunnelj.TunnelPlugin;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 

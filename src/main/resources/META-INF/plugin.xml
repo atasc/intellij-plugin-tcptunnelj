@@ -5,11 +5,10 @@
   <vendor>Andrea Tasca</vendor>
 
   <description>
-    TcpTunnelJ serves as a powerful TCP tunnel, making it an invaluable tool for network development. It allows
-    developers to monitor and intercept TCP connections while effectively displaying the captured data directly within
-    the IDE. This makes it an ideal solution for debugging and analyzing network communications.
-    This plugin is an enhanced and updated version of the original Tunnellij plugin [(available at Tunnellij GitHub
-    Repository], offering additional features and improvements to streamline your workflow.
+    TcpTunnelJ is a practical tool designed to function as a TCP tunnel, providing support for network development. It
+    enables developers to observe and intercept TCP connections, presenting the captured data in an accessible format
+    directly within the IDE. This plugin is a refined version of the original TunnelliJ plugin (available at TunnelliJ
+    GitHub Repository), incorporating new features and enhancements to improve usability and efficiency.
   </description>
 
   <version>0.3.9</version>
@@ -26,7 +25,7 @@
 
   <project-components>
     <component>
-      <implementation-class>io.atasc.intellij.tcptunnelj.tunnellij.TunnelPlugin</implementation-class>
+      <implementation-class>io.atasc.intellij.tcptunnelj.TunnelPlugin</implementation-class>
     </component>
   </project-components>
 

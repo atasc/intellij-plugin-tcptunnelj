@@ -1,8 +1,8 @@
-package io.atasc.intellij.tcptunnelj.tunnellij.action;
+package io.atasc.intellij.tcptunnelj.action;
 
 import com.intellij.openapi.actionSystem.AnActionEvent;
-import io.atasc.intellij.tcptunnelj.tunnellij.TunnelPlugin;
-import io.atasc.intellij.tcptunnelj.tunnellij.ui.Icons;
+import io.atasc.intellij.tcptunnelj.TunnelPlugin;
+import io.atasc.intellij.tcptunnelj.ui.Icons;
 
 import javax.swing.*;
 import java.awt.*;
@@ -40,7 +40,7 @@ public class AboutAction extends BaseAction {
         area.setEditable(false);
         area.append(sb.toString());
         JOptionPane.showMessageDialog(null, area);
-        // Messages.showMessageDialog(sb.toString(), "About TunnelliJ",
+        // Messages.showMessageDialog(sb.toString(), "About TcpTunnelJ",
         // Messages.getInformationIcon());
       } catch (IOException e) {
         e.printStackTrace();
