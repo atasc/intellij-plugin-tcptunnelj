@@ -110,7 +110,7 @@ public class CallsPanel extends JPanel implements TunnelListener {
     int t = model.getSize();
     for (int i = 0; i < model.getSize(); i++) {
       Call call = (Call) model.getElementAt(i); // Retrieve each element
-      String callString = "/************************* " + (i + 1) + "/" + t + " *************************/" + newLine + newLine;
+      String callString = "/************************* (" + (i + 1) + "/" + t + ") *************************/" + newLine + newLine;
       callString += this.getCallString(call) + newLine;
       callString += "/**************************************************/" + newLine + newLine;
       //System.out.println(call); // Perform your desired action here
