@@ -106,9 +106,11 @@ public class CallsPanel extends JPanel implements TunnelListener {
     String newLine = System.lineSeparator();
     StringBuilder builder = new StringBuilder();
     ListModel model = list.getModel(); // Get the list model
+
+    int t = model.getSize();
     for (int i = 0; i < model.getSize(); i++) {
       Call call = (Call) model.getElementAt(i); // Retrieve each element
-      String callString = "/**************************************************/" + newLine + newLine;
+      String callString = "/************************* " + (i + 1) + "/" + t + " *************************/" + newLine + newLine;
       callString += this.getCallString(call) + newLine;
       callString += "/**************************************************/" + newLine + newLine;
       //System.out.println(call); // Perform your desired action here
@@ -167,7 +169,7 @@ public class CallsPanel extends JPanel implements TunnelListener {
     String rq = requestTxt.toString();
     String rs = responseTxt.toString();
 
-    String r = "CALl: " + call.toString() + newLine;
+    String r = "CALL: " + newLine + call.toString() + newLine + newLine;
     r += "REQUEST:" + newLine + rq;
     r += "RESPONSE:" + newLine + rs;
 
