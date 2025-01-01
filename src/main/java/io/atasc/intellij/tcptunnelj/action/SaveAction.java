@@ -7,7 +7,6 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.Presentation;
 import com.intellij.openapi.application.ApplicationManager;
 import io.atasc.intellij.tcptunnelj.TunnelPlugin;
-import io.atasc.intellij.tcptunnelj.toolWindow.TcpTunnelWindow;
 import io.atasc.intellij.tcptunnelj.ui.Icons;
 import io.atasc.intellij.tcptunnelj.ui.TunnelPanel;
 
@@ -30,68 +29,18 @@ public class SaveAction extends BaseAction {
 
   @Override
   public void actionPerformed(AnActionEvent event) {
-    try {
-      TunnelPanel tunnelPanel = this.tunnelPlugin.getTunnelPanel();
-
-      String callList = tunnelPanel.getCallListToString();
-
-      JFileChooser fileChooser = new JFileChooser();
-      fileChooser.setDialogTitle("Save Log File");
-      fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Log Files (*.log)", "log"));
-
-      // Set default file name
-      fileChooser.setSelectedFile(new File("tcptunnelj.log"));
-
-      int userSelection = fileChooser.showSaveDialog(null);
-
-      if (userSelection == JFileChooser.APPROVE_OPTION) {
-        File fileToSave = fileChooser.getSelectedFile();
-
-        // Ensure the file has a .log extension
-        if (!fileToSave.getName().toLowerCase().endsWith(".log")) {
-          fileToSave = new File(fileToSave.getAbsolutePath() + ".log");
-        }
-
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileToSave))) {
-          writer.write(callList);
-
-          ApplicationManager.getApplication().invokeLater(() -> {
-            // Display success notification
-            Notifications.Bus.notify(new Notification(
-                TcpTunnelWindow.NOTIFICATION_ID,
-                "File Saved",
-                "Log file saved successfully!",
-                NotificationType.INFORMATION
-            ));
-          });
-
-        } catch (IOException e) {
-          e.printStackTrace();
-
-          ApplicationManager.getApplication().invokeLater(() -> {
-            // Show error notification
-            Notifications.Bus.notify(new Notification(
-                TcpTunnelWindow.NOTIFICATION_ID,
-                "Error while saving log file",
-                "Error while saving log file: " + e.getMessage(),
-                NotificationType.ERROR
-            ));
-          });
-        }
-      }
-    } catch (Exception e) {
-      e.printStackTrace();
-
-      ApplicationManager.getApplication().invokeLater(() -> {
-        // Show error notification
+    ApplicationManager.getApplication().invokeLater(() -> {
+      try {
+        performSaveAction();
+      } catch (IOException e) {
         Notifications.Bus.notify(new Notification(
-            TcpTunnelWindow.NOTIFICATION_ID,
-            "Error while saving log file",
+            "TcpTunnelJ Notifications",
+            "Error",
             "Error while saving log file: " + e.getMessage(),
             NotificationType.ERROR
         ));
-      });
-    }
+      }
+    });
   }
 
   @Override
@@ -101,6 +50,42 @@ public class SaveAction extends BaseAction {
     Presentation p = event.getPresentation();
     p.setEnabled(!tunnelPanel.isRunning() && tunnelPanel.getCallListSize() > 0);
     p.setVisible(true);
+  }
+
+
+  private void performSaveAction() throws IOException {
+    TunnelPanel tunnelPanel = this.tunnelPlugin.getTunnelPanel();
+
+    String callList = tunnelPanel.getCallListToString();
+
+    JFileChooser fileChooser = new JFileChooser();
+    fileChooser.setDialogTitle("Save Log File");
+    fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Log Files (*.log)", "log"));
+    fileChooser.setSelectedFile(new File("tcptunnelj.log"));
+
+    int userSelection = fileChooser.showSaveDialog(null);
+
+    if (userSelection == JFileChooser.APPROVE_OPTION) {
+      File fileToSave = fileChooser.getSelectedFile();
+
+      if (!fileToSave.getName().toLowerCase().endsWith(".log")) {
+        fileToSave = new File(fileToSave.getAbsolutePath() + ".log");
+      }
+
+      try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileToSave))) {
+        writer.write(callList);
+
+        ApplicationManager.getApplication().invokeLater(() -> {
+          Notifications.Bus.notify(new Notification(
+              "TcpTunnelJ Notifications",
+              "File Saved",
+              "Log file saved successfully!",
+              NotificationType.INFORMATION
+          ));
+        });
+
+      }
+    }
   }
 
 }
