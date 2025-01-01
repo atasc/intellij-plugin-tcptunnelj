@@ -14,7 +14,8 @@ import javax.swing.*;
 public class BaseAction extends AnAction {
   protected TunnelPlugin tunnelPlugin;
 
-  public BaseAction(String text, String description, Icon icon, TunnelPlugin tunnelPlugin) {
+  public BaseAction(String text, String description,
+                    Icon icon, TunnelPlugin tunnelPlugin) {
     this(text, description, icon);
     this.tunnelPlugin = tunnelPlugin;
   }

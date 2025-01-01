@@ -1,6 +1,7 @@
 package io.atasc.intellij.tcptunnelj.action;
 
 import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.ui.components.JBTextArea;
 import io.atasc.intellij.tcptunnelj.TunnelPlugin;
 import io.atasc.intellij.tcptunnelj.ui.Icons;
 
@@ -36,7 +37,7 @@ public class AboutAction extends BaseAction {
           sb.append("\n");
         }
 
-        TextArea area = new TextArea(20, 80);
+        JBTextArea area = new JBTextArea(20, 80);
         area.setEditable(false);
         area.append(sb.toString());
         JOptionPane.showMessageDialog(null, area);
