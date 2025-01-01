@@ -20,7 +20,7 @@ import java.io.ByteArrayOutputStream;
  * @author boruvka/atasc
  * @since
  */
-public class CallsPanel extends JPanel implements TunnelListener {
+public class CallsPanel extends JBPanel implements TunnelListener {
   public static final int DIVIDER_SIZE = 2;
 
   private JBList list;
@@ -192,7 +192,7 @@ class CallsListSelectionListener implements ListSelectionListener {
   }
 }
 
-class ViewersPanel extends JPanel {
+class ViewersPanel extends JBPanel {
   private boolean removeChunk = true;
 
   private JBTextArea requestTxt;

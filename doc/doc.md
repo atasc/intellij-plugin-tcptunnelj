@@ -24,3 +24,5 @@ Internal api: https://plugins.jetbrains.com/docs/intellij/api-internal.html#inte
 Plugin logo: 
 https://plugins.jetbrains.com/docs/intellij/plugin-icon-file.html#adding-plugin-logo-files-to-a-plugin-project
 https://plugins.jetbrains.com/docs/intellij/icons.html#new-ui-icon-colors
+
+controls: https://jetbrains.github.io/ui/controls/button/

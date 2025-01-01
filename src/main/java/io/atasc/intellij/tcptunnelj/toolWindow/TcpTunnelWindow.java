@@ -20,7 +20,7 @@ public class TcpTunnelWindow {
     this.toolWindow = toolWindow;
   }
 
-  public JPanel getContent() {
+  public JBPanel getContent() {
 //    if(this.service==null) {
 //      this.service = ServiceManager.getService(toolWindow.getProject(), TcpTunnelProjectService.class);
 //    }

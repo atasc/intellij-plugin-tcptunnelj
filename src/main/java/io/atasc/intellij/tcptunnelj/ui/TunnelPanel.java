@@ -2,6 +2,9 @@ package io.atasc.intellij.tcptunnelj.ui;
 
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.ui.Messages;
+import com.intellij.ui.components.JBLabel;
+import com.intellij.ui.components.JBPanel;
+import com.intellij.ui.components.JBTextField;
 import io.atasc.intellij.tcptunnelj.TunnelConfig;
 import io.atasc.intellij.tcptunnelj.net.Call;
 import io.atasc.intellij.tcptunnelj.net.Tunnel;
@@ -16,7 +19,7 @@ import java.awt.*;
  * @author boruvka/atasc
  * @since
  */
-public class TunnelPanel extends JPanel {
+public class TunnelPanel extends JBPanel {
   private TunnelConfig tunnelConfig;
 
   private CallsPanel callsPanel;
@@ -114,16 +117,16 @@ public class TunnelPanel extends JPanel {
     return isRunning;
   }
 
-  class ControlPanel extends JPanel implements TunnelListener {
+  class ControlPanel extends JBPanel implements TunnelListener {
     TunnelConfig tunnelConfig;
 
-    private JPanel subPanelAddress;
+    private JBPanel subPanelAddress;
 
-    private JTextField srcPort;
+    private JBTextField srcPort;
 
-    private JTextField destHost;
+    private JBTextField destHost;
 
-    private JTextField destPort;
+    private JBTextField destPort;
 
     public ControlPanel(TunnelConfig tunnelConfig) {
       super();
@@ -134,32 +137,32 @@ public class TunnelPanel extends JPanel {
     protected void initComponents() {
       setLayout(new BorderLayout());
 
-      subPanelAddress = new JPanel();
+      subPanelAddress = new JBPanel();
       subPanelAddress.setBorder(new TitledBorder("Properties"));
 
-      srcPort = new JTextField(this.tunnelConfig.getSourcePort());
+      srcPort = new JBTextField(this.tunnelConfig.getSourcePort());
       srcPort.setInputVerifier(portNumberVerifier);
-      srcPort.setHorizontalAlignment(JTextField.RIGHT);
+      srcPort.setHorizontalAlignment(JBTextField.RIGHT);
       srcPort.setColumns(5);
 
-      destHost = new JTextField(this.tunnelConfig.getDestinationString());
-      destHost.setHorizontalAlignment(JTextField.RIGHT);
+      destHost = new JBTextField(this.tunnelConfig.getDestinationString());
+      destHost.setHorizontalAlignment(JBTextField.RIGHT);
       destHost.setColumns(24);
 
-      destPort = new JTextField(this.tunnelConfig.getDestinationPort());
+      destPort = new JBTextField(this.tunnelConfig.getDestinationPort());
       destPort.setInputVerifier(portNumberVerifier);
-      destPort.setHorizontalAlignment(JTextField.RIGHT);
+      destPort.setHorizontalAlignment(JBTextField.RIGHT);
       destPort.setColumns(5);
 
       this.tunnelConfig.setSourcePort(this.tunnelConfig.getSourcePort());
       this.tunnelConfig.setDestinationString(this.tunnelConfig.getDestinationString());
       this.tunnelConfig.setDestinationPort(this.tunnelConfig.getDestinationPort());
 
-      subPanelAddress.add(new JLabel("from port"));
+      subPanelAddress.add(new JBLabel("from port"));
       subPanelAddress.add(srcPort);
-      subPanelAddress.add(new JLabel("to"));
+      subPanelAddress.add(new JBLabel("to"));
       subPanelAddress.add(destHost);
-      subPanelAddress.add(new JLabel(":"));
+      subPanelAddress.add(new JBLabel(":"));
       subPanelAddress.add(destPort);
 
       add(subPanelAddress, BorderLayout.SOUTH);
@@ -217,7 +220,7 @@ public class TunnelPanel extends JPanel {
 class PortNumberVerifier extends InputVerifier {
 
   public boolean verify(JComponent input) {
-    String text = ((JTextField) input).getText();
+    String text = ((JBTextField) input).getText();
     try {
       Integer.parseInt(text);
       return true;
