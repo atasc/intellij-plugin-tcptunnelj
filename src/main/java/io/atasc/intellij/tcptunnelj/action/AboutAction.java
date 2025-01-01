@@ -6,7 +6,6 @@ import io.atasc.intellij.tcptunnelj.TunnelPlugin;
 import io.atasc.intellij.tcptunnelj.ui.Icons;
 
 import javax.swing.*;
-import java.awt.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
