@@ -14,6 +14,8 @@ import io.atasc.intellij.tcptunnelj.net.TunnelListener;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * @author boruvka/atasc
@@ -41,28 +43,33 @@ public class TunnelPanel extends JBPanel {
     portNumberVerifier = new PortNumberVerifier();
   }
 
-  public void start() throws Exception {
-    Runnable r = new Runnable() {
+  public void start() {
+    ExecutorService executor = Executors.newSingleThreadExecutor(); // Use a single-thread executor for thread management
 
-      public void run() {
+    executor.execute(() -> {
+      try {
         tunnel = new Tunnel(controlPanel.getSrcPort(),
-            controlPanel.getDestPort(), controlPanel.getDestHost());
-        try {
-          tunnel.addTunnelListener(callsPanel);
-          tunnel.addTunnelListener(controlPanel);
-          tunnel.start();
+            controlPanel.getDestPort(),
+            controlPanel.getDestHost());
 
-        } catch (TunnelException e) {
-          showError(e);
-          e.printStackTrace();
+        tunnel.addTunnelListener(callsPanel);
+        tunnel.addTunnelListener(controlPanel);
+
+        tunnel.start(); // Start the tunnel
+      } catch (TunnelException e) {
+        showError(e); // Display error to the user
+        e.printStackTrace();
+      } finally {
+        if (tunnel != null) {
+          try {
+            tunnel.stop(); // Ensure tunnel is stopped in case of failure
+          } catch (Exception stopException) {
+            stopException.printStackTrace();
+          }
         }
+        executor.shutdown(); // Shut down the executor to release resources
       }
-
-    };
-
-    Thread t = new Thread(r);
-    t.start();
-
+    });
   }
 
   public void showError(Exception e) {
@@ -75,17 +82,26 @@ public class TunnelPanel extends JBPanel {
     });
   }
 
-  public void stop() throws Exception {
-    Runnable r = new Runnable() {
-      public void run() {
-        tunnel.stop();
+  public void stop() {
+    ExecutorService executor = Executors.newSingleThreadExecutor(); // Use a single-thread executor
+
+    executor.execute(() -> {
+      try {
+        if (tunnel != null) {
+          tunnel.stop(); // Stop the tunnel
+        }
+        // Optional: Remove listeners if necessary
         // tunnellij.removeTunnelListener(list);
+      } catch (Exception e) {
+        e.printStackTrace(); // Log the exception
+      } finally {
+        executor.shutdown(); // Ensure the executor is properly shut down
       }
-    };
-    Thread t = new Thread(r);
-    t.start();
-    repaint();
+    });
+
+    repaint(); // Update the UI after stopping the tunnel
   }
+
 
   public void clear() {
     callsPanel.clear();
