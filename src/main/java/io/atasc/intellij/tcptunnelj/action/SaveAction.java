@@ -1,9 +1,13 @@
 package io.atasc.intellij.tcptunnelj.action;
 
+import com.intellij.notification.Notification;
+import com.intellij.notification.NotificationType;
+import com.intellij.notification.Notifications;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.Presentation;
-import com.intellij.openapi.ui.Messages;
+import com.intellij.openapi.application.ApplicationManager;
 import io.atasc.intellij.tcptunnelj.TunnelPlugin;
+import io.atasc.intellij.tcptunnelj.toolWindow.TcpTunnelWindow;
 import io.atasc.intellij.tcptunnelj.ui.Icons;
 import io.atasc.intellij.tcptunnelj.ui.TunnelPanel;
 
@@ -50,17 +54,44 @@ public class SaveAction extends BaseAction {
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileToSave))) {
           writer.write(callList);
-          Messages.showMessageDialog("Log file saved successfully!", "Success", Messages.getInformationIcon());
+
+          ApplicationManager.getApplication().invokeLater(() -> {
+            // Display success notification
+            Notifications.Bus.notify(new Notification(
+                TcpTunnelWindow.NOTIFICATION_ID,
+                "File Saved",
+                "Log file saved successfully!",
+                NotificationType.INFORMATION
+            ));
+          });
+
         } catch (IOException e) {
           e.printStackTrace();
-          Messages.showMessageDialog("Error while saving log file: " + e.getMessage(), "Error", Messages.getErrorIcon());
+
+          ApplicationManager.getApplication().invokeLater(() -> {
+            // Show error notification
+            Notifications.Bus.notify(new Notification(
+                TcpTunnelWindow.NOTIFICATION_ID,
+                "Error while saving log file",
+                "Error while saving log file: " + e.getMessage(),
+                NotificationType.ERROR
+            ));
+          });
         }
       }
     } catch (Exception e) {
       e.printStackTrace();
-      Messages.showMessageDialog("Error while saving log file: " + e.getMessage(), "Error", Messages.getErrorIcon());
-    }
 
+      ApplicationManager.getApplication().invokeLater(() -> {
+        // Show error notification
+        Notifications.Bus.notify(new Notification(
+            TcpTunnelWindow.NOTIFICATION_ID,
+            "Error while saving log file",
+            "Error while saving log file: " + e.getMessage(),
+            NotificationType.ERROR
+        ));
+      });
+    }
   }
 
   @Override

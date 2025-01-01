@@ -12,6 +12,7 @@ import javax.swing.*;
  * @since
  */
 public class TcpTunnelWindow {
+  public static final String NOTIFICATION_ID="TcpTunnelJ Notifications";
   private final ToolWindow toolWindow;
   //private TcpTunnelProjectService service;
 

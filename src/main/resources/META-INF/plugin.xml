@@ -21,6 +21,8 @@
 
     <toolWindow factoryClass="io.atasc.intellij.tcptunnelj.toolWindow.TcpTunnelWindowFactory" id="TcpTunnelJ"
                 anchor="bottom" canCloseContents="false" icon="/icons/toolWindow.svg"/>
+
+    <notificationGroup id="TcpTunnelJ Notifications" displayType="BALLOON"/>
   </extensions>
 
   <project-components>
