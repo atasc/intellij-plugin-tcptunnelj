@@ -1,5 +1,10 @@
 package io.atasc.intellij.tcptunnelj.ui;
 
+import com.intellij.ui.OnePixelSplitter;
+import com.intellij.ui.components.JBList;
+import com.intellij.ui.components.JBPanel;
+import com.intellij.ui.components.JBScrollPane;
+import com.intellij.ui.components.JBTextArea;
 import io.atasc.intellij.tcptunnelj.net.Call;
 import io.atasc.intellij.tcptunnelj.net.TunnelListener;
 
@@ -18,15 +23,15 @@ import java.io.ByteArrayOutputStream;
 public class CallsPanel extends JPanel implements TunnelListener {
   public static final int DIVIDER_SIZE = 2;
 
-  private JList list;
+  private JBList list;
   private DefaultListModel model;
   private ViewersPanel viewers;
-  private JSplitPane splitPaneTopBottom;
+  private OnePixelSplitter splitPaneTopBottom;
 
   public CallsPanel() {
     setBackground(UIManager.getColor("Tree.textBackground"));
     model = new DefaultListModel();
-    list = new JList(model);
+    list = new JBList(model);
     list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
     viewers = new ViewersPanel();
@@ -48,18 +53,14 @@ public class CallsPanel extends JPanel implements TunnelListener {
     list.setBackground(UIManager.getColor("Tree.textBackground"));
     list.setVisibleRowCount(3);
 
-    JPanel topPanel = new JPanel(new BorderLayout());
-    topPanel.add(new JScrollPane(list), BorderLayout.CENTER);
-    JPanel bottomPanel = new JPanel(new BorderLayout());
+    JBPanel topPanel = new JBPanel(new BorderLayout());
+    topPanel.add(new JBScrollPane(list), BorderLayout.CENTER);
+    JBPanel bottomPanel = new JBPanel(new BorderLayout());
     bottomPanel.add(viewers, BorderLayout.CENTER);
 
-    splitPaneTopBottom = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-    splitPaneTopBottom.setDividerLocation(0.20d);
-    splitPaneTopBottom.setResizeWeight(0.20d);
-    splitPaneTopBottom.setDividerSize(DIVIDER_SIZE);
-
-    splitPaneTopBottom.add(topPanel, JSplitPane.TOP);
-    splitPaneTopBottom.add(bottomPanel, JSplitPane.BOTTOM);
+    splitPaneTopBottom = new OnePixelSplitter(true, 0.2f); // true for vertical split, 0.2f for top weight
+    splitPaneTopBottom.setFirstComponent(topPanel);
+    splitPaneTopBottom.setSecondComponent(bottomPanel);
 
     add(splitPaneTopBottom, BorderLayout.CENTER);
   }
@@ -109,15 +110,14 @@ public class CallsPanel extends JPanel implements TunnelListener {
   public String getCallListToString() {
     String newLine = System.lineSeparator();
     StringBuilder builder = new StringBuilder();
-    ListModel model = list.getModel(); // Get the list model
+    ListModel model = list.getModel();
 
     int t = model.getSize();
     for (int i = 0; i < model.getSize(); i++) {
-      Call call = (Call) model.getElementAt(i); // Retrieve each element
+      Call call = (Call) model.getElementAt(i);
       String callString = "/************************* (" + (i + 1) + "/" + t + ") *************************/" + newLine + newLine;
       callString += this.getCallString(call) + newLine;
       callString += "/**************************************************/" + newLine + newLine;
-      //System.out.println(call); // Perform your desired action here
       builder.append(callString);
     }
 
@@ -143,10 +143,8 @@ public class CallsPanel extends JPanel implements TunnelListener {
       requestTxt.append(requestBaos.toString());
 
     } else {
-      //request text
       byte[] bytes = requestBaos.toByteArray();
-      for (int i = 0; i < bytes.length; i++) {
-        byte b = bytes[i];
+      for (byte b : bytes) {
         String s = Integer.toHexString(b).toUpperCase();
         if (s.length() == 1) {
           s = "0" + s;
@@ -155,16 +153,10 @@ public class CallsPanel extends JPanel implements TunnelListener {
       }
     }
 
-    //response text
     ByteArrayOutputStream responseBaos = ((ByteArrayOutputStream) call.getInputLogger());
 
-//  if (responseBaos == null) {
-//    return "";
-//  }
-
     if (removeChunk) {
-      responseTxt.append(Call.removeChunkedEncoding(responseBaos.toString())
-      );
+      responseTxt.append(Call.removeChunkedEncoding(responseBaos.toString()));
     } else {
       responseTxt.append(responseBaos.toString());
     }
@@ -189,7 +181,7 @@ class CallsListSelectionListener implements ListSelectionListener {
   }
 
   public void valueChanged(ListSelectionEvent e) {
-    JList list = (JList) e.getSource();
+    JBList list = (JBList) e.getSource();
     Call call = (Call) list.getSelectedValue();
 
     if (call != null) {
@@ -197,18 +189,17 @@ class CallsListSelectionListener implements ListSelectionListener {
     } else {
       viewersPanel.clear();
     }
-
   }
 }
 
 class ViewersPanel extends JPanel {
   private boolean removeChunk = true;
 
-  private JTextArea requestTxt;
-  private JTextArea responseTxt;
-  private JScrollPane requestScroll;
-  private JScrollPane responseScroll;
-  private JSplitPane splitPaneLeftRight;
+  private JBTextArea requestTxt;
+  private JBTextArea responseTxt;
+  private JBScrollPane requestScroll;
+  private JBScrollPane responseScroll;
+  private OnePixelSplitter splitPaneLeftRight;
 
   public ViewersPanel() {
     initComponents();
@@ -219,8 +210,8 @@ class ViewersPanel extends JPanel {
 
     setBackground(UIManager.getColor("Tree.textBackground"));
 
-    requestTxt = new JTextArea();
-    responseTxt = new JTextArea();
+    requestTxt = new JBTextArea();
+    responseTxt = new JBTextArea();
 
     requestTxt.setEditable(true);
     responseTxt.setEditable(true);
@@ -228,23 +219,17 @@ class ViewersPanel extends JPanel {
     requestTxt.setBackground(UIManager.getColor("Tree.textBackground"));
     responseTxt.setBackground(UIManager.getColor("Tree.textBackground"));
 
-    requestScroll = new JScrollPane(requestTxt);
-    responseScroll = new JScrollPane(responseTxt);
+    requestScroll = new JBScrollPane(requestTxt);
+    responseScroll = new JBScrollPane(responseTxt);
 
-    splitPaneLeftRight = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
-    splitPaneLeftRight.setDividerSize(CallsPanel.DIVIDER_SIZE);
-    splitPaneLeftRight.setDividerLocation(0.50d);
-    splitPaneLeftRight.setResizeWeight(0.50d);
-
-    splitPaneLeftRight.add(requestScroll, JSplitPane.LEFT);
-    splitPaneLeftRight.add(responseScroll, JSplitPane.RIGHT);
+    splitPaneLeftRight = new OnePixelSplitter(false, 0.5f); // false for horizontal split
+    splitPaneLeftRight.setFirstComponent(requestScroll);
+    splitPaneLeftRight.setSecondComponent(responseScroll);
 
     add(splitPaneLeftRight, BorderLayout.CENTER);
   }
 
   public void view(Call call) {
-
-    boolean asBytes = false;
     if (call == null) {
       return;
     }
@@ -254,49 +239,20 @@ class ViewersPanel extends JPanel {
       return;
     }
 
-    requestTxt.setText("");
-
-    if (!asBytes) {
-      requestTxt.setText(requestBaos.toString());
-
-    } else {
-      //request text
-      byte[] bytes = requestBaos.toByteArray();
-      for (int i = 0; i < bytes.length; i++) {
-        byte b = bytes[i];
-        String s = Integer.toHexString(b).toUpperCase();
-        if (s.length() == 1) {
-          s = "0" + s;
-        }
-        requestTxt.append(s);
-      }
-    }
+    requestTxt.setText(requestBaos.toString());
     requestTxt.setCaretPosition(0);
 
-    //response text
     ByteArrayOutputStream responseBaos = ((ByteArrayOutputStream) call.getInputLogger());
 
-    if (responseBaos == null) {
-      return;
+    if (responseBaos != null) {
+      if (removeChunk) {
+        responseTxt.setText(Call.removeChunkedEncoding(responseBaos.toString()));
+      } else {
+        responseTxt.setText(responseBaos.toString());
+      }
+      responseTxt.setCaretPosition(0);
     }
-
-    if (removeChunk) {
-      responseTxt.setText(
-          Call.removeChunkedEncoding(responseBaos.toString())
-      );
-    } else {
-      responseTxt.setText(responseBaos.toString());
-    }
-    responseTxt.setCaretPosition(0);
   }
-
-//  public static String removeChunkedEncoding(String response) {
-//    // Use a regex to identify chunks (hexadecimal numbers followed by a newline)
-//    if (response.contains("Transfer-Encoding: chunked")) {
-//      return response.replaceAll("(?m)^[0-9a-fA-F]+\\r?\\n", "");
-//    }
-//    return response;
-//  }
 
   public void wrap() {
     requestTxt.setLineWrap(true);
