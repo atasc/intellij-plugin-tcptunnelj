@@ -65,18 +65,22 @@ public class CallsPanel extends JBPanel implements TunnelListener {
     add(splitPaneTopBottom, BorderLayout.CENTER);
   }
 
+  @Override
   public void tunnelStarted() {
     // nothing yet
   }
 
+  @Override
   public void tunnelStopped() {
     // nothing yet
   }
 
+  @Override
   public synchronized void newCall(Call call) {
     model.addElement(call);
   }
 
+  @Override
   public synchronized void endCall(Call call) {
     if (list.isVisible()) {
       list.repaint();

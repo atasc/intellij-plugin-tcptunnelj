@@ -79,26 +79,21 @@ public class Tunnel {
     }
   }
 
-
   public boolean isRunning() {
     return isRunning;
   }
 
   public void start() throws TunnelException {
-
     try {
-
       serverSocket = new ServerSocket(srcPort);
       System.out.println("Tunnel started at port " + srcPort + ", "
           + " tunneling to " + destHost + ":" + destPort);
       fireTunnelStarted();
 
     } catch (IOException e) {
-
       fireTunnelStopped();
       throw new TunnelException("Cannot create server socket. The port "
           + srcPort + " is probably used by another application.");
-
     }
     while (!shouldStop) {
       Socket client;
@@ -117,11 +112,10 @@ public class Tunnel {
         // TODO: in status bar, also info about client...
         throw new TunnelException("Cannot connect to " + destHost + ":"
             + destPort + ". (" + e.getMessage() + ")");
-
       }
     }
-    fireTunnelStopped();
 
+    fireTunnelStopped();
   }
 
   public void stop() {
@@ -136,9 +130,7 @@ public class Tunnel {
   }
 
   class ClientServant {
-
     private Socket source;
-
     private Socket dest;
 
     public ClientServant(Socket source, Socket dest) throws TunnelException {
@@ -153,28 +145,28 @@ public class Tunnel {
     }
 
     private void serve() throws IOException {
-
-      Call call = new Call("localhost", source.getLocalPort(), dest
-          .getInetAddress().getHostName(), dest.getPort());
+      Call call = new Call("localhost", source.getLocalPort(),
+          dest.getInetAddress().getHostName(), dest.getPort());
 
       fireCallNotifyEvent(call);
 
       // create writers and start them
-      new Writer(call, source.getInputStream(), dest.getOutputStream(),
-          call.getOutputLogger()).start();
+      new Writer(call, source.getInputStream(),
+          dest.getOutputStream(), call.getOutputLogger()
+      ).start();
 
-      new Writer(call, dest.getInputStream(), source.getOutputStream(),
-          call.getInputLogger()).start();
-      // create writers and start them
+      new Writer(call, dest.getInputStream(),
+          source.getOutputStream(), call.getInputLogger()
+      ).start();
+      // create writers and start them eof
     }
 
     class Writer extends Thread {
+      final int BUFFER_SIZE = TunnelConfig.BUFFER_LENGTH;
       InputStream readFrom;
       OutputStream writeTo;
       OutputStream logTo;
       Call call;
-
-      final int BUFFER_SIZE = TunnelConfig.BUFFER_LENGTH;
 
       public Writer(Call call, InputStream readFrom,
                     OutputStream writeTo, OutputStream logTo) {
@@ -185,7 +177,6 @@ public class Tunnel {
       }
 
       public void run() {
-
         try {
           byte[] buffer = new byte[BUFFER_SIZE];
 

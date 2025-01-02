@@ -135,13 +135,9 @@ public class TunnelPanel extends JBPanel {
 
   class ControlPanel extends JBPanel implements TunnelListener {
     TunnelConfig tunnelConfig;
-
     private JBPanel subPanelAddress;
-
     private JBTextField srcPort;
-
     private JBTextField destHost;
-
     private JBTextField destPort;
 
     public ControlPanel(TunnelConfig tunnelConfig) {
@@ -211,19 +207,23 @@ public class TunnelPanel extends JBPanel {
       return destHost.getText();
     }
 
+    @Override
     public void newCall(Call call) {
       //
     }
 
+    @Override
     public void endCall(Call call) {
       //
     }
 
+    @Override
     public void tunnelStarted() {
       isRunning = true;
       setControlPanelEditable(false);
     }
 
+    @Override
     public void tunnelStopped() {
       isRunning = false;
       setControlPanelEditable(true);
