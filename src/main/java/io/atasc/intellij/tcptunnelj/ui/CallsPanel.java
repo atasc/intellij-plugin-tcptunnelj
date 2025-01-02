@@ -228,20 +228,17 @@ class ViewersPanel extends JBPanel {
 
   protected void initComponents() {
     setLayout(new BorderLayout());
-
     setBackground(UIManager.getColor("Tree.textBackground"));
 
     requestTxt = new JBTextArea();
+    requestTxt.setEditable(false);
+    requestTxt.setBackground(UIManager.getColor("Tree.textBackground"));
     addContextMenu(requestTxt);
 
     responseTxt = new JBTextArea();
-    addContextMenu(responseTxt);
-
-    requestTxt.setEditable(true);
-    responseTxt.setEditable(true);
-
-    requestTxt.setBackground(UIManager.getColor("Tree.textBackground"));
+    responseTxt.setEditable(false);
     responseTxt.setBackground(UIManager.getColor("Tree.textBackground"));
+    addContextMenu(responseTxt);
 
     requestScroll = new JBScrollPane(requestTxt);
     responseScroll = new JBScrollPane(responseTxt);
@@ -298,15 +295,13 @@ class ViewersPanel extends JBPanel {
   private void addContextMenu(JBTextArea textArea) {
     JBPopupMenu popupMenu = new JBPopupMenu();
 
-    // Azione per "Taglia"
-    popupMenu.add(new AbstractAction("Cut") {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        textArea.cut();
-      }
-    });
+//    popupMenu.add(new AbstractAction("Cut") {
+//      @Override
+//      public void actionPerformed(ActionEvent e) {
+//        textArea.cut();
+//      }
+//    });
 
-    // Azione per "Copia"
     popupMenu.add(new AbstractAction("Copy") {
       @Override
       public void actionPerformed(ActionEvent e) {
@@ -314,15 +309,20 @@ class ViewersPanel extends JBPanel {
       }
     });
 
-    // Azione per "Incolla"
-    popupMenu.add(new AbstractAction("Paste") {
+//    popupMenu.add(new AbstractAction("Paste") {
+//      @Override
+//      public void actionPerformed(ActionEvent e) {
+//        textArea.paste();
+//      }
+//    });
+
+    popupMenu.add(new AbstractAction("Select All") {
       @Override
       public void actionPerformed(ActionEvent e) {
-        textArea.paste();
+        textArea.selectAll();
       }
     });
 
-    // Associa il menu contestuale al textArea
     textArea.setComponentPopupMenu(popupMenu);
   }
 }

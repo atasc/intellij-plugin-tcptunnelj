@@ -1,7 +1,6 @@
 package io.atasc.intellij.tcptunnelj.ui;
 
 import io.atasc.intellij.tcptunnelj.net.Call;
-import io.atasc.intellij.tcptunnelj.util.Tracer;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -36,11 +35,12 @@ public class CallStringFormatter {
     sb.append(call.getDestHost());
     sb.append(":");
     sb.append(call.getDestPort());
-    sb.append(", output: ");
+    //sb.append("; response: ");
 
+    sb.append(", RQ: ");
     sb.append((call.getOutput() == null) ? " ? B" : formatSize(call.getOutput().toByteArray().length));
 
-    sb.append(", input: ");
+    sb.append(", RS: ");
     sb.append((call.getInput() == null) ? " ? B" : formatSize(call.getInput().toByteArray().length));
 
     if (call.getEnd() != -1) {
