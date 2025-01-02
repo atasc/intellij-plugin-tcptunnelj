@@ -26,7 +26,7 @@ import java.io.ByteArrayOutputStream;
 public class CallsPanel extends JBPanel implements TunnelListener {
   public static final int DIVIDER_SIZE = 2;
 
-  private JBList list;
+  private JBList listCalls;
   private DefaultListModel model;
   private ViewersPanel viewers;
   private OnePixelSplitter splitPaneTopBottom;
@@ -34,13 +34,13 @@ public class CallsPanel extends JBPanel implements TunnelListener {
   public CallsPanel() {
     setBackground(UIManager.getColor("Tree.textBackground"));
     model = new DefaultListModel();
-    list = new JBList(model);
-    list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    listCalls = new JBList(model);
+    listCalls.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
     viewers = new ViewersPanel();
-    list.addListSelectionListener(new CallsListSelectionListener(viewers));
+    listCalls.addListSelectionListener(new CallsListSelectionListener(viewers));
 
-    list.addKeyListener(new KeyAdapter() {
+    listCalls.addKeyListener(new KeyAdapter() {
       public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_DELETE) {
           clearSelected();
@@ -53,11 +53,11 @@ public class CallsPanel extends JBPanel implements TunnelListener {
   }
 
   protected void initComponents() {
-    list.setBackground(UIManager.getColor("Tree.textBackground"));
-    list.setVisibleRowCount(3);
+    listCalls.setBackground(UIManager.getColor("Tree.textBackground"));
+    listCalls.setVisibleRowCount(3);
 
     JBPanel topPanel = new JBPanel(new BorderLayout());
-    topPanel.add(new JBScrollPane(list), BorderLayout.CENTER);
+    topPanel.add(new JBScrollPane(listCalls), BorderLayout.CENTER);
     JBPanel bottomPanel = new JBPanel(new BorderLayout());
     bottomPanel.add(viewers, BorderLayout.CENTER);
 
@@ -98,8 +98,8 @@ public class CallsPanel extends JBPanel implements TunnelListener {
 
   public void repaintViewers() {
     ApplicationManager.getApplication().invokeLater(() -> {
-      if (list.isVisible()) {
-        list.repaint();
+      if (listCalls.isVisible()) {
+        listCalls.repaint();
         viewers.repaint();
       }
     });
@@ -118,20 +118,20 @@ public class CallsPanel extends JBPanel implements TunnelListener {
   }
 
   public synchronized void clearSelected() {
-    int index = list.getSelectedIndex();
+    int index = listCalls.getSelectedIndex();
     if (index != -1) {
       model.removeElementAt(index);
     }
   }
 
   public int getCallListSize() {
-    return list.getModel().getSize();
+    return listCalls.getModel().getSize();
   }
 
   public String getCallListToString() {
     String newLine = System.lineSeparator();
     StringBuilder builder = new StringBuilder();
-    ListModel model = list.getModel();
+    ListModel model = listCalls.getModel();
 
     int t = model.getSize();
     for (int i = 0; i < model.getSize(); i++) {
@@ -216,10 +216,10 @@ class CallsListSelectionListener implements ListSelectionListener {
 class ViewersPanel extends JBPanel {
   private boolean removeChunk = true;
 
-  private JBTextArea requestTxt;
-  private JBTextArea responseTxt;
-  private JBScrollPane requestScroll;
-  private JBScrollPane responseScroll;
+  private JBTextArea txtRQ;
+  private JBTextArea txtRS;
+  private JBScrollPane scrollRQ;
+  private JBScrollPane scrollRS;
   private OnePixelSplitter splitPaneLeftRight;
 
   public ViewersPanel() {
@@ -230,22 +230,22 @@ class ViewersPanel extends JBPanel {
     setLayout(new BorderLayout());
     setBackground(UIManager.getColor("Tree.textBackground"));
 
-    requestTxt = new JBTextArea();
-    requestTxt.setEditable(false);
-    requestTxt.setBackground(UIManager.getColor("Tree.textBackground"));
-    addContextMenu(requestTxt);
+    txtRQ = new JBTextArea();
+    txtRQ.setEditable(false);
+    txtRQ.setBackground(UIManager.getColor("Tree.textBackground"));
+    addContextMenu(txtRQ);
 
-    responseTxt = new JBTextArea();
-    responseTxt.setEditable(false);
-    responseTxt.setBackground(UIManager.getColor("Tree.textBackground"));
-    addContextMenu(responseTxt);
+    txtRS = new JBTextArea();
+    txtRS.setEditable(false);
+    txtRS.setBackground(UIManager.getColor("Tree.textBackground"));
+    addContextMenu(txtRS);
 
-    requestScroll = new JBScrollPane(requestTxt);
-    responseScroll = new JBScrollPane(responseTxt);
+    scrollRQ = new JBScrollPane(txtRQ);
+    scrollRS = new JBScrollPane(txtRS);
 
     splitPaneLeftRight = new OnePixelSplitter(false, 0.5f); // false for horizontal split
-    splitPaneLeftRight.setFirstComponent(requestScroll);
-    splitPaneLeftRight.setSecondComponent(responseScroll);
+    splitPaneLeftRight.setFirstComponent(scrollRQ);
+    splitPaneLeftRight.setSecondComponent(scrollRS);
 
     add(splitPaneLeftRight, BorderLayout.CENTER);
   }
@@ -260,36 +260,36 @@ class ViewersPanel extends JBPanel {
       return;
     }
 
-    requestTxt.setText(requestBaos.toString());
-    requestTxt.setCaretPosition(0);
+    txtRQ.setText(requestBaos.toString());
+    txtRQ.setCaretPosition(0);
 
     ByteArrayOutputStream responseBaos = ((ByteArrayOutputStream) call.getInputLogger());
 
     if (responseBaos != null) {
       if (removeChunk) {
-        responseTxt.setText(Call.removeChunkedEncoding(responseBaos.toString()));
+        txtRS.setText(Call.removeChunkedEncoding(responseBaos.toString()));
       } else {
-        responseTxt.setText(responseBaos.toString());
+        txtRS.setText(responseBaos.toString());
       }
-      responseTxt.setCaretPosition(0);
+      txtRS.setCaretPosition(0);
     }
   }
 
   public void wrap() {
-    requestTxt.setLineWrap(true);
-    requestTxt.setWrapStyleWord(true);
-    responseTxt.setLineWrap(true);
-    responseTxt.setWrapStyleWord(true);
+    txtRQ.setLineWrap(true);
+    txtRQ.setWrapStyleWord(true);
+    txtRS.setLineWrap(true);
+    txtRS.setWrapStyleWord(true);
   }
 
   public void unwrap() {
-    requestTxt.setLineWrap(false);
-    responseTxt.setLineWrap(false);
+    txtRQ.setLineWrap(false);
+    txtRS.setLineWrap(false);
   }
 
   public void clear() {
-    requestTxt.setText("");
-    responseTxt.setText("");
+    txtRQ.setText("");
+    txtRS.setText("");
   }
 
   private void addContextMenu(JBTextArea textArea) {

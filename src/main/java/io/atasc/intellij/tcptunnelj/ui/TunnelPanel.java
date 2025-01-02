@@ -24,8 +24,8 @@ import java.util.concurrent.Executors;
 public class TunnelPanel extends JBPanel {
   private TunnelConfig tunnelConfig;
 
-  private CallsPanel callsPanel;
-  private ControlPanel controlPanel;
+  private CallsPanel panelCalls;
+  private ControlPanel panelControl;
   private Tunnel tunnel;
   private PortNumberVerifier portNumberVerifier;
 
@@ -34,11 +34,11 @@ public class TunnelPanel extends JBPanel {
 
     setLayout(new BorderLayout());
 
-    callsPanel = new CallsPanel();
-    controlPanel = new ControlPanel(tunnelConfig);
+    panelCalls = new CallsPanel();
+    panelControl = new ControlPanel(tunnelConfig);
 
-    add(callsPanel, BorderLayout.CENTER);
-    add(controlPanel, BorderLayout.SOUTH);
+    add(panelCalls, BorderLayout.CENTER);
+    add(panelControl, BorderLayout.SOUTH);
 
     portNumberVerifier = new PortNumberVerifier();
   }
@@ -48,12 +48,12 @@ public class TunnelPanel extends JBPanel {
 
     executor.execute(() -> {
       try {
-        tunnel = new Tunnel(controlPanel.getSrcPort(),
-            controlPanel.getDestPort(),
-            controlPanel.getDestHost());
+        tunnel = new Tunnel(panelControl.getSrcPort(),
+            panelControl.getDestPort(),
+            panelControl.getDestHost());
 
-        tunnel.addTunnelListener(callsPanel);
-        tunnel.addTunnelListener(controlPanel);
+        tunnel.addTunnelListener(panelCalls);
+        tunnel.addTunnelListener(panelControl);
 
         tunnel.start(); // Start the tunnel
       } catch (TunnelException e) {
@@ -104,27 +104,27 @@ public class TunnelPanel extends JBPanel {
 
 
   public void clear() {
-    callsPanel.clear();
+    panelCalls.clear();
   }
 
   public void clearSelected() {
-    callsPanel.clearSelected();
+    panelCalls.clearSelected();
   }
 
   public int getCallListSize() {
-    return callsPanel.getCallListSize();
+    return panelCalls.getCallListSize();
   }
 
   public String getCallListToString() {
-    return callsPanel.getCallListToString();
+    return panelCalls.getCallListToString();
   }
 
   public void wrap() {
-    callsPanel.wrap();
+    panelCalls.wrap();
   }
 
   public void unwrap() {
-    callsPanel.unwrap();
+    panelCalls.unwrap();
   }
 
   private boolean isRunning = false;
@@ -136,9 +136,9 @@ public class TunnelPanel extends JBPanel {
   class ControlPanel extends JBPanel implements TunnelListener {
     TunnelConfig tunnelConfig;
     private JBPanel subPanelAddress;
-    private JBTextField srcPort;
-    private JBTextField destHost;
-    private JBTextField destPort;
+    private JBTextField txtSrcPort;
+    private JBTextField txtDestHost;
+    private JBTextField txtDestPort;
 
     public ControlPanel(TunnelConfig tunnelConfig) {
       super();
@@ -152,59 +152,59 @@ public class TunnelPanel extends JBPanel {
       subPanelAddress = new JBPanel();
       subPanelAddress.setBorder(new TitledBorder("Properties"));
 
-      srcPort = new JBTextField(this.tunnelConfig.getSourcePort());
-      srcPort.setInputVerifier(portNumberVerifier);
-      srcPort.setHorizontalAlignment(JBTextField.RIGHT);
-      srcPort.setColumns(5);
+      txtSrcPort = new JBTextField(this.tunnelConfig.getSourcePort());
+      txtSrcPort.setInputVerifier(portNumberVerifier);
+      txtSrcPort.setHorizontalAlignment(JBTextField.RIGHT);
+      txtSrcPort.setColumns(5);
 
-      destHost = new JBTextField(this.tunnelConfig.getDestinationString());
-      destHost.setHorizontalAlignment(JBTextField.RIGHT);
-      destHost.setColumns(24);
+      txtDestHost = new JBTextField(this.tunnelConfig.getDestinationString());
+      txtDestHost.setHorizontalAlignment(JBTextField.RIGHT);
+      txtDestHost.setColumns(24);
 
-      destPort = new JBTextField(this.tunnelConfig.getDestinationPort());
-      destPort.setInputVerifier(portNumberVerifier);
-      destPort.setHorizontalAlignment(JBTextField.RIGHT);
-      destPort.setColumns(5);
+      txtDestPort = new JBTextField(this.tunnelConfig.getDestinationPort());
+      txtDestPort.setInputVerifier(portNumberVerifier);
+      txtDestPort.setHorizontalAlignment(JBTextField.RIGHT);
+      txtDestPort.setColumns(5);
 
       this.tunnelConfig.setSourcePort(this.tunnelConfig.getSourcePort());
       this.tunnelConfig.setDestinationString(this.tunnelConfig.getDestinationString());
       this.tunnelConfig.setDestinationPort(this.tunnelConfig.getDestinationPort());
 
       subPanelAddress.add(new JBLabel("from port"));
-      subPanelAddress.add(srcPort);
+      subPanelAddress.add(txtSrcPort);
       subPanelAddress.add(new JBLabel("to"));
-      subPanelAddress.add(destHost);
+      subPanelAddress.add(txtDestHost);
       subPanelAddress.add(new JBLabel(":"));
-      subPanelAddress.add(destPort);
+      subPanelAddress.add(txtDestPort);
 
       add(subPanelAddress, BorderLayout.SOUTH);
     }
 
     public void setControlPanelEditable(boolean b) {
-      this.tunnelConfig.setSourcePort(srcPort.getText());
-      this.tunnelConfig.setDestinationString(destHost.getText());
-      this.tunnelConfig.setDestinationPort(destPort.getText());
+      this.tunnelConfig.setSourcePort(txtSrcPort.getText());
+      this.tunnelConfig.setDestinationString(txtDestHost.getText());
+      this.tunnelConfig.setDestinationPort(txtDestPort.getText());
       this.tunnelConfig.store();
 
-      srcPort.setEditable(b);
-      destHost.setEditable(b);
-      destPort.setEditable(b);
+      txtSrcPort.setEditable(b);
+      txtDestHost.setEditable(b);
+      txtDestPort.setEditable(b);
 
-      srcPort.setEnabled(b);
-      destHost.setEnabled(b);
-      destPort.setEnabled(b);
+      txtSrcPort.setEnabled(b);
+      txtDestHost.setEnabled(b);
+      txtDestPort.setEnabled(b);
     }
 
     public int getSrcPort() {
-      return Integer.parseInt(srcPort.getText());
+      return Integer.parseInt(txtSrcPort.getText());
     }
 
     public int getDestPort() {
-      return Integer.parseInt(destPort.getText());
+      return Integer.parseInt(txtDestPort.getText());
     }
 
     public String getDestHost() {
-      return destHost.getText();
+      return txtDestHost.getText();
     }
 
     @Override
