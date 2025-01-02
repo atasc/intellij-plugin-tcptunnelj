@@ -61,7 +61,7 @@ public class CallStringFormatter {
   }
 
   private static String formatDuration(long durationMs) {
-    Tracer.print("CallStringFormatter.formatDuration: " + durationMs);
+    //Tracer.print("CallStringFormatter.formatDuration: " + durationMs);
     if (durationMs > 1000) {
       double seconds = durationMs / 1000.0;
       return String.format("%.2f seconds", seconds);
