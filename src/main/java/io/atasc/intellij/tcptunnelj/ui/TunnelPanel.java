@@ -102,7 +102,6 @@ public class TunnelPanel extends JBPanel {
     repaint(); // Update the UI after stopping the tunnel
   }
 
-
   public void clear() {
     panelCalls.clear();
   }
@@ -135,7 +134,7 @@ public class TunnelPanel extends JBPanel {
 
   class ControlPanel extends JBPanel implements TunnelListener {
     TunnelConfig tunnelConfig;
-    private JBPanel subPanelAddress;
+    private JBPanel panelAddress;
     private JBTextField txtSrcPort;
     private JBTextField txtDestHost;
     private JBTextField txtDestPort;
@@ -149,8 +148,8 @@ public class TunnelPanel extends JBPanel {
     protected void initComponents() {
       setLayout(new BorderLayout());
 
-      subPanelAddress = new JBPanel();
-      subPanelAddress.setBorder(new TitledBorder("Properties"));
+      panelAddress = new JBPanel();
+      panelAddress.setBorder(new TitledBorder("Properties"));
 
       txtSrcPort = new JBTextField(this.tunnelConfig.getSourcePort());
       txtSrcPort.setInputVerifier(portNumberVerifier);
@@ -170,14 +169,14 @@ public class TunnelPanel extends JBPanel {
       this.tunnelConfig.setDestinationString(this.tunnelConfig.getDestinationString());
       this.tunnelConfig.setDestinationPort(this.tunnelConfig.getDestinationPort());
 
-      subPanelAddress.add(new JBLabel("from port"));
-      subPanelAddress.add(txtSrcPort);
-      subPanelAddress.add(new JBLabel("to"));
-      subPanelAddress.add(txtDestHost);
-      subPanelAddress.add(new JBLabel(":"));
-      subPanelAddress.add(txtDestPort);
+      panelAddress.add(new JBLabel("from port"));
+      panelAddress.add(txtSrcPort);
+      panelAddress.add(new JBLabel("to"));
+      panelAddress.add(txtDestHost);
+      panelAddress.add(new JBLabel(":"));
+      panelAddress.add(txtDestPort);
 
-      add(subPanelAddress, BorderLayout.SOUTH);
+      add(panelAddress, BorderLayout.SOUTH);
     }
 
     public void setControlPanelEditable(boolean b) {
