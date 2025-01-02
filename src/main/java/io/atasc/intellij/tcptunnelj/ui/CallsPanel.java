@@ -94,6 +94,8 @@ public class CallsPanel extends JBPanel implements TunnelListener {
 //    }
 
     this.repaintViewers();
+
+    this.scrollToLastCall();
   }
 
   public void repaintViewers() {
@@ -103,6 +105,13 @@ public class CallsPanel extends JBPanel implements TunnelListener {
         viewers.repaint();
       }
     });
+  }
+
+  public void scrollToLastCall() {
+    int lastIndex = model.getSize() - 1;
+    if (lastIndex >= 0) {
+      listCalls.ensureIndexIsVisible(lastIndex);
+    }
   }
 
   public void wrap() {
