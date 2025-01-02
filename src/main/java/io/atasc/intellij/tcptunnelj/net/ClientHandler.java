@@ -60,7 +60,6 @@ public class ClientHandler extends Thread {
     }
   }
 
-
   private void closeSockets() {
     try {
       if (!clientSocket.isClosed()) {
