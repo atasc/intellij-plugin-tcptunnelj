@@ -79,12 +79,33 @@ public class Call {
     return output;
   }
 
-  public static String removeChunkedEncoding(String response) {
-    // Use a regex to identify chunks (hexadecimal numbers followed by a newline)
-    if (response.contains("Transfer-Encoding: chunked")) {
-      return response.replaceAll("(?m)^[0-9a-fA-F]+\\r?\\n", "");
-    }
-    return response;
-  }
+//  public static String removeChunkedEncoding(String response) {
+//    // Use a regex to identify chunks (hexadecimal numbers followed by a newline)
+//    if (response.contains("Transfer-Encoding: chunked")) {
+//      return response.replaceAll("(?m)^[0-9a-fA-F]+\\r?\\n", "");
+//    }
+//    return response;
+//  }
 
+  public static String removeChunkedEncoding(String response) {
+    // Divide header and body using double newline as delimiter
+    int headerEndIndex = response.indexOf("\r\n\r\n");
+    if (headerEndIndex == -1) {
+      // No headers found, return response as is
+      return response;
+    }
+
+    // Extract header and body
+    String header = response.substring(0, headerEndIndex);
+    String body = response.substring(headerEndIndex + 4);
+
+    // Check for Transfer-Encoding: chunked in the header only
+    if (header.contains("Transfer-Encoding: chunked")) {
+      // Remove chunked encoding from the body
+      body = body.replaceAll("(?m)^[0-9a-fA-F]+\\r?\\n", "");
+    }
+
+    // Reassemble response
+    return header + "\r\n\r\n" + body;
+  }
 }
