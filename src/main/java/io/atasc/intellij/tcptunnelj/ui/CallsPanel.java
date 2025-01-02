@@ -1,9 +1,7 @@
 package io.atasc.intellij.tcptunnelj.ui;
 
-import com.intellij.notification.Notification;
-import com.intellij.notification.NotificationType;
-import com.intellij.notification.Notifications;
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.ui.JBPopupMenu;
 import com.intellij.ui.OnePixelSplitter;
 import com.intellij.ui.components.JBList;
 import com.intellij.ui.components.JBPanel;
@@ -16,6 +14,7 @@ import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.ByteArrayOutputStream;
@@ -97,7 +96,7 @@ public class CallsPanel extends JBPanel implements TunnelListener {
     this.repaintViewers();
   }
 
-  public void repaintViewers(){
+  public void repaintViewers() {
     ApplicationManager.getApplication().invokeLater(() -> {
       if (list.isVisible()) {
         list.repaint();
@@ -233,7 +232,10 @@ class ViewersPanel extends JBPanel {
     setBackground(UIManager.getColor("Tree.textBackground"));
 
     requestTxt = new JBTextArea();
+    addContextMenu(requestTxt);
+
     responseTxt = new JBTextArea();
+    addContextMenu(responseTxt);
 
     requestTxt.setEditable(true);
     responseTxt.setEditable(true);
@@ -291,5 +293,36 @@ class ViewersPanel extends JBPanel {
   public void clear() {
     requestTxt.setText("");
     responseTxt.setText("");
+  }
+
+  private void addContextMenu(JBTextArea textArea) {
+    JBPopupMenu popupMenu = new JBPopupMenu();
+
+    // Azione per "Taglia"
+    popupMenu.add(new AbstractAction("Cut") {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        textArea.cut();
+      }
+    });
+
+    // Azione per "Copia"
+    popupMenu.add(new AbstractAction("Copy") {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        textArea.copy();
+      }
+    });
+
+    // Azione per "Incolla"
+    popupMenu.add(new AbstractAction("Paste") {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        textArea.paste();
+      }
+    });
+
+    // Associa il menu contestuale al textArea
+    textArea.setComponentPopupMenu(popupMenu);
   }
 }
