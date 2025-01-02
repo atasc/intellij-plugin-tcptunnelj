@@ -10,16 +10,19 @@
       enables developers to observe and intercept TCP connections, presenting the captured data in an accessible format
       directly within the IDE. This plugin is a refined version of the original TunnelliJ plugin (available at TunnelliJ
       GitHub Repository), incorporating new features and enhancements to improve usability and efficiency.
-
-      <h3>What's New in Version 0.4.1</h3>
-      <ul>
-          <li>UI improvements.</li>
-          <li>Notifications</li>
-          <li>Improved tcp tunnel</li>
-          <li>Better UI performance</li>
-      </ul>
     ]]>
   </description>
+
+  <change-notes>
+    <![CDATA[
+    <h2>What's New in Version 0.4.5</h2>
+    <ul>
+      <li>Improved TCP tunnel functionality.</li>
+      <li>Enhanced UI for better user experience.</li>
+      <li>New notification system for updates.</li>
+    </ul>
+    ]]>
+  </change-notes>
 
   <version>0.4.5</version>
 
