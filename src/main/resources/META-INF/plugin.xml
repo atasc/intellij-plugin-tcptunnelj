@@ -15,11 +15,13 @@
       <ul>
           <li>UI improvements.</li>
           <li>Notifications</li>
+          <li>Improved tcp tunnel</li>
+          <li>Better UI performance</li>
       </ul>
     ]]>
   </description>
 
-  <version>0.4.1</version>
+  <version>0.4.3</version>
 
   <depends>com.intellij.modules.platform</depends>
 
