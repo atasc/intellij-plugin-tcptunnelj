@@ -1,7 +1,7 @@
 package io.atasc.intellij.tcptunnelj.action;
 
 import com.intellij.openapi.actionSystem.AnActionEvent;
-import io.atasc.intellij.tcptunnelj.TunnelPlugin;
+import io.atasc.intellij.tcptunnelj.TcpTunnelPlugin;
 import io.atasc.intellij.tcptunnelj.ui.Icons;
 import io.atasc.intellij.tcptunnelj.ui.TunnelPanel;
 
@@ -10,7 +10,7 @@ import io.atasc.intellij.tcptunnelj.ui.TunnelPanel;
  * @since
  */
 public class ClearAction extends BaseAction {
-  public ClearAction(TunnelPlugin tunnelPlugin) {
+  public ClearAction(TcpTunnelPlugin tunnelPlugin) {
     super("Remove all calls from list", "Remove all calls from list",
         Icons.ICON_CLEAR, tunnelPlugin);
   }

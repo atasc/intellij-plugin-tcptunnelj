@@ -5,7 +5,7 @@ import com.intellij.openapi.ui.Messages;
 import com.intellij.ui.components.JBLabel;
 import com.intellij.ui.components.JBPanel;
 import com.intellij.ui.components.JBTextField;
-import io.atasc.intellij.tcptunnelj.TunnelConfig;
+import io.atasc.intellij.tcptunnelj.TcpTunnelConfig;
 import io.atasc.intellij.tcptunnelj.net.Call;
 import io.atasc.intellij.tcptunnelj.net.Tunnel;
 import io.atasc.intellij.tcptunnelj.net.TunnelException;
@@ -22,14 +22,14 @@ import java.util.concurrent.Executors;
  * @since
  */
 public class TunnelPanel extends JBPanel {
-  private TunnelConfig tunnelConfig;
+  private TcpTunnelConfig tunnelConfig;
 
   private CallsPanel panelCalls;
   private ControlPanel panelControl;
   private Tunnel tunnel;
   private PortNumberVerifier portNumberVerifier;
 
-  public TunnelPanel(TunnelConfig tunnelConfig) {
+  public TunnelPanel(TcpTunnelConfig tunnelConfig) {
     this.tunnelConfig = tunnelConfig;
 
     setLayout(new BorderLayout());
@@ -133,13 +133,13 @@ public class TunnelPanel extends JBPanel {
   }
 
   class ControlPanel extends JBPanel implements TunnelListener {
-    TunnelConfig tunnelConfig;
+    TcpTunnelConfig tunnelConfig;
     private JBPanel panelAddress;
     private JBTextField txtSrcPort;
     private JBTextField txtDestHost;
     private JBTextField txtDestPort;
 
-    public ControlPanel(TunnelConfig tunnelConfig) {
+    public ControlPanel(TcpTunnelConfig tunnelConfig) {
       super();
       this.tunnelConfig = tunnelConfig;
       initComponents();

@@ -8,7 +8,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowFactory;
 import com.intellij.ui.content.ContentFactory;
-import io.atasc.intellij.tcptunnelj.TunnelPlugin;
+import io.atasc.intellij.tcptunnelj.TcpTunnelPlugin;
 import io.atasc.intellij.tcptunnelj.listeners.TcpTunnelAppLifecycleListener;
 import org.jetbrains.annotations.NotNull;
 
@@ -54,7 +54,7 @@ public class TcpTunnelWindowFactory implements ToolWindowFactory, Disposable {
       }
       case 3 -> {
         SwingUtilities.invokeLater(() -> {
-          TunnelPlugin tunnelPlugin = new TunnelPlugin(project);
+          TcpTunnelPlugin tunnelPlugin = new TcpTunnelPlugin(project);
 
           var content = ContentFactory.getInstance().createContent(tunnelPlugin.getContent(), null, false);
           toolWindow.getContentManager().addContent(content);

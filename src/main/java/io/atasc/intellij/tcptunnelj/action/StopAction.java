@@ -3,7 +3,7 @@ package io.atasc.intellij.tcptunnelj.action;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.Presentation;
 import com.intellij.openapi.ui.Messages;
-import io.atasc.intellij.tcptunnelj.TunnelPlugin;
+import io.atasc.intellij.tcptunnelj.TcpTunnelPlugin;
 import io.atasc.intellij.tcptunnelj.ui.Icons;
 import io.atasc.intellij.tcptunnelj.ui.TunnelPanel;
 
@@ -13,7 +13,7 @@ import io.atasc.intellij.tcptunnelj.ui.TunnelPanel;
  */
 public class StopAction extends BaseAction {
 
-  public StopAction(TunnelPlugin tunnelPlugin) {
+  public StopAction(TcpTunnelPlugin tunnelPlugin) {
     super("Stop tcp tunnel", "Stop tcp tunnel",
         Icons.ICON_STOP, tunnelPlugin);
   }

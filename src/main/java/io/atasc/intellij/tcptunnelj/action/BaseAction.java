@@ -2,7 +2,7 @@ package io.atasc.intellij.tcptunnelj.action;
 
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
-import io.atasc.intellij.tcptunnelj.TunnelPlugin;
+import io.atasc.intellij.tcptunnelj.TcpTunnelPlugin;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
@@ -12,10 +12,10 @@ import javax.swing.*;
  * @since
  */
 public class BaseAction extends AnAction {
-  protected TunnelPlugin tunnelPlugin;
+  protected TcpTunnelPlugin tunnelPlugin;
 
   public BaseAction(String text, String description,
-                    Icon icon, TunnelPlugin tunnelPlugin) {
+                    Icon icon, TcpTunnelPlugin tunnelPlugin) {
     this(text, description, icon);
     this.tunnelPlugin = tunnelPlugin;
   }

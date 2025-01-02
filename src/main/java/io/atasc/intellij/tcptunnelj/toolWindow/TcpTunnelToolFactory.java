@@ -4,7 +4,7 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowFactory;
-import io.atasc.intellij.tcptunnelj.TunnelPlugin;
+import io.atasc.intellij.tcptunnelj.TcpTunnelPlugin;
 
 /**
  * @author atasc
@@ -19,7 +19,7 @@ public class TcpTunnelToolFactory implements ToolWindowFactory {
 
   @Override
   public void createToolWindowContent(Project project, ToolWindow toolWindow) {
-    TunnelPlugin tunnelPlugin = new TunnelPlugin(project);
+    TcpTunnelPlugin tunnelPlugin = new TcpTunnelPlugin(project);
     //tunnelPlugin.projectOpened();
   }
 

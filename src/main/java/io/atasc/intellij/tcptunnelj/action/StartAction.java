@@ -3,7 +3,7 @@ package io.atasc.intellij.tcptunnelj.action;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.Presentation;
 import com.intellij.openapi.ui.Messages;
-import io.atasc.intellij.tcptunnelj.TunnelPlugin;
+import io.atasc.intellij.tcptunnelj.TcpTunnelPlugin;
 import io.atasc.intellij.tcptunnelj.ui.Icons;
 import io.atasc.intellij.tcptunnelj.ui.TunnelPanel;
 
@@ -12,7 +12,7 @@ import io.atasc.intellij.tcptunnelj.ui.TunnelPanel;
  * @since
  */
 public class StartAction extends BaseAction {
-  public StartAction(TunnelPlugin tunnelPlugin) {
+  public StartAction(TcpTunnelPlugin tunnelPlugin) {
     super("Start tcp tunnel", "Start tcp tunnel",
         Icons.ICON_START, tunnelPlugin);
   }

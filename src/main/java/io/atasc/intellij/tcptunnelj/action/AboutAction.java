@@ -2,7 +2,7 @@ package io.atasc.intellij.tcptunnelj.action;
 
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.ui.components.JBTextArea;
-import io.atasc.intellij.tcptunnelj.TunnelPlugin;
+import io.atasc.intellij.tcptunnelj.TcpTunnelPlugin;
 import io.atasc.intellij.tcptunnelj.ui.Icons;
 
 import javax.swing.*;
@@ -17,7 +17,7 @@ import java.io.InputStreamReader;
  */
 public class AboutAction extends BaseAction {
 
-  public AboutAction(TunnelPlugin tunnelPlugin) {
+  public AboutAction(TcpTunnelPlugin tunnelPlugin) {
     super("Show About dialog", "Show About dialog",
         Icons.ICON_HELP, tunnelPlugin);
   }

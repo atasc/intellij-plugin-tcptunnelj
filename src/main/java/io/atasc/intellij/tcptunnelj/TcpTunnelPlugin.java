@@ -15,14 +15,14 @@ import java.awt.*;
  * @author boruvka/atasc
  * @since
  */
-public class TunnelPlugin implements Disposable, AutoCloseable {
+public class TcpTunnelPlugin implements Disposable, AutoCloseable {
   private static final String COMPONENT_NAME = "io.atasc.intellij.tcptunnelj.TunnelWindow";
   private static final String TOOL_WINDOW_ID = "TcpTunnelJ";
 
   //private ToolWindow tunnelWindow;
   private Project project;
   private TunnelPanel tunnelPanel;
-  private TunnelConfig tunnelConfig;
+  private TcpTunnelConfig tunnelConfig;
 
   public TunnelPanel getTunnelPanel() {
     return this.tunnelPanel;
@@ -33,10 +33,10 @@ public class TunnelPlugin implements Disposable, AutoCloseable {
 //    return COMPONENT_NAME;
 //  }
 
-  public TunnelPlugin(Project project) {
+  public TcpTunnelPlugin(Project project) {
     this.project = project;
 
-    this.tunnelConfig = new TunnelConfig(project.getName());
+    this.tunnelConfig = new TcpTunnelConfig(project.getName());
     //tunnelConfig.setProjectName();
 
     TcpTunnelProjectManagerListener.attachListener(project, new ProjectManagerListener() {
@@ -53,7 +53,7 @@ public class TunnelPlugin implements Disposable, AutoCloseable {
     });
   }
 
-  public TunnelPlugin() {
+  public TcpTunnelPlugin() {
     super();
   }
 

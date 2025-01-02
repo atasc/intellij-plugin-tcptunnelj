@@ -37,7 +37,7 @@
 
   <project-components>
     <component>
-      <implementation-class>io.atasc.intellij.tcptunnelj.TunnelPlugin</implementation-class>
+      <implementation-class>io.atasc.intellij.tcptunnelj.TcpTunnelPlugin</implementation-class>
     </component>
   </project-components>
 

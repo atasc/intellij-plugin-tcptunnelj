@@ -6,7 +6,7 @@ import com.intellij.notification.Notifications;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.Presentation;
 import com.intellij.openapi.application.ApplicationManager;
-import io.atasc.intellij.tcptunnelj.TunnelPlugin;
+import io.atasc.intellij.tcptunnelj.TcpTunnelPlugin;
 import io.atasc.intellij.tcptunnelj.ui.Icons;
 import io.atasc.intellij.tcptunnelj.ui.TunnelPanel;
 
@@ -22,7 +22,7 @@ import java.io.IOException;
  */
 public class SaveAction extends BaseAction {
 
-  public SaveAction(TunnelPlugin tunnelPlugin) {
+  public SaveAction(TcpTunnelPlugin tunnelPlugin) {
     super("Save calls", "Save calls",
         Icons.ICON_SAVE, tunnelPlugin);
   }

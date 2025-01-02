@@ -7,7 +7,7 @@ import java.util.Properties;
  * @author boruvka/atasc
  * @since
  */
-public class TunnelConfig {
+public class TcpTunnelConfig {
   public static Properties PROPERTIES;
   private static final String PROPERTIES_FILE_NAME = ".tcptunnelj.properties";
   private static File PROPERTIES_FILE;
@@ -48,7 +48,7 @@ public class TunnelConfig {
     PROPERTIES = new Properties();
   }
 
-  public TunnelConfig(String projectName) {
+  public TcpTunnelConfig(String projectName) {
     this.init();
     this.setProjectName(projectName);
   }

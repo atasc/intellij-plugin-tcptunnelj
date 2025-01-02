@@ -1,4 +1,4 @@
-package com.github.atasc.intellijplugintcptunnelj
+package io.atasc.intellij.tcptunnelj
 
 import com.intellij.ide.highlighter.XmlFileType
 import com.intellij.openapi.components.service
@@ -9,7 +9,7 @@ import com.intellij.util.PsiErrorElementUtil
 import io.atasc.intellij.tcptunnelj.services.TcpTunnelProjectService
 
 @TestDataPath("\$CONTENT_ROOT/src/test/testData")
-class MyPluginTest : BasePlatformTestCase() {
+class TcpTunnelJPluginTest : BasePlatformTestCase() {
 
     fun testXMLFile() {
         val psiFile = myFixture.configureByText(XmlFileType.INSTANCE, "<foo>bar</foo>")
