@@ -3,6 +3,10 @@ package io.atasc.intellij.tcptunnelj.net;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+/**
+ * @author atasc
+ * @since
+ */
 public class TunnelWriter extends Thread {
   private static final int BUFFER_SIZE = 8192;
   private final InputStream inputStream;

@@ -3,6 +3,10 @@ package io.atasc.intellij.tcptunnelj.net;
 import java.io.IOException;
 import java.net.Socket;
 
+/**
+ * @author atasc
+ * @since
+ */
 public class ClientHandler extends Thread {
   private final Socket clientSocket;
   private final Socket destinationSocket;

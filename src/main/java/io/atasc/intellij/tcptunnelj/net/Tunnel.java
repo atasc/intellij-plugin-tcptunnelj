@@ -6,6 +6,10 @@ import java.net.Socket;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * @author atasc
+ * @since
+ */
 public class Tunnel {
   private final int srcPort;
   private final int destPort;
