@@ -1,5 +1,9 @@
 package io.atasc.intellij.tcptunnelj.ui;
 
+import com.intellij.notification.Notification;
+import com.intellij.notification.NotificationType;
+import com.intellij.notification.Notifications;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.ui.OnePixelSplitter;
 import com.intellij.ui.components.JBList;
 import com.intellij.ui.components.JBPanel;
@@ -78,14 +82,28 @@ public class CallsPanel extends JBPanel implements TunnelListener {
   @Override
   public synchronized void newCall(Call call) {
     model.addElement(call);
+    ApplicationManager.getApplication().invokeLater(() -> {
+      this.repaintViewers();
+    });
   }
 
   @Override
   public synchronized void endCall(Call call) {
-    if (list.isVisible()) {
-      list.repaint();
-      viewers.repaint();
-    }
+//    if (list.isVisible()) {
+//      list.repaint();
+//      viewers.repaint();
+//    }
+
+    this.repaintViewers();
+  }
+
+  public void repaintViewers(){
+    ApplicationManager.getApplication().invokeLater(() -> {
+      if (list.isVisible()) {
+        list.repaint();
+        viewers.repaint();
+      }
+    });
   }
 
   public void wrap() {
