@@ -1,6 +1,7 @@
 package io.atasc.intellij.tcptunnelj.ui;
 
 import io.atasc.intellij.tcptunnelj.net.Call;
+import io.atasc.intellij.tcptunnelj.util.Tracer;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -60,6 +61,7 @@ public class CallStringFormatter {
   }
 
   private static String formatDuration(long durationMs) {
+    Tracer.print("CallStringFormatter.formatDuration: " + durationMs);
     if (durationMs > 1000) {
       double seconds = durationMs / 1000.0;
       return String.format("%.2f seconds", seconds);
