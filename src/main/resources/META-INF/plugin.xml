@@ -15,16 +15,17 @@
 
   <change-notes>
     <![CDATA[
-    <h2>What's New in Version 0.4.5</h2>
+    <h2>What's New in Version 0.4.6</h2>
     <ul>
-      <li>Improved TCP tunnel functionality.</li>
-      <li>Enhanced UI for better user experience.</li>
-      <li>New notification system for updates.</li>
+      <li>Improved TCP tunnel functionality</li>
+      <li>Enhanced UI for better user experience</li>
+      <li>New notification system for updates</li>
+      <li>Support to text based socket communication</li>
     </ul>
     ]]>
   </change-notes>
 
-  <version>0.4.5</version>
+  <version>0.4.6</version>
 
   <depends>com.intellij.modules.platform</depends>
 
