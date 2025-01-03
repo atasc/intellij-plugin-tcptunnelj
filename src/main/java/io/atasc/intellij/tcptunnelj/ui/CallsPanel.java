@@ -87,6 +87,18 @@ public class CallsPanel extends JBPanel implements TunnelListener {
   }
 
   @Override
+  public synchronized void onDataReceived(Call call, String data) {
+    ApplicationManager.getApplication().invokeLater(() -> {
+//      if (data.startsWith("Request")) { // Esempio di identificazione richiesta/risposta
+//        viewers.updateRequest(data);
+//      } else {
+//        viewers.updateResponse(data);
+//      }
+      viewers.view(call);
+    });
+  }
+
+  @Override
   public synchronized void endCall(Call call) {
 //    if (list.isVisible()) {
 //      list.repaint();
@@ -257,6 +269,16 @@ class ViewersPanel extends JBPanel {
     splitPaneLeftRight.setSecondComponent(scrollRS);
 
     add(splitPaneLeftRight, BorderLayout.CENTER);
+  }
+
+  public void updateRequest(String data) {
+    txtRQ.append(data);
+    txtRQ.setCaretPosition(txtRQ.getText().length());
+  }
+
+  public void updateResponse(String data) {
+    txtRS.append(data);
+    txtRS.setCaretPosition(txtRS.getText().length());
   }
 
   public void view(Call call) {

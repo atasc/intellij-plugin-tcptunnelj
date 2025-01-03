@@ -14,4 +14,6 @@ public interface TunnelListener {
 
   void tunnelStopped();
 
+  void onDataReceived(Call call, String data);
+
 }

@@ -55,6 +55,14 @@ public class Tunnel {
     }
   }
 
+  public void onDataReceived(Call call, boolean isRequest, String data) {
+    synchronized (listeners) {
+      for (TunnelListener listener : listeners) {
+        listener.onDataReceived(call, data);
+      }
+    }
+  }
+
   public void addListener(TunnelListener listener) {
     synchronized (listeners) {
       listeners.add(listener);

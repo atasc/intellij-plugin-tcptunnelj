@@ -28,19 +28,20 @@ public class ClientHandler extends Thread {
           destinationSocket.getPort()
       );
 
-      // Notifica i listener che una nuova chiamata è iniziata
       tunnel.notifyNewCall(call);
 
       TunnelWriter clientToDestination = new TunnelWriter(
           clientSocket.getInputStream(),
           destinationSocket.getOutputStream(),
-          call.getOutputLogger()
+          call.getOutputLogger(),
+          data -> tunnel.onDataReceived(call, true, data)
       );
 
       TunnelWriter destinationToClient = new TunnelWriter(
           destinationSocket.getInputStream(),
           clientSocket.getOutputStream(),
-          call.getInputLogger()
+          call.getInputLogger(),
+          data -> tunnel.onDataReceived(call, false, data)
       );
 
       clientToDestination.start();
@@ -50,8 +51,6 @@ public class ClientHandler extends Thread {
       destinationToClient.join();
 
       call.setEnd(System.currentTimeMillis());
-
-      // Notifica i listener che la chiamata è terminata
       tunnel.notifyCallEnded(call);
     } catch (Exception e) {
       System.err.println("Error in ClientHandler: " + e.getMessage());
@@ -59,6 +58,7 @@ public class ClientHandler extends Thread {
       closeSockets();
     }
   }
+
 
   private void closeSockets() {
     try {
