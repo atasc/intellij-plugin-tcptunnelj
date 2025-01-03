@@ -28,7 +28,7 @@ public class CallsPanel extends JBPanel implements TunnelListener {
 
   private JBList listCalls;
   private DefaultListModel model;
-  private ViewersPanel viewers;
+  private ViewersPanel panelViewers;
   private OnePixelSplitter splitPaneTopBottom;
 
   public CallsPanel() {
@@ -37,8 +37,8 @@ public class CallsPanel extends JBPanel implements TunnelListener {
     listCalls = new JBList(model);
     listCalls.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-    viewers = new ViewersPanel();
-    listCalls.addListSelectionListener(new CallsListSelectionListener(viewers));
+    panelViewers = new ViewersPanel();
+    listCalls.addListSelectionListener(new CallsListSelectionListener(panelViewers));
 
     listCalls.addKeyListener(new KeyAdapter() {
       public void keyPressed(KeyEvent e) {
@@ -59,7 +59,7 @@ public class CallsPanel extends JBPanel implements TunnelListener {
     JBPanel topPanel = new JBPanel(new BorderLayout());
     topPanel.add(new JBScrollPane(listCalls), BorderLayout.CENTER);
     JBPanel bottomPanel = new JBPanel(new BorderLayout());
-    bottomPanel.add(viewers, BorderLayout.CENTER);
+    bottomPanel.add(panelViewers, BorderLayout.CENTER);
 
     splitPaneTopBottom = new OnePixelSplitter(true, 0.2f); // true for vertical split, 0.2f for top weight
     splitPaneTopBottom.setFirstComponent(topPanel);
@@ -94,7 +94,8 @@ public class CallsPanel extends JBPanel implements TunnelListener {
 //      } else {
 //        viewers.updateResponse(data);
 //      }
-      viewers.view(call);
+      panelViewers.view(call);
+      panelViewers.scrollViewerToBottom();
     });
   }
 
@@ -114,7 +115,7 @@ public class CallsPanel extends JBPanel implements TunnelListener {
     ApplicationManager.getApplication().invokeLater(() -> {
       if (listCalls.isVisible()) {
         listCalls.repaint();
-        viewers.repaint();
+        panelViewers.repaint();
       }
     });
   }
@@ -127,11 +128,11 @@ public class CallsPanel extends JBPanel implements TunnelListener {
   }
 
   public void wrap() {
-    viewers.wrap();
+    panelViewers.wrap();
   }
 
   public void unwrap() {
-    viewers.unwrap();
+    panelViewers.unwrap();
   }
 
   public synchronized void clear() {
@@ -281,6 +282,11 @@ class ViewersPanel extends JBPanel {
     txtRS.setCaretPosition(txtRS.getText().length());
   }
 
+  public void scrollViewerToBottom() {
+    txtRQ.setCaretPosition(txtRQ.getText().length());
+    txtRS.setCaretPosition(txtRS.getText().length());
+  }
+
   public void view(Call call) {
     if (call == null) {
       return;
@@ -351,6 +357,13 @@ class ViewersPanel extends JBPanel {
       @Override
       public void actionPerformed(ActionEvent e) {
         textArea.selectAll();
+      }
+    });
+
+    popupMenu.add(new AbstractAction("Clear") {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        textArea.setText("");
       }
     });
 
