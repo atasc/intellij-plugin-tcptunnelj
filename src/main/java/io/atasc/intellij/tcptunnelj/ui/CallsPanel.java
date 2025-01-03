@@ -94,6 +94,8 @@ public class CallsPanel extends JBPanel implements TunnelListener {
 //      } else {
 //        viewers.updateResponse(data);
 //      }
+
+      this.repaintViewers();
       panelViewers.view(call);
       panelViewers.scrollViewerToBottom();
     });
