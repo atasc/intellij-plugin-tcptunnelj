@@ -78,6 +78,8 @@ public class CallsPanel extends JBPanel implements TunnelListener {
     model.addElement(call);
     ApplicationManager.getApplication().invokeLater(() -> {
       this.repaintViewers();
+
+      this.scrollToLastCall();
     });
   }
 
@@ -115,7 +117,7 @@ public class CallsPanel extends JBPanel implements TunnelListener {
 
     this.repaintViewers();
 
-    this.scrollToLastCall();
+//    this.scrollToLastCall();
   }
 
   public void repaintViewers() {

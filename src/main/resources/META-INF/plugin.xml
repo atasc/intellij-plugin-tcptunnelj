@@ -15,7 +15,7 @@
 
   <change-notes>
     <![CDATA[
-    <h2>What's New in Version 0.4.7</h2>
+    <h2>What's New in Version 0.4.8</h2>
     <ul>
       <li>Improved TCP tunnel functionality</li>
       <li>Enhanced UI for better user experience</li>
@@ -25,7 +25,7 @@
     ]]>
   </change-notes>
 
-  <version>0.4.7</version>
+  <version>0.4.8</version>
 
   <depends>com.intellij.modules.platform</depends>
 
