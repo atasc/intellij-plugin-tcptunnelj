@@ -96,8 +96,12 @@ public class CallsPanel extends JBPanel implements TunnelListener {
 //      }
 
       this.repaintViewers();
-      panelViewers.view(call);
-      panelViewers.scrollViewerToBottom();
+
+      if (call == this.getSelectedCallFromList()) {
+        panelViewers.view(call);
+        panelViewers.scrollViewerToBottom();
+      }
+
     });
   }
 
@@ -146,6 +150,16 @@ public class CallsPanel extends JBPanel implements TunnelListener {
     if (index != -1) {
       model.removeElementAt(index);
     }
+  }
+
+  public Call getSelectedCallFromList() {
+    Call call = (Call) listCalls.getSelectedValue();
+//    int index = listCalls.getSelectedIndex();
+//    if (index != -1) {
+//      model.removeElementAt(index);
+//    }
+
+    return call;
   }
 
   public int getCallListSize() {
