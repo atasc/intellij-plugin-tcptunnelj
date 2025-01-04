@@ -228,8 +228,8 @@ public class CallsPanel extends JBPanel implements TunnelListener {
     String rs = responseTxt.toString();
 
     String r = "CALL: " + newLine + call.toString() + newLine + newLine;
-    r += "REQUEST:" + newLine + rq;
-    r += "RESPONSE:" + newLine + rs;
+    r += "REQUEST:" + newLine + rq + newLine;
+    r += "RESPONSE:" + newLine + rs + newLine;
 
     return r;
   }

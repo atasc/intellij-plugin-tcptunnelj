@@ -11,6 +11,7 @@ import io.atasc.intellij.tcptunnelj.ui.Icons;
 import io.atasc.intellij.tcptunnelj.ui.TunnelPanel;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -60,7 +61,7 @@ public class SaveAction extends BaseAction {
 
     JFileChooser fileChooser = new JFileChooser();
     fileChooser.setDialogTitle("Save Log File");
-    fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Log Files (*.log)", "log"));
+    fileChooser.setFileFilter(new FileNameExtensionFilter("Log Files (*.log)", "log"));
     fileChooser.setSelectedFile(new File("tcptunnelj.log"));
 
     int userSelection = fileChooser.showSaveDialog(null);
