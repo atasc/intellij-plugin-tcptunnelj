@@ -83,22 +83,6 @@ public class StartOnBootAction extends BaseToggleAction {
               3000
           );
 
-          TcpTunnelWindow.showTemporaryNotification(
-              TcpTunnelWindow.NOTIFICATION_ID,
-              "Tcp Tunnel Started",
-              "The TCP Tunnel has been started automatically on boot.",
-              NotificationType.INFORMATION,
-              4000
-          );
-
-          TcpTunnelWindow.showTemporaryNotification(
-              TcpTunnelWindow.NOTIFICATION_ID,
-              "Tcp Tunnel Started",
-              "The TCP Tunnel has been started automatically on boot.",
-              NotificationType.INFORMATION,
-              5000
-          );
-
         });
       } catch (Exception e) {
         ApplicationManager.getApplication().invokeLater(() -> {
