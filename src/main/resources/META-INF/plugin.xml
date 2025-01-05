@@ -40,9 +40,9 @@
   </extensions>
 
   <project-components>
-    <component>
-      <implementation-class>io.atasc.intellij.tcptunnelj.TcpTunnelPlugin</implementation-class>
-    </component>
+<!--    <component>-->
+<!--      <implementation-class>io.atasc.intellij.tcptunnelj.TcpTunnelPlugin</implementation-class>-->
+<!--    </component>-->
   </project-components>
 
   <applicationListeners>

@@ -23,6 +23,7 @@ public class TcpTunnelPlugin implements Disposable, AutoCloseable {
   private Project project;
   private TunnelPanel tunnelPanel;
   private TcpTunnelConfig tunnelConfig;
+  private boolean initialized=false;
 
   public TunnelPanel getTunnelPanel() {
     return this.tunnelPanel;
@@ -55,6 +56,11 @@ public class TcpTunnelPlugin implements Disposable, AutoCloseable {
         closeTheTunnel();
       }
     });
+
+    //build ui
+    this.getContent();
+
+    this.initialized = true;
   }
 
   public TcpTunnelPlugin() {
