@@ -109,7 +109,7 @@ public class StartOnBootAction extends BaseToggleAction {
 
         });
       }
-    }, 3, TimeUnit.SECONDS);
+    }, 1500, TimeUnit.MILLISECONDS);
   }
 
 }
