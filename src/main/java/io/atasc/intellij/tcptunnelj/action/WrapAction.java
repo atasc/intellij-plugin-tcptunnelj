@@ -1,32 +1,28 @@
 package io.atasc.intellij.tcptunnelj.action;
 
-import com.intellij.openapi.actionSystem.ActionUpdateThread;
 import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.ToggleAction;
 import io.atasc.intellij.tcptunnelj.TcpTunnelPlugin;
 import io.atasc.intellij.tcptunnelj.ui.Icons;
 import io.atasc.intellij.tcptunnelj.ui.TunnelPanel;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * @author boruvka/atasc
  * @since
  */
-public class WrapAction extends ToggleAction {
-  private TcpTunnelPlugin tunnelPlugin;
-  private boolean selected = false;
-
+public class WrapAction extends BaseToggleAction {
   public WrapAction(TcpTunnelPlugin tunnelPlugin) {
     super("Wrap lines", "Wrap lines", Icons.ICON_WRAP);
     this.tunnelPlugin = tunnelPlugin;
   }
 
   @Override
-  public boolean isSelected(AnActionEvent event) {
+  public boolean isSelected(@NotNull AnActionEvent event) {
     return selected;
   }
 
   @Override
-  public void setSelected(AnActionEvent event, boolean b) {
+  public void setSelected(@NotNull AnActionEvent event, boolean b) {
     selected = b;
 
     //Project project = (Project) event.getDataContext().getData("project");
@@ -38,11 +34,5 @@ public class WrapAction extends ToggleAction {
     } else {
       tunnelPanel.unwrap();
     }
-  }
-
-  @Override
-  public ActionUpdateThread getActionUpdateThread() {
-    // Specify that this action must be executed on the Event Dispatch Thread (EDT).
-    return ActionUpdateThread.EDT;
   }
 }
