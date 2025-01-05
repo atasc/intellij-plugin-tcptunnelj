@@ -12,7 +12,7 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 
 public class ControlPanel extends JBPanel implements TunnelListener {
-  TunnelPanel tunnelPanel;
+  TunnelPanel pannelTunnel;
   TcpTunnelConfig tunnelConfig;
   private JBPanel panelAddress;
   private JBTextField txtSrcPort;
@@ -21,7 +21,7 @@ public class ControlPanel extends JBPanel implements TunnelListener {
 
   public ControlPanel(TunnelPanel tunnelPanel) {
     super();
-    this.tunnelPanel = tunnelPanel;
+    this.pannelTunnel = tunnelPanel;
     this.tunnelConfig = tunnelPanel.getTunnelConfig();
     initComponents();
   }
@@ -106,14 +106,14 @@ public class ControlPanel extends JBPanel implements TunnelListener {
   @Override
   public void tunnelStarted() {
     //isRunning = true;
-    this.tunnelPanel.setRunning(true);
+    this.pannelTunnel.setRunning(true);
     setControlPanelEditable(false);
   }
 
   @Override
   public void tunnelStopped() {
     //isRunning = false;
-    this.tunnelPanel.setRunning(false);
+    this.pannelTunnel.setRunning(false);
     setControlPanelEditable(true);
   }
 }
