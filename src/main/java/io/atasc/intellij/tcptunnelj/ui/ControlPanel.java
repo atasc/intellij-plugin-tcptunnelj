@@ -62,10 +62,10 @@ public class ControlPanel extends JBPanel implements TunnelListener {
   }
 
   public void setControlPanelEditable(boolean state) {
-    this.tunnelConfig.setSourcePort(txtSrcPort.getText());
-    this.tunnelConfig.setDestinationString(txtDestHost.getText());
-    this.tunnelConfig.setDestinationPort(txtDestPort.getText());
-    this.tunnelConfig.store();
+//    this.tunnelConfig.setSourcePort(txtSrcPort.getText());
+//    this.tunnelConfig.setDestinationString(txtDestHost.getText());
+//    this.tunnelConfig.setDestinationPort(txtDestPort.getText());
+//    this.tunnelConfig.store();
 
     txtSrcPort.setEditable(state);
     txtDestHost.setEditable(state);
@@ -74,6 +74,13 @@ public class ControlPanel extends JBPanel implements TunnelListener {
     txtSrcPort.setEnabled(state);
     txtDestHost.setEnabled(state);
     txtDestPort.setEnabled(state);
+  }
+
+  public void saveConnectionConfig() {
+    this.tunnelConfig.setSourcePort(txtSrcPort.getText());
+    this.tunnelConfig.setDestinationString(txtDestHost.getText());
+    this.tunnelConfig.setDestinationPort(txtDestPort.getText());
+    this.tunnelConfig.store();
   }
 
   public int getSrcPort() {
@@ -107,13 +114,14 @@ public class ControlPanel extends JBPanel implements TunnelListener {
   public void tunnelStarted() {
     //isRunning = true;
     this.pannelTunnel.setRunning(true);
-    setControlPanelEditable(false);
+    this.setControlPanelEditable(false);
+    this.saveConnectionConfig();
   }
 
   @Override
   public void tunnelStopped() {
     //isRunning = false;
     this.pannelTunnel.setRunning(false);
-    setControlPanelEditable(true);
+    this.setControlPanelEditable(true);
   }
 }
