@@ -18,7 +18,7 @@ public class Icons {
   public static final Icon ICON_REMOVE = AllIcons.General.Remove;
   public static final Icon ICON_CLEAR = AllIcons.Actions.GC;
   public static final Icon ICON_WRAP = AllIcons.Actions.ToggleSoftWrap;
-  public static final Icon ICON_START_ON_BOOT =AllIcons.Actions.Play_forward;
+  public static final Icon ICON_START_ON_BOOT = AllIcons.Actions.Play_forward;
 
   public static final Icon ICON_START = AllIcons.Actions.Execute;
   public static final Icon ICON_STOP = AllIcons.Actions.Suspend;

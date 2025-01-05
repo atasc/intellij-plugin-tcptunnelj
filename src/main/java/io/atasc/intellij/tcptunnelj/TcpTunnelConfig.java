@@ -16,7 +16,7 @@ public class TcpTunnelConfig {
   private String srcPort = ".tcptunnelj.src.port";
   private String dstHost = ".tcptunnelj.dst.hostname";
   private String dstPort = ".tcptunnelj.dst.port";
-  private String startOnBoot = ".tcptunnelj.start.on.boot"; // New property
+  private String startOnBoot = ".tcptunnelj.start.on.boot";
 
   private static String projectName;
 

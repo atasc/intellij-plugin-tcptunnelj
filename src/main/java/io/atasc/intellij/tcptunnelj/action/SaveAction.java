@@ -7,6 +7,7 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.Presentation;
 import com.intellij.openapi.application.ApplicationManager;
 import io.atasc.intellij.tcptunnelj.TcpTunnelPlugin;
+import io.atasc.intellij.tcptunnelj.toolWindow.TcpTunnelWindow;
 import io.atasc.intellij.tcptunnelj.ui.Icons;
 import io.atasc.intellij.tcptunnelj.ui.TunnelPanel;
 
@@ -35,7 +36,7 @@ public class SaveAction extends BaseAction {
         performSaveAction();
       } catch (IOException e) {
         Notifications.Bus.notify(new Notification(
-            "TcpTunnelJ Notifications",
+            TcpTunnelWindow.NOTIFICATION_ID,
             "Error",
             "Error while saving log file: " + e.getMessage(),
             NotificationType.ERROR
@@ -78,7 +79,7 @@ public class SaveAction extends BaseAction {
 
         ApplicationManager.getApplication().invokeLater(() -> {
           Notifications.Bus.notify(new Notification(
-              "TcpTunnelJ Notifications",
+              TcpTunnelWindow.NOTIFICATION_ID,
               "File Saved",
               "Log file saved successfully!",
               NotificationType.INFORMATION

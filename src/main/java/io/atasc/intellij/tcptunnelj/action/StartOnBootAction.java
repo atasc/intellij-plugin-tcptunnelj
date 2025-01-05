@@ -7,6 +7,7 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.application.ApplicationManager;
 import io.atasc.intellij.tcptunnelj.TcpTunnelConfig;
 import io.atasc.intellij.tcptunnelj.TcpTunnelPlugin;
+import io.atasc.intellij.tcptunnelj.toolWindow.TcpTunnelWindow;
 import io.atasc.intellij.tcptunnelj.ui.Icons;
 
 /**
@@ -39,7 +40,7 @@ public class StartOnBootAction extends BaseToggleAction {
     String message = state ? "Start on Boot enabled!" : "Start on Boot disabled!";
     ApplicationManager.getApplication().invokeLater(() -> {
       Notifications.Bus.notify(new Notification(
-          "TcpTunnelJ Notifications",
+          TcpTunnelWindow.NOTIFICATION_ID,
           "Setting Saved",
           message,
           NotificationType.INFORMATION
