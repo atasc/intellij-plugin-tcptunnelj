@@ -27,7 +27,7 @@ public class StartAction extends BaseAction {
     try {
       tunnelPanel.start();
     } catch (Exception e) {
-      Messages.showMessageDialog("Error when starting server: "
+      Messages.showMessageDialog("Error when starting the server: "
           + e.getMessage(), "Error", Messages.getErrorIcon());
     }
 

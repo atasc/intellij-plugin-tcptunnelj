@@ -29,7 +29,7 @@ public class StopAction extends BaseAction {
       tunnelPanel.stop();
     } catch (Exception e) {
       e.printStackTrace();
-      Messages.showMessageDialog("Error when starting server: "
+      Messages.showMessageDialog("Error when stopping the server: "
           + e.getMessage(), "Error", Messages.getErrorIcon());
     }
   }
