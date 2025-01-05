@@ -1,6 +1,9 @@
 package io.atasc.intellij.tcptunnelj.toolWindow;
 
 import com.intellij.ide.AppLifecycleListener;
+import com.intellij.notification.Notification;
+import com.intellij.notification.NotificationType;
+import com.intellij.notification.Notifications;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
@@ -20,6 +23,7 @@ import javax.swing.*;
  */
 public class TcpTunnelWindowFactory implements ToolWindowFactory, Disposable {
   private static final Logger LOGGER = Logger.getInstance(TcpTunnelWindowFactory.class);
+  TcpTunnelPlugin tunnelPlugin;
 
   static {
     //LOGGER.warn("Don't forget to remove all non-needed sample code files with their corresponding registration entries in `plugin.xml`.");
@@ -54,9 +58,12 @@ public class TcpTunnelWindowFactory implements ToolWindowFactory, Disposable {
       }
       case 3 -> {
         SwingUtilities.invokeLater(() -> {
-          TcpTunnelPlugin tunnelPlugin = new TcpTunnelPlugin(project);
+          //TcpTunnelPlugin tunnelPlugin = new TcpTunnelPlugin(project);
+          if (this.tunnelPlugin == null) {
+            this.tunnelPlugin = new TcpTunnelPlugin(project);
+          }
 
-          var content = ContentFactory.getInstance().createContent(tunnelPlugin.getContent(), null, false);
+          var content = ContentFactory.getInstance().createContent(this.tunnelPlugin.getContent(), null, false);
           toolWindow.getContentManager().addContent(content);
           //toolWindow.setIcon(Icons.ICON_TOOL);
 
@@ -96,6 +103,21 @@ public class TcpTunnelWindowFactory implements ToolWindowFactory, Disposable {
   @Override
   public void init(@NotNull ToolWindow toolWindow) {
     ToolWindowFactory.super.init(toolWindow);
+
+    try {
+      this.tunnelPlugin = new TcpTunnelPlugin(toolWindow.getProject());
+      //build ui
+      this.tunnelPlugin.getContent();
+    } catch (Exception e) {
+      ApplicationManager.getApplication().invokeLater(() -> {
+        Notifications.Bus.notify(new Notification(
+            TcpTunnelWindow.NOTIFICATION_ID,
+            "Error",
+            "Error when creating TcpTunnelJ UI: " + e.getMessage(),
+            NotificationType.ERROR
+        ));
+      });
+    }
   }
 
 //  @Override

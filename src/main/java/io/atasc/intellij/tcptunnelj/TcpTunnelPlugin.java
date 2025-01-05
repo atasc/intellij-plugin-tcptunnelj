@@ -23,7 +23,6 @@ public class TcpTunnelPlugin implements Disposable, AutoCloseable {
   private Project project;
   private TunnelPanel tunnelPanel;
   private TcpTunnelConfig tunnelConfig;
-  private boolean initialized=false;
 
   public TunnelPanel getTunnelPanel() {
     return this.tunnelPanel;
@@ -56,11 +55,6 @@ public class TcpTunnelPlugin implements Disposable, AutoCloseable {
         closeTheTunnel();
       }
     });
-
-    //build ui
-    this.getContent();
-
-    this.initialized = true;
   }
 
   public TcpTunnelPlugin() {
@@ -108,12 +102,13 @@ public class TcpTunnelPlugin implements Disposable, AutoCloseable {
   }
 
   public TunnelPanel getContent() {
-    initComponent();
-
     if (this.tunnelPanel == null) {
+      initComponent();
+
       this.tunnelPanel = createTunnelPanel();
 
       DefaultActionGroup actionGroup = initToolbarActionGroup();
+
       ActionToolbar toolBar = ActionManager.getInstance()
           .createActionToolbar("tcptunnelj.Toolbar", actionGroup, false);
 
