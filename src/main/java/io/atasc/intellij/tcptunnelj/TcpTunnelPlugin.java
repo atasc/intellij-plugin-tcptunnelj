@@ -145,8 +145,8 @@ public class TcpTunnelPlugin implements Disposable, AutoCloseable {
     AnAction clearSelectedAction = new ClearSelectedAction(this);
     ToggleAction wrapAction = new WrapAction(this);
     AnAction saveAction = new SaveAction(this);
+    ToggleAction startOnBootAction = new StartOnBootAction(this);
     //AnAction aboutAction = new AboutAction(this);
-    ToggleAction startOnBootAction = new WrapAction(this);
 
     actionGroup.add(startAction);
     actionGroup.add(stopAction);
@@ -154,6 +154,7 @@ public class TcpTunnelPlugin implements Disposable, AutoCloseable {
     actionGroup.add(clearAction);
     actionGroup.add(wrapAction);
     actionGroup.add(saveAction);
+    actionGroup.add(startOnBootAction);
     //actionGroup.add(aboutAction);
 
     return actionGroup;
