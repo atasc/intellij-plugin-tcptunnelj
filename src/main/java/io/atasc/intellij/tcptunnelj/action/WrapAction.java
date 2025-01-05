@@ -1,5 +1,6 @@
 package io.atasc.intellij.tcptunnelj.action;
 
+import com.intellij.openapi.actionSystem.ActionUpdateThread;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.ToggleAction;
 import io.atasc.intellij.tcptunnelj.TcpTunnelPlugin;
@@ -32,12 +33,16 @@ public class WrapAction extends ToggleAction {
     //TunnelPanel tunnelPanel = TunnelPlugin.getTunnelPanel(project);
 
     TunnelPanel tunnelPanel = this.tunnelPlugin.getTunnelPanel();
-
     if (selected) {
       tunnelPanel.wrap();
     } else {
       tunnelPanel.unwrap();
     }
+  }
 
+  @Override
+  public ActionUpdateThread getActionUpdateThread() {
+    // Specify that this action must be executed on the Event Dispatch Thread (EDT).
+    return ActionUpdateThread.EDT;
   }
 }
