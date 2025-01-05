@@ -61,19 +61,19 @@ public class ControlPanel extends JBPanel implements TunnelListener {
     add(panelAddress, BorderLayout.SOUTH);
   }
 
-  public void setControlPanelEditable(boolean b) {
+  public void setControlPanelEditable(boolean state) {
     this.tunnelConfig.setSourcePort(txtSrcPort.getText());
     this.tunnelConfig.setDestinationString(txtDestHost.getText());
     this.tunnelConfig.setDestinationPort(txtDestPort.getText());
     this.tunnelConfig.store();
 
-    txtSrcPort.setEditable(b);
-    txtDestHost.setEditable(b);
-    txtDestPort.setEditable(b);
+    txtSrcPort.setEditable(state);
+    txtDestHost.setEditable(state);
+    txtDestPort.setEditable(state);
 
-    txtSrcPort.setEnabled(b);
-    txtDestHost.setEnabled(b);
-    txtDestPort.setEnabled(b);
+    txtSrcPort.setEnabled(state);
+    txtDestHost.setEnabled(state);
+    txtDestPort.setEnabled(state);
   }
 
   public int getSrcPort() {

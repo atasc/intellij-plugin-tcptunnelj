@@ -16,6 +16,7 @@ public class TcpTunnelConfig {
   private String srcPort = ".tcptunnelj.src.port";
   private String dstHost = ".tcptunnelj.dst.hostname";
   private String dstPort = ".tcptunnelj.dst.port";
+  private String startOnBoot = ".tcptunnelj.start.on.boot"; // New property
 
   private static String projectName;
 
@@ -41,6 +42,15 @@ public class TcpTunnelConfig {
 
   public void setSourcePort(String port) {
     PROPERTIES.setProperty(srcPort, port);
+  }
+
+  // Getter and Setter for Start on Boot
+  public boolean isStartOnBootEnabled() {
+    return Boolean.parseBoolean(PROPERTIES.getProperty(startOnBoot, "false"));
+  }
+
+  public void setStartOnBootEnabled(boolean enabled) {
+    PROPERTIES.setProperty(startOnBoot, Boolean.toString(enabled));
   }
 
   static {
@@ -73,6 +83,7 @@ public class TcpTunnelConfig {
       this.srcPort = projectName + ".tcptunnelj.src.port";
       this.dstHost = projectName + ".tcptunnelj.dst.hostname";
       this.dstPort = projectName + ".tcptunnelj.dst.port";
+      this.startOnBoot = projectName + ".tcptunnelj.start.on.boot"; // Update for project-specific key
     }
   }
 
@@ -92,5 +103,4 @@ public class TcpTunnelConfig {
     }
     return name;
   }
-
 }

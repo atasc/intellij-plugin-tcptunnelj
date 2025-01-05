@@ -28,7 +28,11 @@ public class TcpTunnelPlugin implements Disposable, AutoCloseable {
     return this.tunnelPanel;
   }
 
-//  @Override
+  public TcpTunnelConfig getTunnelConfig() {
+    return tunnelConfig;
+  }
+
+  //  @Override
 //  public String getComponentName() {
 //    return COMPONENT_NAME;
 //  }

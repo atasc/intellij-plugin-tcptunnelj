@@ -5,6 +5,7 @@ import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.application.ApplicationManager;
+import io.atasc.intellij.tcptunnelj.TcpTunnelConfig;
 import io.atasc.intellij.tcptunnelj.TcpTunnelPlugin;
 import io.atasc.intellij.tcptunnelj.ui.Icons;
 
@@ -13,9 +14,14 @@ import io.atasc.intellij.tcptunnelj.ui.Icons;
  * @since
  */
 public class StartOnBootAction extends BaseToggleAction {
+  private final TcpTunnelConfig config;
+
   public StartOnBootAction(TcpTunnelPlugin tunnelPlugin) {
     super("Start on Boot", "Start on Boot", Icons.ICON_START_ON_BOOT);
     this.tunnelPlugin = tunnelPlugin;
+    this.config = tunnelPlugin.getTunnelConfig();
+
+    this.selected = config.isStartOnBootEnabled();
   }
 
   @Override
@@ -26,41 +32,18 @@ public class StartOnBootAction extends BaseToggleAction {
   @Override
   public void setSelected(AnActionEvent event, boolean state) {
     selected = state;
-    if (selected) {
-      // Enable "Start on Boot" functionality
-      ApplicationManager.getApplication().invokeLater(() -> {
-        Notifications.Bus.notify(new Notification(
-            "TcpTunnelJ Notifications",
-            "Setting Saved",
-            "Start on Boot enabled!",
-            NotificationType.INFORMATION
-        ));
-      });
 
-    } else {
-      // Disable "Start on Boot" functionality
-      ApplicationManager.getApplication().invokeLater(() -> {
-        Notifications.Bus.notify(new Notification(
-            "TcpTunnelJ Notifications",
-            "Setting Saved",
-            "Start on Boot disabled!",
-            NotificationType.INFORMATION
-        ));
-      });
+    config.setStartOnBootEnabled(state);
+    config.store();
 
-    }
-
+    String message = state ? "Start on Boot enabled!" : "Start on Boot disabled!";
     ApplicationManager.getApplication().invokeLater(() -> {
-      try {
-
-      } catch (Exception e) {
-        Notifications.Bus.notify(new Notification(
-            "TcpTunnelJ Notifications",
-            "Error",
-            "Error while saving log file: " + e.getMessage(),
-            NotificationType.ERROR
-        ));
-      }
+      Notifications.Bus.notify(new Notification(
+          "TcpTunnelJ Notifications",
+          "Setting Saved",
+          message,
+          NotificationType.INFORMATION
+      ));
     });
 
   }
