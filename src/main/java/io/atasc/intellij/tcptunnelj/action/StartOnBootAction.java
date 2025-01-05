@@ -65,22 +65,58 @@ public class StartOnBootAction extends BaseToggleAction {
 
       try {
         tunnelPanel.start();
+
+
         ApplicationManager.getApplication().invokeLater(() -> {
-          Notifications.Bus.notify(new Notification(
+//          Notifications.Bus.notify(new Notification(
+//              TcpTunnelWindow.NOTIFICATION_ID,
+//              "Tcp Tunnel Started",
+//              "The TCP Tunnel has been started automatically on boot.",
+//              NotificationType.INFORMATION
+//          ));
+
+          TcpTunnelWindow.showTemporaryNotification(
               TcpTunnelWindow.NOTIFICATION_ID,
               "Tcp Tunnel Started",
               "The TCP Tunnel has been started automatically on boot.",
-              NotificationType.INFORMATION
-          ));
+              NotificationType.INFORMATION,
+              3000
+          );
+
+          TcpTunnelWindow.showTemporaryNotification(
+              TcpTunnelWindow.NOTIFICATION_ID,
+              "Tcp Tunnel Started",
+              "The TCP Tunnel has been started automatically on boot.",
+              NotificationType.INFORMATION,
+              4000
+          );
+
+          TcpTunnelWindow.showTemporaryNotification(
+              TcpTunnelWindow.NOTIFICATION_ID,
+              "Tcp Tunnel Started",
+              "The TCP Tunnel has been started automatically on boot.",
+              NotificationType.INFORMATION,
+              5000
+          );
+
         });
       } catch (Exception e) {
         ApplicationManager.getApplication().invokeLater(() -> {
-          Notifications.Bus.notify(new Notification(
+//          Notifications.Bus.notify(new Notification(
+//              TcpTunnelWindow.NOTIFICATION_ID,
+//              "Error",
+//              "Error when starting the TCP Tunnel on boot: " + e.getMessage(),
+//              NotificationType.ERROR
+//          ));
+
+          TcpTunnelWindow.showTemporaryNotification(
               TcpTunnelWindow.NOTIFICATION_ID,
               "Error",
               "Error when starting the TCP Tunnel on boot: " + e.getMessage(),
-              NotificationType.ERROR
-          ));
+              NotificationType.ERROR,
+              3000
+          );
+
         });
       }
     }, 3, TimeUnit.SECONDS);

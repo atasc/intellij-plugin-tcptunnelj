@@ -1,9 +1,7 @@
 package io.atasc.intellij.tcptunnelj.toolWindow;
 
 import com.intellij.ide.AppLifecycleListener;
-import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
-import com.intellij.notification.Notifications;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
@@ -110,12 +108,20 @@ public class TcpTunnelWindowFactory implements ToolWindowFactory, Disposable {
       this.tunnelPlugin.getContent();
     } catch (Exception e) {
       ApplicationManager.getApplication().invokeLater(() -> {
-        Notifications.Bus.notify(new Notification(
+//        Notifications.Bus.notify(new Notification(
+//            TcpTunnelWindow.NOTIFICATION_ID,
+//            "Error",
+//            "Error when creating TcpTunnelJ UI: " + e.getMessage(),
+//            NotificationType.ERROR
+//        ));
+
+        TcpTunnelWindow.showTemporaryNotification(
             TcpTunnelWindow.NOTIFICATION_ID,
             "Error",
             "Error when creating TcpTunnelJ UI: " + e.getMessage(),
-            NotificationType.ERROR
-        ));
+            NotificationType.ERROR,
+            3000
+        );
       });
     }
   }
