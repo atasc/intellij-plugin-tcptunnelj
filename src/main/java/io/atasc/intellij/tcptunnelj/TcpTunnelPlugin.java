@@ -154,6 +154,10 @@ public class TcpTunnelPlugin implements Disposable, AutoCloseable {
     actionGroup.add(clearAction);
     actionGroup.add(wrapAction);
     actionGroup.add(saveAction);
+
+    // Add a separator
+    actionGroup.addSeparator("Options");
+
     actionGroup.add(startOnBootAction);
     //actionGroup.add(aboutAction);
 
