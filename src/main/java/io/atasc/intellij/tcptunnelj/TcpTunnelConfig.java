@@ -29,7 +29,7 @@ public class TcpTunnelConfig {
   }
 
   public String getDestinationPort() {
-    return PROPERTIES.getProperty(dstPort, "6060");
+    return PROPERTIES.getProperty(dstPort, "6061");
   }
 
   public void setDestinationPort(String port) {
@@ -37,7 +37,7 @@ public class TcpTunnelConfig {
   }
 
   public String getSourcePort() {
-    return PROPERTIES.getProperty(srcPort, "4444");
+    return PROPERTIES.getProperty(srcPort, "4445");
   }
 
   public void setSourcePort(String port) {
