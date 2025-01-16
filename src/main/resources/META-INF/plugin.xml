@@ -22,6 +22,7 @@
       <li>New notification system for updates</li>
       <li>Support to text based socket communication</li>
       <li>Start Tcp Tunnel on boot option</li>
+      <li>Until Build</li>
     </ul>
     ]]>
   </change-notes>
