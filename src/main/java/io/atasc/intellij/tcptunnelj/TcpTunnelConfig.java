@@ -8,9 +8,9 @@ import java.util.Properties;
  * @since
  */
 public class TcpTunnelConfig {
-  public static Properties PROPERTIES;
+  private final Properties properties;
   private static final String PROPERTIES_FILE_NAME = ".tcptunnelj.properties";
-  private static File PROPERTIES_FILE;
+  private static final File PROPERTIES_FILE = new File(System.getProperty("user.home"), PROPERTIES_FILE_NAME);
   public static final int BUFFER_LENGTH = 4096;
 
   private String srcPort = ".tcptunnelj.src.port";
@@ -18,47 +18,43 @@ public class TcpTunnelConfig {
   private String dstPort = ".tcptunnelj.dst.port";
   private String startOnBoot = ".tcptunnelj.start.on.boot";
 
-  private static String projectName;
+  private String projectName;
 
   public String getDestinationString() {
-    return PROPERTIES.getProperty(dstHost, "localhost");
+    return properties.getProperty(dstHost, "localhost");
   }
 
   public void setDestinationString(String destination) {
-    PROPERTIES.setProperty(dstHost, destination);
+    properties.setProperty(dstHost, destination);
   }
 
   public String getDestinationPort() {
-    return PROPERTIES.getProperty(dstPort, "6061");
+    return properties.getProperty(dstPort, "6061");
   }
 
   public void setDestinationPort(String port) {
-    PROPERTIES.setProperty(dstPort, port);
+    properties.setProperty(dstPort, port);
   }
 
   public String getSourcePort() {
-    return PROPERTIES.getProperty(srcPort, "4445");
+    return properties.getProperty(srcPort, "4445");
   }
 
   public void setSourcePort(String port) {
-    PROPERTIES.setProperty(srcPort, port);
+    properties.setProperty(srcPort, port);
   }
 
   // Getter and Setter for Start on Boot
   public boolean isStartOnBootEnabled() {
-    return Boolean.parseBoolean(PROPERTIES.getProperty(startOnBoot, "false"));
+    return Boolean.parseBoolean(properties.getProperty(startOnBoot, "false"));
   }
 
   public void setStartOnBootEnabled(boolean enabled) {
-    PROPERTIES.setProperty(startOnBoot, Boolean.toString(enabled));
-  }
-
-  static {
-    PROPERTIES_FILE = new File(System.getProperty("user.home"), PROPERTIES_FILE_NAME);
-    PROPERTIES = new Properties();
+    properties.setProperty(startOnBoot, Boolean.toString(enabled));
   }
 
   public TcpTunnelConfig(String projectName) {
+    this.properties = new Properties();
     this.init();
     this.setProjectName(projectName);
   }
@@ -67,7 +63,7 @@ public class TcpTunnelConfig {
     if (PROPERTIES_FILE.exists()) {
       try {
         InputStream is = new FileInputStream(PROPERTIES_FILE);
-        PROPERTIES.load(is);
+        properties.load(is);
       } catch (FileNotFoundException e) {
         e.printStackTrace();
       } catch (IOException e) {
@@ -90,7 +86,7 @@ public class TcpTunnelConfig {
   public synchronized void store() {
     try {
       OutputStream os = new FileOutputStream(PROPERTIES_FILE);
-      PROPERTIES.store(os, "TcpTunnelJ Plugin");
+      properties.store(os, "TcpTunnelJ Plugin");
     } catch (IOException e) {
       e.printStackTrace();
     }

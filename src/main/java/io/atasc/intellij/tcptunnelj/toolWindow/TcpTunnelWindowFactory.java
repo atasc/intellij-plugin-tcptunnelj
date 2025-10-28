@@ -21,7 +21,6 @@ import javax.swing.*;
  */
 public class TcpTunnelWindowFactory implements ToolWindowFactory, Disposable {
   private static final Logger LOGGER = Logger.getInstance(TcpTunnelWindowFactory.class);
-  TcpTunnelPlugin tunnelPlugin;
 
   static {
     //LOGGER.warn("Don't forget to remove all non-needed sample code files with their corresponding registration entries in `plugin.xml`.");
@@ -56,12 +55,10 @@ public class TcpTunnelWindowFactory implements ToolWindowFactory, Disposable {
       }
       case 3 -> {
         SwingUtilities.invokeLater(() -> {
-          //TcpTunnelPlugin tunnelPlugin = new TcpTunnelPlugin(project);
-          if (this.tunnelPlugin == null) {
-            this.tunnelPlugin = new TcpTunnelPlugin(project);
-          }
+          // Create a new instance for this specific project - do not store as instance field
+          TcpTunnelPlugin tunnelPlugin = new TcpTunnelPlugin(project);
 
-          var content = ContentFactory.getInstance().createContent(this.tunnelPlugin.getContent(), null, false);
+          var content = ContentFactory.getInstance().createContent(tunnelPlugin.getContent(), null, false);
           toolWindow.getContentManager().addContent(content);
           //toolWindow.setIcon(Icons.ICON_TOOL);
 
@@ -101,29 +98,7 @@ public class TcpTunnelWindowFactory implements ToolWindowFactory, Disposable {
   @Override
   public void init(@NotNull ToolWindow toolWindow) {
     ToolWindowFactory.super.init(toolWindow);
-
-    try {
-      this.tunnelPlugin = new TcpTunnelPlugin(toolWindow.getProject());
-      //build ui
-      this.tunnelPlugin.getContent();
-    } catch (Exception e) {
-      ApplicationManager.getApplication().invokeLater(() -> {
-//        Notifications.Bus.notify(new Notification(
-//            TcpTunnelWindow.NOTIFICATION_ID,
-//            "Error",
-//            "Error when creating TcpTunnelJ UI: " + e.getMessage(),
-//            NotificationType.ERROR
-//        ));
-
-        TcpTunnelWindow.showTemporaryNotification(
-            TcpTunnelWindow.NOTIFICATION_ID,
-            "Error",
-            "Error when creating TcpTunnelJ UI: " + e.getMessage(),
-            NotificationType.ERROR,
-            3000
-        );
-      });
-    }
+    // Plugin instance creation moved to createToolWindowContent() to avoid sharing between projects
   }
 
 //  @Override
