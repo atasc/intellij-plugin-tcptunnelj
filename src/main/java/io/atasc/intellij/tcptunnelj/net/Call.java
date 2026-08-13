@@ -4,6 +4,7 @@ import io.atasc.intellij.tcptunnelj.ui.CallStringFormatter;
 
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -29,8 +30,8 @@ public class Call {
   private String destHost;
   private int srcPort;
   private int destPort;
-  private ByteArrayOutputStream input;
-  private ByteArrayOutputStream output;
+  private final LogStream input;
+  private final LogStream output;
 
   public Call(String srcHost, int srcPort, String destHost, int destPort) {
     this.start = System.currentTimeMillis();
@@ -38,8 +39,19 @@ public class Call {
     this.srcPort = srcPort;
     this.destHost = destHost;
     this.destPort = destPort;
-    this.input = new ByteArrayOutputStream();
-    this.output = new ByteArrayOutputStream();
+    this.input = new LogStream();
+    this.output = new LogStream();
+  }
+
+  /**
+   * A {@link ByteArrayOutputStream} that can hand out the head of what it holds and its current
+   * size without copying the whole conversation, so that cell renderers stay cheap even when a
+   * call has accumulated megabytes.
+   */
+  public static class LogStream extends ByteArrayOutputStream {
+    public synchronized String head(int max) {
+      return new String(buf, 0, Math.min(max, count), StandardCharsets.UTF_8);
+    }
   }
 
   public OutputStream getOutputLogger() {
@@ -88,6 +100,21 @@ public class Call {
 
   public ByteArrayOutputStream getOutput() {
     return output;
+  }
+
+  /**
+   * The first {@code max} bytes the client sent, as text. Cheap enough for a cell renderer.
+   */
+  public String getRequestHead(int max) {
+    return output.head(max);
+  }
+
+  public int getRequestSize() {
+    return output.size();
+  }
+
+  public int getResponseSize() {
+    return input.size();
   }
 
 //  public static String removeChunkedEncoding(String response) {

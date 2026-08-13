@@ -1,6 +1,7 @@
 package io.atasc.intellij.tcptunnelj.ui;
 
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.application.ModalityState;
 import com.intellij.openapi.ide.CopyPasteManager;
 import com.intellij.ui.OnePixelSplitter;
 import com.intellij.ui.components.JBList;
@@ -17,6 +18,9 @@ import java.awt.event.KeyEvent;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * @author boruvka/atasc
@@ -25,10 +29,21 @@ import java.util.List;
 public class CallsPanel extends JBPanel implements TunnelListener {
   public static final int DIVIDER_SIZE = 2;
 
+  /**
+   * How often the list and the viewers are refreshed while traffic is flowing. Tunnel threads only
+   * flag what changed; a single timer on the EDT does the painting, so a page firing dozens of
+   * requests cannot flood the EDT with one task per 8 KB chunk.
+   */
+  private static final int REFRESH_INTERVAL_MS = 150;
+
   private JBList listCalls;
   private DefaultListModel model;
   private ViewersPanel panelViewers;
   private OnePixelSplitter splitPaneTopBottom;
+
+  private final AtomicBoolean dirty = new AtomicBoolean(false);
+  private final Set<Call> callsWithNewData = ConcurrentHashMap.newKeySet();
+  private final Timer refreshTimer;
 
   public CallsPanel() {
     setBackground(UIManager.getColor("Tree.textBackground"));
@@ -46,6 +61,13 @@ public class CallsPanel extends JBPanel implements TunnelListener {
         }
       }
     });
+
+    refreshTimer = new Timer(REFRESH_INTERVAL_MS, e -> {
+      if (dirty.get()) {
+        refreshNow();
+      }
+    });
+    refreshTimer.setRepeats(true);
 
     setLayout(new BorderLayout());
     initComponents();
@@ -69,68 +91,89 @@ public class CallsPanel extends JBPanel implements TunnelListener {
 
   @Override
   public void tunnelStarted() {
-    // nothing yet
+    runOnEdt(refreshTimer::start);
   }
 
   @Override
   public void tunnelStopped() {
-    // nothing yet
-  }
-
-  @Override
-  public synchronized void newCall(Call call) {
-    model.addElement(call);
-    ApplicationManager.getApplication().invokeLater(() -> {
-      this.repaintViewers();
-
-      this.scrollToLastCall();
+    runOnEdt(() -> {
+      refreshTimer.stop();
+      // last tick: durations and sizes of the calls that were still open
+      refreshNow();
     });
   }
 
   @Override
-  public synchronized void onDataReceived(Call call, String data) {
-    ApplicationManager.getApplication().invokeLater(() -> {
-//      if (data.startsWith("Request")) { // Esempio di identificazione richiesta/risposta
-//        viewers.updateRequest(data);
-//      } else {
-//        viewers.updateResponse(data);
-//      }
-
-      this.repaintViewers();
-
-      //check if call is in list -> if not add it
-      int i = model.indexOf(call);
-      if (i < 0) {
-        this.newCall(call);
+  public void newCall(Call call) {
+    // the model is Swing state: it may only be touched on the EDT, otherwise the JList layout
+    // cache goes out of sync with it and the list paints blank or scrolls to nowhere
+    runOnEdt(() -> {
+      model.addElement(call);
+      scrollToLastCall();
+      if (!refreshTimer.isRunning()) {
+        // in case tunnelStarted() was never delivered to this panel
+        refreshTimer.start();
       }
-
-      if (call == this.getSelectedCallFromList()) {
-        panelViewers.view(call);
-        panelViewers.scrollViewerToBottom();
-      }
-
     });
   }
 
   @Override
-  public synchronized void endCall(Call call) {
-//    if (list.isVisible()) {
-//      list.repaint();
-//      viewers.repaint();
-//    }
+  public void onDataReceived(Call call, String data) {
+    markDirty(call);
+  }
 
-    this.repaintViewers();
+  @Override
+  public void endCall(Call call) {
+    markDirty(call);
+  }
 
-//    this.scrollToLastCall();
+  /**
+   * Records that {@code call} changed and lets the refresh timer paint it. Called on tunnel
+   * threads, so it must not touch Swing.
+   */
+  private void markDirty(Call call) {
+    if (call != null) {
+      callsWithNewData.add(call);
+    }
+    dirty.set(true);
+  }
+
+  /**
+   * EDT only: pushes everything accumulated since the last tick into the UI.
+   */
+  private void refreshNow() {
+    dirty.set(false);
+
+    Call selected = getSelectedCallFromList();
+    boolean selectionChanged = selected != null && callsWithNewData.contains(selected);
+    callsWithNewData.clear();
+
+    if (listCalls.isVisible()) {
+      listCalls.repaint();
+      panelViewers.repaint();
+    }
+
+    if (selectionChanged) {
+      panelViewers.view(selected);
+      panelViewers.scrollViewerToBottom();
+    }
   }
 
   public void repaintViewers() {
-    ApplicationManager.getApplication().invokeLater(() -> {
+    runOnEdt(() -> {
       if (listCalls.isVisible()) {
         listCalls.repaint();
         panelViewers.repaint();
       }
     });
+  }
+
+  /**
+   * Tunnel callbacks arrive on tunnel threads. {@link ModalityState#any()} keeps the UI updating
+   * even while a modal dialog is open, instead of queueing every call until it is closed.
+   */
+  private static void runOnEdt(Runnable runnable) {
+    ApplicationManager.getApplication().invokeLater(runnable, ModalityState.any());
   }
 
   public void scrollToLastCall() {
@@ -149,6 +192,7 @@ public class CallsPanel extends JBPanel implements TunnelListener {
   }
 
   public synchronized void clear() {
+    callsWithNewData.clear();
     model.clear();
   }
 

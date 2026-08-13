@@ -17,15 +17,7 @@ public class CallStringFormatter {
     sb.append("[");
     sb.append(dateFormat.format(new Date(call.getStart())));
 
-    if (call.getOutput() != null) {
-      byte[] arr = call.getOutput().toByteArray();
-      if (arr != null) {
-        int len = (arr.length > Call.CMD_LENGTH) ? Call.CMD_LENGTH : arr.length;
-        byte[] text = new byte[len];
-        System.arraycopy(arr, 0, text, 0, len);
-        sb.append("] ").append(new String(text)).append("...");
-      }
-    }
+    sb.append("] ").append(call.getRequestHead(Call.CMD_LENGTH)).append("...");
 
     sb.append("; from ");
     sb.append(call.getSrcHost());
@@ -38,10 +30,10 @@ public class CallStringFormatter {
     //sb.append("; response: ");
 
     sb.append(", RQ: ");
-    sb.append((call.getOutput() == null) ? " ? B" : formatSize(call.getOutput().toByteArray().length));
+    sb.append(formatSize(call.getRequestSize()));
 
     sb.append(", RS: ");
-    sb.append((call.getInput() == null) ? " ? B" : formatSize(call.getInput().toByteArray().length));
+    sb.append(formatSize(call.getResponseSize()));
 
     if (call.getEnd() != -1) {
       long durationMs = call.getEnd() - call.getStart();

@@ -9,18 +9,23 @@ import java.net.Socket;
  */
 public class ClientHandler extends Thread {
   private final Socket clientSocket;
-  private final Socket destinationSocket;
+  private final String destHost;
+  private final int destPort;
   private final Tunnel tunnel;
+  private Socket destinationSocket;
 
-  public ClientHandler(Socket clientSocket, Socket destinationSocket, Tunnel tunnel) {
+  public ClientHandler(Socket clientSocket, String destHost, int destPort, Tunnel tunnel) {
     this.clientSocket = clientSocket;
-    this.destinationSocket = destinationSocket;
+    this.destHost = destHost;
+    this.destPort = destPort;
     this.tunnel = tunnel;
   }
 
   @Override
   public void run() {
     try {
+      destinationSocket = new Socket(destHost, destPort);
+
       Call call = new Call(
           clientSocket.getInetAddress().getHostAddress(),
           clientSocket.getPort(),
@@ -65,7 +70,7 @@ public class ClientHandler extends Thread {
       if (!clientSocket.isClosed()) {
         clientSocket.close();
       }
-      if (!destinationSocket.isClosed()) {
+      if (destinationSocket != null && !destinationSocket.isClosed()) {
         destinationSocket.close();
       }
     } catch (IOException e) {

@@ -89,12 +89,14 @@ public class Tunnel {
       while (!shouldStop) {
         try {
           Socket clientSocket = serverSocket.accept();
-          Socket destinationSocket = new Socket(destHost, destPort);
-          new ClientHandler(clientSocket, destinationSocket, this).start();
+          // the connection to the destination is opened by the handler thread: doing it here would
+          // serialize connection setup and, on failure, would take the whole accept loop down
+          new ClientHandler(clientSocket, destHost, destPort, this).start();
         } catch (IOException e) {
-          if (!shouldStop) {
-            throw new TunnelException("Error accepting connection: " + e.getMessage());
+          if (shouldStop || serverSocket.isClosed()) {
+            break;
           }
+          System.err.println("Error accepting connection: " + e.getMessage());
         }
       }
     } catch (IOException e) {
