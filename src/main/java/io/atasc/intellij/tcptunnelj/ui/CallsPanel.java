@@ -1,6 +1,7 @@
 package io.atasc.intellij.tcptunnelj.ui;
 
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.ide.CopyPasteManager;
 import com.intellij.ui.OnePixelSplitter;
 import com.intellij.ui.components.JBList;
 import com.intellij.ui.components.JBPanel;
@@ -10,9 +11,12 @@ import io.atasc.intellij.tcptunnelj.net.TunnelListener;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author boruvka/atasc
@@ -30,7 +34,7 @@ public class CallsPanel extends JBPanel implements TunnelListener {
     setBackground(UIManager.getColor("Tree.textBackground"));
     model = new DefaultListModel();
     listCalls = new JBList(model);
-    listCalls.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    listCalls.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
     panelViewers = new ViewersPanel();
     listCalls.addListSelectionListener(new CallsListSelectionListener(panelViewers));
@@ -149,10 +153,44 @@ public class CallsPanel extends JBPanel implements TunnelListener {
   }
 
   public synchronized void clearSelected() {
-    int index = listCalls.getSelectedIndex();
-    if (index != -1) {
-      model.removeElementAt(index);
+    int[] indices = listCalls.getSelectedIndices();
+    // walk backwards so that the remaining indices stay valid while removing
+    for (int i = indices.length - 1; i >= 0; i--) {
+      model.removeElementAt(indices[i]);
     }
+  }
+
+  public List<Call> getSelectedCalls() {
+    List<Call> calls = new ArrayList<>();
+    for (Object value : listCalls.getSelectedValuesList()) {
+      calls.add((Call) value);
+    }
+
+    return calls;
+  }
+
+  public int getSelectedCallsSize() {
+    return listCalls.getSelectedIndices().length;
+  }
+
+  /**
+   * Puts the request lines of the selected calls on the clipboard, one per line,
+   * in the form "GET /path?query HTTP/1.1". Returns the copied lines.
+   */
+  public List<String> copySelectedRequestsToClipboard() {
+    List<String> requestLines = new ArrayList<>();
+    for (Call call : getSelectedCalls()) {
+      requestLines.addAll(call.getRequestLines());
+    }
+
+    if (requestLines.isEmpty()) {
+      return requestLines;
+    }
+
+    String text = String.join(System.lineSeparator(), requestLines);
+    CopyPasteManager.getInstance().setContents(new StringSelection(text));
+
+    return requestLines;
   }
 
   public Call getSelectedCallFromList() {

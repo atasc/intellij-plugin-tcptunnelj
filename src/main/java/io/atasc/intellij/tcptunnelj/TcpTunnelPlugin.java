@@ -150,14 +150,18 @@ public class TcpTunnelPlugin implements Disposable, AutoCloseable {
     AnAction clearSelectedAction = new ClearSelectedAction(this);
     ToggleAction wrapAction = new WrapAction(this);
     AnAction saveAction = new SaveAction(this);
+    AnAction copyRequestsAction = new CopyRequestsAction(this);
     ToggleAction startOnBootAction = new StartOnBootAction(this);
     //AnAction aboutAction = new AboutAction(this);
+
+    copyRequestsAction.registerCustomShortcutSet(CommonShortcuts.getCopy(), this.tunnelPanel);
 
     actionGroup.add(startAction);
     actionGroup.add(stopAction);
     actionGroup.add(clearSelectedAction);
     actionGroup.add(clearAction);
     actionGroup.add(wrapAction);
+    actionGroup.add(copyRequestsAction);
     actionGroup.add(saveAction);
 
     // Add a separator

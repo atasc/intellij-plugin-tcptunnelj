@@ -50,7 +50,7 @@ public class SaveAction extends BaseAction {
     TunnelPanel tunnelPanel = this.tunnelPlugin.getTunnelPanel();
 
     Presentation p = event.getPresentation();
-    p.setEnabled(!tunnelPanel.isRunning() && tunnelPanel.getCallListSize() > 0);
+    p.setEnabled(tunnelPanel.getCallListSize() > 0);
     p.setVisible(true);
   }
 

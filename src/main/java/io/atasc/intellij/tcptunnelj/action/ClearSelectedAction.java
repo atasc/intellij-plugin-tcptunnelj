@@ -12,7 +12,7 @@ import io.atasc.intellij.tcptunnelj.ui.TunnelPanel;
 public class ClearSelectedAction extends BaseAction {
 
   public ClearSelectedAction(TcpTunnelPlugin tunnelPlugin) {
-    super("Remove selected call", "Remove selected call",
+    super("Remove selected calls", "Remove selected calls",
         Icons.ICON_REMOVE, tunnelPlugin);
   }
 

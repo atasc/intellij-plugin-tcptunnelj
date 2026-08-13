@@ -4,6 +4,9 @@
 
 ## [Unreleased]
 
+- Multiple selection on the calls list, with a "Copy requests" action that copies the request lines of the selected calls to the clipboard (Ctrl/Cmd+C)
+- "Save calls" is now enabled whenever the list is not empty, also while the tunnel is running
+
 ## [0.0.1] - 2024-12-15
 
 ### Added

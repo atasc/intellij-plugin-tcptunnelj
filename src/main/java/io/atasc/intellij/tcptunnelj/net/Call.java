@@ -4,6 +4,10 @@ import io.atasc.intellij.tcptunnelj.ui.CallStringFormatter;
 
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author boruvka/atasc
@@ -11,6 +15,13 @@ import java.io.OutputStream;
  */
 public class Call {
   public static final int CMD_LENGTH = 80;
+
+  /**
+   * Matches an HTTP request line, e.g. "GET /api/v1/food/search?origin=100 HTTP/1.1".
+   * A single call may carry more than one when the connection is kept alive.
+   */
+  private static final Pattern REQUEST_LINE_PATTERN = Pattern.compile(
+      "(?m)^(?:GET|POST|PUT|DELETE|PATCH|HEAD|OPTIONS|TRACE|CONNECT) +\\S+ +HTTP/\\d(?:\\.\\d)?$");
 
   private long start;
   private long end = -1;
@@ -86,6 +97,28 @@ public class Call {
 //    }
 //    return response;
 //  }
+
+  /**
+   * The HTTP request lines sent by the client on this call, in the order they were sent.
+   * Empty when the call does not carry HTTP traffic.
+   */
+  public List<String> getRequestLines() {
+    return extractRequestLines(output.toString());
+  }
+
+  public static List<String> extractRequestLines(String request) {
+    List<String> lines = new ArrayList<>();
+    if (request == null || request.isEmpty()) {
+      return lines;
+    }
+
+    Matcher matcher = REQUEST_LINE_PATTERN.matcher(request);
+    while (matcher.find()) {
+      lines.add(matcher.group().trim());
+    }
+
+    return lines;
+  }
 
   public static String removeChunkedEncoding(String response) {
     // Divide header and body using double newline as delimiter

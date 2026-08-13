@@ -24,6 +24,7 @@ public class Icons {
   public static final Icon ICON_STOP = AllIcons.Actions.Suspend;
   public static final Icon ICON_HELP = AllIcons.Actions.Help;
   public static final Icon ICON_SAVE = AllIcons.Actions.MenuSaveall;
+  public static final Icon ICON_COPY = AllIcons.Actions.Copy;
 
   public static ImageIcon getCustomIcon(String file) {
     try {

@@ -9,6 +9,7 @@ import io.atasc.intellij.tcptunnelj.net.TunnelException;
 import io.atasc.intellij.tcptunnelj.util.PortNumberVerifier;
 
 import java.awt.*;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -120,6 +121,14 @@ public class TunnelPanel extends JBPanel {
 
   public int getCallListSize() {
     return panelCalls.getCallListSize();
+  }
+
+  public int getSelectedCallsSize() {
+    return panelCalls.getSelectedCallsSize();
+  }
+
+  public List<String> copySelectedRequestsToClipboard() {
+    return panelCalls.copySelectedRequestsToClipboard();
   }
 
   public String getCallListToString() {
