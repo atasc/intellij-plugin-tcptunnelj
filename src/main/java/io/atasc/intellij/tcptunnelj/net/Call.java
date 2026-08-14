@@ -24,6 +24,16 @@ public class Call {
   private static final Pattern REQUEST_LINE_PATTERN = Pattern.compile(
       "(?m)^(?:GET|POST|PUT|DELETE|PATCH|HEAD|OPTIONS|TRACE|CONNECT) +\\S+ +HTTP/\\d(?:\\.\\d)?$");
 
+  /**
+   * Matches a {@code Transfer-Encoding} header whose value lists {@code chunked}. Header names are
+   * case-insensitive and the value may carry several codings, e.g. {@code gzip, chunked}.
+   */
+  private static final Pattern CHUNKED_HEADER_PATTERN = Pattern.compile(
+      "(?im)^Transfer-Encoding:[^\\r\\n]*\\bchunked\\b");
+
+  private static final byte[] CRLF = {'\r', '\n'};
+  private static final byte[] CRLF_CRLF = {'\r', '\n', '\r', '\n'};
+
   private long start;
   private long end = -1;
   private String srcHost;
@@ -117,20 +127,33 @@ public class Call {
     return input.size();
   }
 
-//  public static String removeChunkedEncoding(String response) {
-//    // Use a regex to identify chunks (hexadecimal numbers followed by a newline)
-//    if (response.contains("Transfer-Encoding: chunked")) {
-//      return response.replaceAll("(?m)^[0-9a-fA-F]+\\r?\\n", "");
-//    }
-//    return response;
-//  }
+  /**
+   * What the client sent, as text.
+   */
+  public String getRequestText() {
+    return new String(output.toByteArray(), StandardCharsets.UTF_8);
+  }
+
+  /**
+   * What the destination answered, as text, with any chunked framing removed.
+   */
+  public String getResponseText() {
+    return removeChunkedEncoding(input.toByteArray());
+  }
+
+  /**
+   * What the destination answered, as text, exactly as it came off the wire.
+   */
+  public String getRawResponseText() {
+    return new String(input.toByteArray(), StandardCharsets.UTF_8);
+  }
 
   /**
    * The HTTP request lines sent by the client on this call, in the order they were sent.
    * Empty when the call does not carry HTTP traffic.
    */
   public List<String> getRequestLines() {
-    return extractRequestLines(output.toString());
+    return extractRequestLines(getRequestText());
   }
 
   public static List<String> extractRequestLines(String request) {
@@ -147,25 +170,135 @@ public class Call {
     return lines;
   }
 
-  public static String removeChunkedEncoding(String response) {
-    // Divide header and body using double newline as delimiter
-    int headerEndIndex = response.indexOf("\r\n\r\n");
-    if (headerEndIndex == -1) {
-      // No headers found, return response as is
-      return response;
+  /**
+   * Rebuilds the captured response with every {@code Transfer-Encoding: chunked} body decoded, so
+   * that the payload comes out byte-identical to what the client's own HTTP stack sees.
+   * <p>
+   * Chunk sizes count <em>bytes</em>, so this has to work on the raw capture: decoding to a
+   * {@link String} first would shift every boundary by the number of multi-byte characters seen so
+   * far. A keep-alive call can carry several responses back to back, so each header/body pair is
+   * decoded in turn. Whatever does not parse as chunked framing — a truncated capture, a non-HTTP
+   * protocol — is copied through verbatim rather than dropped.
+   */
+  public static String removeChunkedEncoding(byte[] response) {
+    if (response == null || response.length == 0) {
+      return "";
     }
 
-    // Extract header and body
-    String header = response.substring(0, headerEndIndex);
-    String body = response.substring(headerEndIndex + 4);
+    ByteArrayOutputStream out = new ByteArrayOutputStream(response.length);
+    int pos = 0;
 
-    // Check for Transfer-Encoding: chunked in the header only
-    if (header.contains("Transfer-Encoding: chunked")) {
-      // Remove chunked encoding from the body
-      body = body.replaceAll("(?m)^[0-9a-fA-F]+\\r?\\n", "");
+    while (pos < response.length) {
+      int headerEnd = indexOf(response, CRLF_CRLF, pos);
+      if (headerEnd == -1) {
+        // No header block: not HTTP, or the capture stopped mid-headers.
+        out.write(response, pos, response.length - pos);
+        break;
+      }
+
+      int bodyStart = headerEnd + CRLF_CRLF.length;
+      out.write(response, pos, bodyStart - pos);
+
+      String header = new String(response, pos, headerEnd - pos, StandardCharsets.ISO_8859_1);
+      if (!CHUNKED_HEADER_PATTERN.matcher(header).find()) {
+        out.write(response, bodyStart, response.length - bodyStart);
+        break;
+      }
+
+      pos = decodeChunkedBody(response, bodyStart, out);
     }
 
-    // Reassemble response
-    return header + "\r\n\r\n" + body;
+    return new String(out.toByteArray(), StandardCharsets.UTF_8);
+  }
+
+  /**
+   * Writes the decoded chunks starting at {@code from} into {@code out} and returns the offset just
+   * past the terminating chunk, where the next response of a keep-alive call begins. On malformed
+   * or truncated framing the remainder is written out untouched and the buffer length is returned.
+   */
+  private static int decodeChunkedBody(byte[] body, int from, ByteArrayOutputStream out) {
+    int pos = from;
+
+    while (pos < body.length) {
+      int eol = indexOf(body, CRLF, pos);
+      if (eol == -1) {
+        break;
+      }
+
+      int size = parseChunkSize(body, pos, eol);
+      if (size < 0) {
+        break;
+      }
+
+      if (size == 0) {
+        // Terminating chunk, followed by optional trailers and the final empty line.
+        int trailerEnd = indexOf(body, CRLF_CRLF, eol);
+        return trailerEnd == -1 ? body.length : trailerEnd + CRLF_CRLF.length;
+      }
+
+      int chunkStart = eol + CRLF.length;
+      if (size > body.length - chunkStart) {
+        break;
+      }
+
+      out.write(body, chunkStart, size);
+      pos = chunkStart + size;
+
+      // Each chunk is closed by its own CRLF, which is framing, not payload.
+      if (!startsWith(body, CRLF, pos)) {
+        break;
+      }
+      pos += CRLF.length;
+    }
+
+    out.write(body, pos, body.length - pos);
+    return body.length;
+  }
+
+  /**
+   * The chunk size declared in {@code [from, end)} — a hex length optionally followed by a
+   * {@code ;extension} — or -1 when the line is not a chunk header.
+   */
+  private static int parseChunkSize(byte[] body, int from, int end) {
+    int digits = 0;
+    int size = 0;
+
+    for (int i = from; i < end; i++) {
+      int digit = Character.digit(body[i], 16);
+      if (digit == -1) {
+        // Only a chunk extension or trailing whitespace may follow the length.
+        if (digits > 0 && (body[i] == ';' || body[i] == ' ' || body[i] == '\t')) {
+          break;
+        }
+        return -1;
+      }
+      if (++digits > 8) {
+        return -1;
+      }
+      size = (size << 4) | digit;
+    }
+
+    return digits == 0 ? -1 : size;
+  }
+
+  private static int indexOf(byte[] haystack, byte[] needle, int from) {
+    for (int i = Math.max(from, 0); i <= haystack.length - needle.length; i++) {
+      if (startsWith(haystack, needle, i)) {
+        return i;
+      }
+    }
+    return -1;
+  }
+
+  private static boolean startsWith(byte[] haystack, byte[] needle, int at) {
+    if (at < 0 || at > haystack.length - needle.length) {
+      return false;
+    }
+    for (int i = 0; i < needle.length; i++) {
+      if (haystack[at + i] != needle[i]) {
+        return false;
+      }
+    }
+    return true;
   }
 }

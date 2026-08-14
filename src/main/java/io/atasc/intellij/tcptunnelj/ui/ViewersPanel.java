@@ -10,7 +10,6 @@ import io.atasc.intellij.tcptunnelj.net.Call;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.io.ByteArrayOutputStream;
 
 public class ViewersPanel extends JBPanel {
   private boolean removeChunk = true;
@@ -69,24 +68,11 @@ public class ViewersPanel extends JBPanel {
       return;
     }
 
-    ByteArrayOutputStream requestBaos = (ByteArrayOutputStream) call.getOutputLogger();
-    if (requestBaos == null) {
-      return;
-    }
-
-    txtRQ.setText(requestBaos.toString());
+    txtRQ.setText(call.getRequestText());
     txtRQ.setCaretPosition(0);
 
-    ByteArrayOutputStream responseBaos = ((ByteArrayOutputStream) call.getInputLogger());
-
-    if (responseBaos != null) {
-      if (removeChunk) {
-        txtRS.setText(Call.removeChunkedEncoding(responseBaos.toString()));
-      } else {
-        txtRS.setText(responseBaos.toString());
-      }
-      txtRS.setCaretPosition(0);
-    }
+    txtRS.setText(removeChunk ? call.getResponseText() : call.getRawResponseText());
+    txtRS.setCaretPosition(0);
   }
 
   public void wrap() {

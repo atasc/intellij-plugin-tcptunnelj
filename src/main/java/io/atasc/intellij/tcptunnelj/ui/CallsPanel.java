@@ -292,7 +292,7 @@ public class CallsPanel extends JBPanel implements TunnelListener {
     }
 
     if (!asBytes) {
-      requestTxt.append(requestBaos.toString());
+      requestTxt.append(call.getRequestText());
 
     } else {
       byte[] bytes = requestBaos.toByteArray();
@@ -305,12 +305,10 @@ public class CallsPanel extends JBPanel implements TunnelListener {
       }
     }
 
-    ByteArrayOutputStream responseBaos = ((ByteArrayOutputStream) call.getInputLogger());
-
     if (removeChunk) {
-      responseTxt.append(Call.removeChunkedEncoding(responseBaos.toString()));
+      responseTxt.append(call.getResponseText());
     } else {
-      responseTxt.append(responseBaos.toString());
+      responseTxt.append(call.getRawResponseText());
     }
 
     String newLine = System.lineSeparator();
