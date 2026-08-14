@@ -15,16 +15,25 @@ import java.awt.event.ActionEvent;
 
 public class ViewersPanel extends JBPanel {
   /**
-   * Longest line the viewers draw in one piece. Swing draws a line of text as a single run, and
-   * past a few thousand characters the glyphs pile up on top of each other and the line turns into
-   * an unreadable smear — which is exactly what a 50 KB JSON body on one line looks like, whether
-   * it arrives that way or after the chunked framing is undone. Anything longer is therefore broken
-   * up <em>for display only</em>; the copy actions below always work off the call itself, so what
-   * lands on the clipboard never carries these breaks.
+   * Longest line the viewers draw in one piece when line wrap is off. With wrap off Swing lays a
+   * line out as a single run whose width the drawing pipeline addresses with 16-bit coordinates, so
+   * somewhere past 32767 pixels the glyph positions overflow and the line turns into a smear — and
+   * laying out a 50 KB JSON body costs that on every repaint. 4000 characters is roughly 28000
+   * pixels at the default font, comfortably inside the limit.
+   * <p>
+   * This is a fallback for the unwrapped view only: {@link #wrapped} is on by default, and with
+   * wrap on Swing breaks the lines itself and the viewer shows the response untouched.
    */
-  private static final int MAX_DISPLAY_LINE_LENGTH = 1000;
+  static final int MAX_DISPLAY_LINE_LENGTH = 4000;
 
   private Call currentCall;
+
+  /**
+   * Whether the viewers wrap long lines, mirroring the "Wrap lines" toolbar toggle. When they do,
+   * nothing has to be broken up for display and a selection copied out of the viewer is exactly
+   * what came over the wire.
+   */
+  private boolean wrapped = true;
 
   private JBTextArea txtRQ;
   private JBTextArea txtRS;
@@ -49,6 +58,8 @@ public class ViewersPanel extends JBPanel {
     txtRS.setEditable(false);
     txtRS.setBackground(UIManager.getColor("Tree.textBackground"));
     addContextMenu(txtRS, true);
+
+    applyWrap();
 
     scrollRQ = new JBScrollPane(txtRQ);
     scrollRS = new JBScrollPane(txtRS);
@@ -76,10 +87,9 @@ public class ViewersPanel extends JBPanel {
   }
 
   /**
-   * Shows the call as it was captured: both sides exactly as they went over the wire, chunk sizes
-   * and all. Undoing the chunked framing and the content coding is left to the copy and save
-   * actions — on screen it would only merge a whole JSON body into one unrenderable line, and it
-   * would hide the framing this tool exists to show.
+   * Shows the request as it was captured and the response with its chunked framing undone and its
+   * payload decompressed, which is what makes a JSON body readable: the chunk sizes no longer sit
+   * in the middle of the text. The wire form stays one context-menu entry away.
    */
   public void view(Call call) {
     if (call == null) {
@@ -87,12 +97,34 @@ public class ViewersPanel extends JBPanel {
     }
 
     currentCall = call;
+    render();
+  }
 
-    txtRQ.setText(forDisplay(call.getRequestText()));
+  /**
+   * Puts the current call in the two viewers. Called again on every wrap toggle, because whether a
+   * long line has to be broken up depends on it.
+   */
+  private void render() {
+    if (currentCall == null) {
+      return;
+    }
+
+    txtRQ.setText(forDisplay(currentCall.getRequestText(), wrapped));
     txtRQ.setCaretPosition(0);
 
-    txtRS.setText(forDisplay(call.getRawResponseText()));
+    txtRS.setText(forDisplay(currentCall.getResponseText(), wrapped));
     txtRS.setCaretPosition(0);
+  }
+
+  /**
+   * {@code text} as the viewers should show it: untouched when they wrap, since Swing then breaks
+   * the lines itself, and broken up at {@link #MAX_DISPLAY_LINE_LENGTH} when they do not.
+   */
+  static String forDisplay(String text, boolean wrapped) {
+    if (wrapped) {
+      return text == null ? "" : text;
+    }
+    return forDisplay(text);
   }
 
   /**
@@ -147,15 +179,32 @@ public class ViewersPanel extends JBPanel {
   }
 
   public void wrap() {
-    txtRQ.setLineWrap(true);
-    txtRQ.setWrapStyleWord(true);
-    txtRS.setLineWrap(true);
-    txtRS.setWrapStyleWord(true);
+    setWrapped(true);
   }
 
   public void unwrap() {
-    txtRQ.setLineWrap(false);
-    txtRS.setLineWrap(false);
+    setWrapped(false);
+  }
+
+  /**
+   * Turning the wrap off means the over-long lines now have to be broken up by hand, and turning it
+   * back on means those breaks have to go, so the current call is drawn again either way.
+   */
+  private void setWrapped(boolean wrapped) {
+    if (this.wrapped == wrapped) {
+      return;
+    }
+
+    this.wrapped = wrapped;
+    applyWrap();
+    render();
+  }
+
+  private void applyWrap() {
+    txtRQ.setLineWrap(wrapped);
+    txtRQ.setWrapStyleWord(wrapped);
+    txtRS.setLineWrap(wrapped);
+    txtRS.setWrapStyleWord(wrapped);
   }
 
   public void clear() {
@@ -165,9 +214,9 @@ public class ViewersPanel extends JBPanel {
   }
 
   /**
-   * The viewer shows the capture untouched, so copying a selection out of the response would carry
-   * the chunk sizes with it. The response menu therefore also offers the decoded forms, which are
-   * built from the call rather than from what is on screen.
+   * What is on screen carries the line breaks {@link #forDisplay(String)} added, so the response
+   * menu offers the payload built from the call itself — the body alone, or headers and body — plus
+   * the wire form for when the chunk sizes are the point.
    */
   private void addContextMenu(JBTextArea textArea, boolean isResponse) {
     JBPopupMenu popupMenu = new JBPopupMenu();
@@ -201,6 +250,15 @@ public class ViewersPanel extends JBPanel {
         public void actionPerformed(ActionEvent e) {
           if (currentCall != null) {
             copyToClipboard(currentCall.getResponseText());
+          }
+        }
+      });
+
+      popupMenu.add(new AbstractAction("Copy response (raw)") {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+          if (currentCall != null) {
+            copyToClipboard(currentCall.getRawResponseText());
           }
         }
       });

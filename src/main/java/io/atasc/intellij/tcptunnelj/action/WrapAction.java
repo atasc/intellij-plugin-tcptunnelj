@@ -14,6 +14,9 @@ public class WrapAction extends BaseToggleAction {
   public WrapAction(TcpTunnelPlugin tunnelPlugin) {
     super("Wrap lines", "Wrap lines", Icons.ICON_WRAP);
     this.tunnelPlugin = tunnelPlugin;
+    // The viewers wrap from the start — a JSON body is one very long line, and unwrapped it either
+    // scrolls off to the right or has to be broken up for display. The toggle starts on to say so.
+    this.selected = true;
   }
 
   @Override
