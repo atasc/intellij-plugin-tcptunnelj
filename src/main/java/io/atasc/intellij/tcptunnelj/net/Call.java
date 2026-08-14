@@ -170,6 +170,15 @@ public class Call {
   }
 
   /**
+   * Only the body of what the destination answered — headers dropped, chunked framing removed and a
+   * compressed payload decompressed. This is the JSON (or whatever the payload is) ready to be
+   * pasted somewhere else. A keep-alive call carrying several responses yields one body per line.
+   */
+  public String getResponseBody() {
+    return decodeResponseBody(input.toByteArray());
+  }
+
+  /**
    * The HTTP request lines sent by the client on this call, in the order they were sent.
    * Empty when the call does not carry HTTP traffic.
    */
@@ -196,7 +205,7 @@ public class Call {
    * {@code Content-Encoding} payload compressed.
    */
   public static String removeChunkedEncoding(byte[] response) {
-    return new String(decode(response, false), StandardCharsets.UTF_8);
+    return new String(decode(response, false, false), StandardCharsets.UTF_8);
   }
 
   /**
@@ -206,7 +215,15 @@ public class Call {
    * wire, so they still describe the framing that was undone.
    */
   public static String decodeResponse(byte[] response) {
-    return new String(decode(response, true), StandardCharsets.UTF_8);
+    return new String(decode(response, true, false), StandardCharsets.UTF_8);
+  }
+
+  /**
+   * The decoded bodies of the captured response, without the headers, one per line when a
+   * keep-alive call carries more than one response.
+   */
+  public static String decodeResponseBody(byte[] response) {
+    return new String(decode(response, true, true), StandardCharsets.UTF_8);
   }
 
   /**
@@ -219,8 +236,11 @@ public class Call {
    * handled in turn, delimited by the chunked framing or by {@code Content-Length}. Whatever does
    * not parse — a truncated capture, a non-HTTP protocol, a coding the JDK cannot undo such as
    * {@code br} — is copied through verbatim rather than dropped.
+   * <p>
+   * With {@code bodyOnly} the headers are left out, so that what comes back is the payload alone,
+   * ready to be pasted into a {@code .json} file.
    */
-  private static byte[] decode(byte[] response, boolean decompress) {
+  private static byte[] decode(byte[] response, boolean decompress, boolean bodyOnly) {
     if (response == null || response.length == 0) {
       return EMPTY;
     }
@@ -237,7 +257,14 @@ public class Call {
       }
 
       int bodyStart = headerEnd + CRLF_CRLF.length;
-      out.write(response, pos, bodyStart - pos);
+      if (bodyOnly) {
+        // One body per line, so that a keep-alive call carrying several responses stays readable.
+        if (out.size() > 0) {
+          out.write('\n');
+        }
+      } else {
+        out.write(response, pos, bodyStart - pos);
+      }
 
       String header = new String(response, pos, headerEnd - pos, StandardCharsets.ISO_8859_1);
       ByteArrayOutputStream body = new ByteArrayOutputStream();
