@@ -5,6 +5,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author atasc
@@ -14,10 +16,17 @@ public class Tunnel {
   private final int srcPort;
   private final int destPort;
   private final String destHost;
-  private boolean shouldStop = false;
-  private boolean isRunning = false;
+  private volatile boolean shouldStop = false;
+  private volatile boolean isRunning = false;
   private ServerSocket serverSocket;
   private final List<TunnelListener> listeners = new LinkedList<>();
+
+  /**
+   * The connections being pumped right now. {@link #stop()} closes them, otherwise their threads stay
+   * blocked in a read until the peer gives up — and a thread of this plugin outliving the tunnel is
+   * what keeps the plugin from being unloaded without restarting the IDE.
+   */
+  private final Set<ClientHandler> handlers = ConcurrentHashMap.newKeySet();
 
   public Tunnel(int srcPort, int destPort, String destHost) {
     this.srcPort = srcPort;
@@ -91,7 +100,14 @@ public class Tunnel {
           Socket clientSocket = serverSocket.accept();
           // the connection to the destination is opened by the handler thread: doing it here would
           // serialize connection setup and, on failure, would take the whole accept loop down
-          new ClientHandler(clientSocket, destHost, destPort, this).start();
+          ClientHandler handler = new ClientHandler(clientSocket, destHost, destPort, this);
+          handlers.add(handler);
+          handler.start();
+
+          if (shouldStop) {
+            // stop() ran between accept() and the registration above, so this one is ours to cut
+            handler.close();
+          }
         } catch (IOException e) {
           if (shouldStop || serverSocket.isClosed()) {
             break;
@@ -118,6 +134,21 @@ public class Tunnel {
     } catch (IOException e) {
       System.err.println("Error closing server socket: " + e.getMessage());
     }
+
+    // Closing the server socket only ends the accept loop; the connections already being pumped have
+    // their own threads, blocked in a read that nothing else will interrupt.
+    for (ClientHandler handler : handlers) {
+      handler.close();
+    }
+    handlers.clear();
+  }
+
+  /**
+   * Called by a {@link ClientHandler} when its connection is over, so that {@link #stop()} does not
+   * keep walking connections that have already closed themselves.
+   */
+  void handlerFinished(ClientHandler handler) {
+    handlers.remove(handler);
   }
 
   private void fireTunnelStarted() {

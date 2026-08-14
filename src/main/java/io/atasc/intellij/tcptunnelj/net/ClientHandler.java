@@ -19,6 +19,11 @@ public class ClientHandler extends Thread {
     this.destHost = destHost;
     this.destPort = destPort;
     this.tunnel = tunnel;
+
+    // A connection outlives neither the tunnel nor the IDE: as a daemon it can never hold either one
+    // open, and it is the tunnel that decides when to cut it short.
+    setDaemon(true);
+    setName("TcpTunnelJ handler " + clientSocket.getPort());
   }
 
   @Override
@@ -61,9 +66,17 @@ public class ClientHandler extends Thread {
       System.err.println("Error in ClientHandler: " + e.getMessage());
     } finally {
       closeSockets();
+      tunnel.handlerFinished(this);
     }
   }
 
+  /**
+   * Cuts this connection short, which is how {@link Tunnel#stop()} gets the two pump threads to
+   * leave their blocking reads: closing the sockets makes those reads fail and the threads end.
+   */
+  void close() {
+    closeSockets();
+  }
 
   private void closeSockets() {
     try {

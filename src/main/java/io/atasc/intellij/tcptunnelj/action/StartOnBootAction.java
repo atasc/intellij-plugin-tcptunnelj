@@ -3,28 +3,37 @@ package io.atasc.intellij.tcptunnelj.action;
 import com.intellij.notification.NotificationType;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.util.Alarm;
 import io.atasc.intellij.tcptunnelj.TcpTunnelConfig;
 import io.atasc.intellij.tcptunnelj.TcpTunnelPlugin;
 import io.atasc.intellij.tcptunnelj.toolWindow.TcpTunnelWindow;
 import io.atasc.intellij.tcptunnelj.ui.Icons;
 import io.atasc.intellij.tcptunnelj.ui.TunnelPanel;
 
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-
 /**
  * @author atasc
  * @since
  */
 public class StartOnBootAction extends BaseToggleAction {
+  /**
+   * How long to wait before starting the tunnel by itself, to let the tool window finish building.
+   */
+  private static final int START_DELAY_MS = 1500;
+
   private final TcpTunnelConfig config;
-  private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+
+  /**
+   * Owned by the plugin, so a tool window disposed inside the delay cancels the pending start. The
+   * plain {@code ScheduledExecutorService} this replaces was never shut down: one live non-daemon
+   * thread per tool window, which also pinned the plugin classloader.
+   */
+  private final Alarm alarm;
 
   public StartOnBootAction(TcpTunnelPlugin tunnelPlugin) {
     super("Start on Boot", "Start on Boot", Icons.ICON_START_ON_BOOT);
     this.tunnelPlugin = tunnelPlugin;
     this.config = tunnelPlugin.getTunnelConfig();
+    this.alarm = new Alarm(Alarm.ThreadToUse.SWING_THREAD, tunnelPlugin);
 
     this.selected = config.isStartOnBootEnabled();
 
@@ -67,7 +76,7 @@ public class StartOnBootAction extends BaseToggleAction {
   }
 
   private void scheduleTunnelStart() {
-    scheduler.schedule(() -> {
+    alarm.addRequest(() -> {
       TunnelPanel tunnelPanel = this.tunnelPlugin.getTunnelPanel();
       if (tunnelPanel == null) {
         // the tool window was disposed inside the delay: nothing left to start
@@ -113,7 +122,7 @@ public class StartOnBootAction extends BaseToggleAction {
 
         });
       }
-    }, 1500, TimeUnit.MILLISECONDS);
+    }, START_DELAY_MS);
   }
 
 }

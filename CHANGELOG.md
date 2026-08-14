@@ -12,6 +12,9 @@
 - The request and response viewers are now platform editors instead of text areas, which fixes a JSON body rendering as an unreadable compressed strip: Swing lays a line out in a single run, so with the wrap off the glyph positions of a 50 KB line collapse, while the editor only paints the part of the line that is on screen. Soft wrap is on by default and "Wrap lines" toggles it, and either way the text is never altered to make it drawable — so a selection copied out of a viewer pastes as valid JSON. Breaking long lines up for display was tried first and reverted: "Copy" copies what is on screen, so the breaks reached the clipboard and cut the JSON mid-token
 - Ctrl+F, Ctrl+G and the rest of the editor's own search and navigation now work inside the viewers
 - Closing the tool window or the project now disposes the plugin: the tunnel is closed, the calls list stops its refresh timer, the viewers' editors are released and the settings are persisted. None of that used to happen, because nothing ever disposed it
+- Fixed four thread leaks, each of which lasted for the rest of the IDE session: a scheduled executor per tool window in "Start on Boot", another one per notification shown, one executor per tunnel start and one per stop, and the tunnel's connection threads, which were not daemon and were left blocked in a read after the tunnel was closed. Scheduling now goes through the platform's own executors, connections are tracked and cut short on stop, and their threads are daemon
+- Removed an `AppLifecycleListener` that was subscribed once per project on a connection with no parent disposable and only printed to stdout; the application message bus held it for the whole session
+- Groundwork for loading and unloading the plugin without restarting the IDE: those leaks were what pinned the plugin's classloader, and the empty `<project-components>` block is gone from the descriptor
 
 ## [0.0.1] - 2024-12-15
 

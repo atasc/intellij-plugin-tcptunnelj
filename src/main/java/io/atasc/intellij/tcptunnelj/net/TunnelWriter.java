@@ -21,6 +21,11 @@ public class TunnelWriter extends Thread {
     this.outputStream = outputStream;
     this.logStream = logStream;
     this.listener = listener;
+
+    // Blocked in a read for as long as the connection lives: as a daemon it cannot keep the IDE, or
+    // the plugin's classloader, alive past it.
+    setDaemon(true);
+    setName("TcpTunnelJ pump");
   }
 
   @Override

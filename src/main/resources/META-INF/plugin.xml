@@ -41,11 +41,9 @@
     <notificationGroup id="TcpTunnelJ Notifications" displayType="BALLOON"/>
   </extensions>
 
-  <project-components>
-<!--    <component>-->
-<!--      <implementation-class>io.atasc.intellij.tcptunnelj.TcpTunnelPlugin</implementation-class>-->
-<!--    </component>-->
-  </project-components>
+  <!-- No <project-components> here on purpose: components are what keep a plugin from being loaded
+       and unloaded without restarting the IDE. This one is a tool window, built per project in
+       TcpTunnelWindowFactory and disposed with it. -->
 
   <applicationListeners>
 

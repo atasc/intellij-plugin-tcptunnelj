@@ -1,9 +1,6 @@
 package io.atasc.intellij.tcptunnelj.toolWindow;
 
-import com.intellij.ide.AppLifecycleListener;
-import com.intellij.notification.NotificationType;
 import com.intellij.openapi.Disposable;
-import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Disposer;
@@ -11,7 +8,6 @@ import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowFactory;
 import com.intellij.ui.content.ContentFactory;
 import io.atasc.intellij.tcptunnelj.TcpTunnelPlugin;
-import io.atasc.intellij.tcptunnelj.listeners.TcpTunnelAppLifecycleListener;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
@@ -68,9 +64,9 @@ public class TcpTunnelWindowFactory implements ToolWindowFactory, Disposable {
           toolWindow.getContentManager().addContent(content);
           //toolWindow.setIcon(Icons.ICON_TOOL);
 
-          ApplicationManager.getApplication().getMessageBus().connect()
-              .subscribe(AppLifecycleListener.TOPIC, new TcpTunnelAppLifecycleListener());
-
+          // An AppLifecycleListener used to be subscribed here on a connection with no parent
+          // disposable, once per project, and it only printed to stdout: the application message bus
+          // held it — and through it the plugin classloader — for the rest of the session.
         });
       }
     }

@@ -12,8 +12,6 @@ import io.atasc.intellij.tcptunnelj.util.PortNumberVerifier;
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /**
  * @author boruvka/atasc
@@ -54,10 +52,14 @@ public class TunnelPanel extends JBPanel implements Disposable {
     portNumberVerifier = new PortNumberVerifier();
   }
 
+  /**
+   * Opens the tunnel on a pooled thread — {@link Tunnel#start()} blocks in an accept loop, so it can
+   * never run on the EDT. The platform's pool is used rather than an executor of our own: those were
+   * created per call and their threads, being neither daemon nor shut down on every path, kept the
+   * plugin's classloader alive.
+   */
   public void start() {
-    ExecutorService executor = Executors.newSingleThreadExecutor(); // Use a single-thread executor for thread management
-
-    executor.execute(() -> {
+    ApplicationManager.getApplication().executeOnPooledThread(() -> {
       try {
         tunnel = new Tunnel(panelControl.getSrcPort(),
             panelControl.getDestPort(),
@@ -78,7 +80,6 @@ public class TunnelPanel extends JBPanel implements Disposable {
             stopException.printStackTrace();
           }
         }
-        executor.shutdown(); // Shut down the executor to release resources
       }
     });
   }
@@ -93,22 +94,18 @@ public class TunnelPanel extends JBPanel implements Disposable {
     });
   }
 
+  /**
+   * Closes the tunnel here and now, rather than on a thread of its own: {@link Tunnel#stop()} only
+   * closes sockets, and {@link #dispose()} needs them shut before the panel goes away.
+   */
   public void stop() {
-    ExecutorService executor = Executors.newSingleThreadExecutor(); // Use a single-thread executor
-
-    executor.execute(() -> {
-      try {
-        if (tunnel != null) {
-          tunnel.stop(); // Stop the tunnel
-        }
-        // Optional: Remove listeners if necessary
-        // tunnellij.removeTunnelListener(list);
-      } catch (Exception e) {
-        e.printStackTrace(); // Log the exception
-      } finally {
-        executor.shutdown(); // Ensure the executor is properly shut down
+    try {
+      if (tunnel != null) {
+        tunnel.stop();
       }
-    });
+    } catch (Exception e) {
+      e.printStackTrace(); // Log the exception
+    }
 
     repaint(); // Update the UI after stopping the tunnel
   }

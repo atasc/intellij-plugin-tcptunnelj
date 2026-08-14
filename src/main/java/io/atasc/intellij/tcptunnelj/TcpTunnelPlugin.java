@@ -137,7 +137,8 @@ public class TcpTunnelPlugin implements Disposable, AutoCloseable {
         this.tunnelPanel.stop();
       }
     } catch (Exception e) {
-      throw new RuntimeException(e);
+      // this also runs from dispose(): throwing here would turn a project close into an IDE error
+      e.printStackTrace();
     }
   }
 
