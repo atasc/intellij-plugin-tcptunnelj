@@ -218,6 +218,14 @@ public class CallsPanel extends JBPanel implements TunnelListener {
   }
 
   /**
+   * The calls list itself, used to scope keyboard shortcuts to it: an action registered on the whole
+   * panel would also steal the keystroke from the request/response viewers.
+   */
+  public JComponent getCallsListComponent() {
+    return listCalls;
+  }
+
+  /**
    * Puts the request lines of the selected calls on the clipboard, one per line,
    * in the form "GET /path?query HTTP/1.1". Returns the copied lines.
    */

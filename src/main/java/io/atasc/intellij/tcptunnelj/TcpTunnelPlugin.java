@@ -154,7 +154,10 @@ public class TcpTunnelPlugin implements Disposable, AutoCloseable {
     ToggleAction startOnBootAction = new StartOnBootAction(this);
     //AnAction aboutAction = new AboutAction(this);
 
-    copyRequestsAction.registerCustomShortcutSet(CommonShortcuts.getCopy(), this.tunnelPanel);
+    // scoped to the calls list only: on the whole TunnelPanel this action swallowed Ctrl+C inside
+    // the request/response viewers, copying the request lines instead of the selected text
+    copyRequestsAction.registerCustomShortcutSet(CommonShortcuts.getCopy(),
+        this.tunnelPanel.getCallsListComponent());
 
     actionGroup.add(startAction);
     actionGroup.add(stopAction);
