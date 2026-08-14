@@ -10,6 +10,7 @@ import io.atasc.intellij.tcptunnelj.TcpTunnelPlugin;
 import io.atasc.intellij.tcptunnelj.toolWindow.TcpTunnelWindow;
 import io.atasc.intellij.tcptunnelj.ui.Icons;
 import io.atasc.intellij.tcptunnelj.ui.TunnelPanel;
+import io.atasc.intellij.tcptunnelj.util.SystemDirectories;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -23,6 +24,7 @@ import java.io.IOException;
  * @since
  */
 public class SaveAction extends BaseAction {
+  private static final String DEFAULT_FILE_NAME = "tcptunnelj.log";
 
   public SaveAction(TcpTunnelPlugin tunnelPlugin) {
     super("Save calls", "Save calls",
@@ -60,10 +62,14 @@ public class SaveAction extends BaseAction {
 
     String callList = tunnelPanel.getCallListToString();
 
-    JFileChooser fileChooser = new JFileChooser();
+    File downloadsDir = SystemDirectories.getDownloadsDirectory();
+
+    JFileChooser fileChooser = new JFileChooser(downloadsDir);
     fileChooser.setDialogTitle("Save Log File");
     fileChooser.setFileFilter(new FileNameExtensionFilter("Log Files (*.log)", "log"));
-    fileChooser.setSelectedFile(new File("tcptunnelj.log"));
+    // absolute, otherwise JFileChooser resolves the name against the process working directory and
+    // silently moves the dialog away from the downloads folder
+    fileChooser.setSelectedFile(new File(downloadsDir, DEFAULT_FILE_NAME));
 
     int userSelection = fileChooser.showSaveDialog(null);
 
