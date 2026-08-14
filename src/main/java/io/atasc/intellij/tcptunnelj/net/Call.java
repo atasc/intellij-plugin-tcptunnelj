@@ -2,13 +2,20 @@ package io.atasc.intellij.tcptunnelj.net;
 
 import io.atasc.intellij.tcptunnelj.ui.CallStringFormatter;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.Inflater;
+import java.util.zip.InflaterInputStream;
 
 /**
  * @author boruvka/atasc
@@ -31,8 +38,21 @@ public class Call {
   private static final Pattern CHUNKED_HEADER_PATTERN = Pattern.compile(
       "(?im)^Transfer-Encoding:[^\\r\\n]*\\bchunked\\b");
 
+  /**
+   * Captures the value of a {@code Content-Encoding} header, e.g. {@code gzip}.
+   */
+  private static final Pattern CONTENT_ENCODING_PATTERN = Pattern.compile(
+      "(?im)^Content-Encoding:([^\\r\\n]*)");
+
+  /**
+   * Captures the value of a {@code Content-Length} header, which delimits a non-chunked body.
+   */
+  private static final Pattern CONTENT_LENGTH_PATTERN = Pattern.compile(
+      "(?im)^Content-Length:[ \\t]*(\\d{1,10})");
+
   private static final byte[] CRLF = {'\r', '\n'};
   private static final byte[] CRLF_CRLF = {'\r', '\n', '\r', '\n'};
+  private static final byte[] EMPTY = new byte[0];
 
   private long start;
   private long end = -1;
@@ -135,10 +155,11 @@ public class Call {
   }
 
   /**
-   * What the destination answered, as text, with any chunked framing removed.
+   * What the destination answered, as text, with the chunked framing removed and a compressed
+   * payload decompressed — that is, the body as the client's own HTTP stack sees it.
    */
   public String getResponseText() {
-    return removeChunkedEncoding(input.toByteArray());
+    return decodeResponse(input.toByteArray());
   }
 
   /**
@@ -171,18 +192,37 @@ public class Call {
   }
 
   /**
-   * Rebuilds the captured response with every {@code Transfer-Encoding: chunked} body decoded, so
-   * that the payload comes out byte-identical to what the client's own HTTP stack sees.
+   * The captured response with every {@code Transfer-Encoding: chunked} body unframed, leaving a
+   * {@code Content-Encoding} payload compressed.
+   */
+  public static String removeChunkedEncoding(byte[] response) {
+    return new String(decode(response, false), StandardCharsets.UTF_8);
+  }
+
+  /**
+   * The captured response with every {@code Transfer-Encoding: chunked} body unframed and every
+   * {@code gzip} / {@code deflate} payload decompressed, so that a body reads as the text the
+   * client's own HTTP stack hands to the application. Headers are left exactly as they came off the
+   * wire, so they still describe the framing that was undone.
+   */
+  public static String decodeResponse(byte[] response) {
+    return new String(decode(response, true), StandardCharsets.UTF_8);
+  }
+
+  /**
+   * Rebuilds the captured response so that each body comes out byte-identical to what the client's
+   * own HTTP stack sees.
    * <p>
    * Chunk sizes count <em>bytes</em>, so this has to work on the raw capture: decoding to a
    * {@link String} first would shift every boundary by the number of multi-byte characters seen so
    * far. A keep-alive call can carry several responses back to back, so each header/body pair is
-   * decoded in turn. Whatever does not parse as chunked framing — a truncated capture, a non-HTTP
-   * protocol — is copied through verbatim rather than dropped.
+   * handled in turn, delimited by the chunked framing or by {@code Content-Length}. Whatever does
+   * not parse — a truncated capture, a non-HTTP protocol, a coding the JDK cannot undo such as
+   * {@code br} — is copied through verbatim rather than dropped.
    */
-  public static String removeChunkedEncoding(byte[] response) {
+  private static byte[] decode(byte[] response, boolean decompress) {
     if (response == null || response.length == 0) {
-      return "";
+      return EMPTY;
     }
 
     ByteArrayOutputStream out = new ByteArrayOutputStream(response.length);
@@ -200,15 +240,41 @@ public class Call {
       out.write(response, pos, bodyStart - pos);
 
       String header = new String(response, pos, headerEnd - pos, StandardCharsets.ISO_8859_1);
-      if (!CHUNKED_HEADER_PATTERN.matcher(header).find()) {
-        out.write(response, bodyStart, response.length - bodyStart);
-        break;
+      ByteArrayOutputStream body = new ByteArrayOutputStream();
+      int next;
+
+      if (CHUNKED_HEADER_PATTERN.matcher(header).find()) {
+        next = decodeChunkedBody(response, bodyStart, body);
+      } else {
+        // Without chunked framing only Content-Length says where this response ends; when it is
+        // missing or does not fit the capture, the rest of the buffer is this one body.
+        next = bodyEnd(header, response, bodyStart);
+        body.write(response, bodyStart, next - bodyStart);
       }
 
-      pos = decodeChunkedBody(response, bodyStart, out);
+      byte[] bytes = body.toByteArray();
+      if (decompress) {
+        bytes = decompress(header, bytes);
+      }
+      out.write(bytes, 0, bytes.length);
+      pos = next;
     }
 
-    return new String(out.toByteArray(), StandardCharsets.UTF_8);
+    return out.toByteArray();
+  }
+
+  /**
+   * Where the non-chunked body starting at {@code bodyStart} ends, per {@code Content-Length}.
+   */
+  private static int bodyEnd(String header, byte[] response, int bodyStart) {
+    Matcher matcher = CONTENT_LENGTH_PATTERN.matcher(header);
+    if (matcher.find()) {
+      long length = Long.parseLong(matcher.group(1));
+      if (length <= response.length - bodyStart) {
+        return bodyStart + (int) length;
+      }
+    }
+    return response.length;
   }
 
   /**
@@ -279,6 +345,75 @@ public class Call {
     }
 
     return digits == 0 ? -1 : size;
+  }
+
+  /**
+   * The body as the client's HTTP stack decodes it, honouring {@code Content-Encoding}. A payload
+   * that will not inflate — {@code br} and {@code zstd}, which the JDK cannot undo, or a capture
+   * that starts mid-stream — is handed back untouched, so the viewer still shows the raw bytes
+   * instead of nothing.
+   */
+  private static byte[] decompress(String header, byte[] body) {
+    if (body.length == 0) {
+      return body;
+    }
+
+    Matcher matcher = CONTENT_ENCODING_PATTERN.matcher(header);
+    if (!matcher.find()) {
+      return body;
+    }
+
+    String encoding = matcher.group(1).trim().toLowerCase(Locale.ROOT);
+    byte[] decoded;
+
+    if (encoding.contains("gzip")) {
+      decoded = inflateGzip(body);
+    } else if (encoding.contains("deflate")) {
+      decoded = inflateDeflate(body);
+    } else {
+      return body;
+    }
+
+    return decoded.length == 0 ? body : decoded;
+  }
+
+  private static byte[] inflateGzip(byte[] body) {
+    try {
+      return readFully(new GZIPInputStream(new ByteArrayInputStream(body)));
+    } catch (IOException e) {
+      // Not a gzip stream after all: no magic number, or the capture starts mid-body.
+      return EMPTY;
+    }
+  }
+
+  private static byte[] inflateDeflate(byte[] body) {
+    byte[] zlib = readFully(new InflaterInputStream(new ByteArrayInputStream(body)));
+    if (zlib.length > 0) {
+      return zlib;
+    }
+
+    // "deflate" is meant to be zlib-wrapped, but plenty of servers send a raw deflate stream.
+    return readFully(new InflaterInputStream(new ByteArrayInputStream(body), new Inflater(true)));
+  }
+
+  /**
+   * Everything {@code in} yields, keeping what was already inflated when the stream turns out to be
+   * truncated — a capture of a connection that died mid-response is exactly the case worth seeing.
+   */
+  private static byte[] readFully(InputStream in) {
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+    try (InputStream stream = in) {
+      byte[] buffer = new byte[8192];
+      int read;
+      while ((read = stream.read(buffer)) != -1) {
+        out.write(buffer, 0, read);
+      }
+    } catch (IOException e) {
+      // Truncated or corrupt stream: whatever came out before the error is still worth showing.
+    }
+
+    return out.toByteArray();
   }
 
   private static int indexOf(byte[] haystack, byte[] needle, int from) {
