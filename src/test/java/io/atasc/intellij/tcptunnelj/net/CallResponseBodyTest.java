@@ -50,6 +50,29 @@ public class CallResponseBodyTest {
     assertEquals(first + "\n" + second, Call.decodeResponseBody(capture));
   }
 
+  /**
+   * The capture this was written for: a 50 KB JSON body chunked in 8 KB pieces. It has to come back
+   * as one single line — for a while the viewers broke long lines up to keep Swing from smearing the
+   * glyphs, that ended up in the clipboard through "Copy", and a break landing inside a token
+   * ({@code nul\nl}) left a body that would not parse.
+   */
+  @Test
+  public void keepsALargeBodyOnASingleLine() throws IOException {
+    StringBuilder json = new StringBuilder("[");
+    while (json.length() < 50_000) {
+      json.append("{\"key\":\"nkVLTOWbroU_CsUpv6pXP\",\"label\":\"Farine\",\"leaf\":null},");
+    }
+    json.setLength(json.length() - 1);
+    json.append(']');
+
+    byte[] capture = chunked("HTTP/1.1 200 OK\r\nContent-Type: application/json\r\n"
+        + "Transfer-Encoding: chunked", bytes(json.toString()), 8192);
+    String body = Call.decodeResponseBody(capture);
+
+    assertEquals(json.toString(), body);
+    assertEquals("no line break may survive anywhere in the body", -1, body.indexOf('\n'));
+  }
+
   @Test
   public void handlesEmptyAndNullCaptures() {
     assertEquals("", Call.decodeResponseBody(null));

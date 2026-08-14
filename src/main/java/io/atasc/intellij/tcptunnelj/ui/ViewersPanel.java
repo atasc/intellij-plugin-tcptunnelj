@@ -14,24 +14,16 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 
 public class ViewersPanel extends JBPanel {
-  /**
-   * Longest line the viewers draw in one piece when line wrap is off. With wrap off Swing lays a
-   * line out as a single run whose width the drawing pipeline addresses with 16-bit coordinates, so
-   * somewhere past 32767 pixels the glyph positions overflow and the line turns into a smear — and
-   * laying out a 50 KB JSON body costs that on every repaint. 4000 characters is roughly 28000
-   * pixels at the default font, comfortably inside the limit.
-   * <p>
-   * This is a fallback for the unwrapped view only: {@link #wrapped} is on by default, and with
-   * wrap on Swing breaks the lines itself and the viewer shows the response untouched.
-   */
-  static final int MAX_DISPLAY_LINE_LENGTH = 4000;
-
   private Call currentCall;
 
   /**
-   * Whether the viewers wrap long lines, mirroring the "Wrap lines" toolbar toggle. When they do,
-   * nothing has to be broken up for display and a selection copied out of the viewer is exactly
-   * what came over the wire.
+   * Whether the viewers wrap long lines, mirroring the "Wrap lines" toolbar toggle. On by default,
+   * because a JSON body is one line of tens of thousands of characters and unwrapped it scrolls off
+   * to the right — and wrapping is the only way to make it readable that leaves the text alone.
+   * <p>
+   * Breaking the over-long lines up for display was tried instead and reverted: "Copy" and Ctrl+C in
+   * a text area copy what is on screen, so every break landed in the clipboard, cutting JSON in the
+   * middle of a token — {@code nul\nl} — and the pasted body would not parse.
    */
   private boolean wrapped = true;
 
@@ -101,72 +93,19 @@ public class ViewersPanel extends JBPanel {
   }
 
   /**
-   * Puts the current call in the two viewers. Called again on every wrap toggle, because whether a
-   * long line has to be broken up depends on it.
+   * Puts the current call in the two viewers, exactly as {@link Call} hands it over. Nothing is
+   * reformatted for display: a selection copied out of a viewer has to paste as valid JSON.
    */
   private void render() {
     if (currentCall == null) {
       return;
     }
 
-    txtRQ.setText(forDisplay(currentCall.getRequestText(), wrapped));
+    txtRQ.setText(currentCall.getRequestText());
     txtRQ.setCaretPosition(0);
 
-    txtRS.setText(forDisplay(currentCall.getResponseText(), wrapped));
+    txtRS.setText(currentCall.getResponseText());
     txtRS.setCaretPosition(0);
-  }
-
-  /**
-   * {@code text} as the viewers should show it: untouched when they wrap, since Swing then breaks
-   * the lines itself, and broken up at {@link #MAX_DISPLAY_LINE_LENGTH} when they do not.
-   */
-  static String forDisplay(String text, boolean wrapped) {
-    if (wrapped) {
-      return text == null ? "" : text;
-    }
-    return forDisplay(text);
-  }
-
-  /**
-   * {@code text} with every line longer than {@link #MAX_DISPLAY_LINE_LENGTH} broken up, so that
-   * Swing has no over-long line to draw. Text that has no such line is handed back untouched.
-   */
-  static String forDisplay(String text) {
-    if (text == null || text.isEmpty()) {
-      return "";
-    }
-
-    StringBuilder out = null;
-    int lineStart = 0;
-
-    for (int i = 0; i <= text.length(); i++) {
-      boolean end = i == text.length();
-      if (!end && text.charAt(i) != '\n') {
-        continue;
-      }
-
-      if (i - lineStart > MAX_DISPLAY_LINE_LENGTH) {
-        if (out == null) {
-          out = new StringBuilder(text.length() + text.length() / MAX_DISPLAY_LINE_LENGTH);
-          out.append(text, 0, lineStart);
-        }
-        for (int from = lineStart; from < i; from += MAX_DISPLAY_LINE_LENGTH) {
-          if (from > lineStart) {
-            out.append('\n');
-          }
-          out.append(text, from, Math.min(from + MAX_DISPLAY_LINE_LENGTH, i));
-        }
-      } else if (out != null) {
-        out.append(text, lineStart, i);
-      }
-
-      if (!end && out != null) {
-        out.append('\n');
-      }
-      lineStart = i + 1;
-    }
-
-    return out == null ? text : out.toString();
   }
 
   /**
@@ -186,18 +125,9 @@ public class ViewersPanel extends JBPanel {
     setWrapped(false);
   }
 
-  /**
-   * Turning the wrap off means the over-long lines now have to be broken up by hand, and turning it
-   * back on means those breaks have to go, so the current call is drawn again either way.
-   */
   private void setWrapped(boolean wrapped) {
-    if (this.wrapped == wrapped) {
-      return;
-    }
-
     this.wrapped = wrapped;
     applyWrap();
-    render();
   }
 
   private void applyWrap() {
@@ -214,9 +144,9 @@ public class ViewersPanel extends JBPanel {
   }
 
   /**
-   * What is on screen carries the line breaks {@link #forDisplay(String)} added, so the response
-   * menu offers the payload built from the call itself — the body alone, or headers and body — plus
-   * the wire form for when the chunk sizes are the point.
+   * "Copy" copies the selection as it is on screen, which is the decoded response. The response menu
+   * adds the payload built from the call itself — the body alone, without the headers — and the wire
+   * form for when the chunk sizes are the point.
    */
   private void addContextMenu(JBTextArea textArea, boolean isResponse) {
     JBPopupMenu popupMenu = new JBPopupMenu();
