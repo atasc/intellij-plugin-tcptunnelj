@@ -1,5 +1,6 @@
 package io.atasc.intellij.tcptunnelj.ui;
 
+import com.intellij.openapi.Disposable;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.ui.components.JBPanel;
@@ -18,7 +19,7 @@ import java.util.concurrent.Executors;
  * @author boruvka/atasc
  * @since
  */
-public class TunnelPanel extends JBPanel {
+public class TunnelPanel extends JBPanel implements Disposable {
   private CallsPanel panelCalls;
   private ControlPanel panelControl;
   private Tunnel tunnel;
@@ -110,6 +111,15 @@ public class TunnelPanel extends JBPanel {
     });
 
     repaint(); // Update the UI after stopping the tunnel
+  }
+
+  /**
+   * Closes the tunnel and hands the disposal on to the calls panel, which owns the editors.
+   */
+  @Override
+  public void dispose() {
+    stop();
+    panelCalls.dispose();
   }
 
   public void clear() {

@@ -6,6 +6,7 @@ import com.intellij.openapi.Disposable;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.util.Disposer;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowFactory;
 import com.intellij.ui.content.ContentFactory;
@@ -57,6 +58,11 @@ public class TcpTunnelWindowFactory implements ToolWindowFactory, Disposable {
         SwingUtilities.invokeLater(() -> {
           // Create a new instance for this specific project - do not store as instance field
           TcpTunnelPlugin tunnelPlugin = new TcpTunnelPlugin(project);
+
+          // Nothing used to dispose the plugin, so the tunnel stayed open, the refresh timer kept
+          // ticking and the viewers' editors were never released. The tool window's disposable is the
+          // right owner: it is disposed on project close and when the plugin itself is unloaded.
+          Disposer.register(toolWindow.getDisposable(), tunnelPlugin);
 
           var content = ContentFactory.getInstance().createContent(tunnelPlugin.getContent(), null, false);
           toolWindow.getContentManager().addContent(content);

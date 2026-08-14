@@ -69,6 +69,10 @@ public class StartOnBootAction extends BaseToggleAction {
   private void scheduleTunnelStart() {
     scheduler.schedule(() -> {
       TunnelPanel tunnelPanel = this.tunnelPlugin.getTunnelPanel();
+      if (tunnelPanel == null) {
+        // the tool window was disposed inside the delay: nothing left to start
+        return;
+      }
 
       try {
         tunnelPanel.start();

@@ -1,5 +1,6 @@
 package io.atasc.intellij.tcptunnelj.ui;
 
+import com.intellij.openapi.Disposable;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.application.ModalityState;
 import com.intellij.openapi.ide.CopyPasteManager;
@@ -26,7 +27,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @author boruvka/atasc
  * @since
  */
-public class CallsPanel extends JBPanel implements TunnelListener {
+public class CallsPanel extends JBPanel implements TunnelListener, Disposable {
   public static final int DIVIDER_SIZE = 2;
 
   /**
@@ -181,6 +182,16 @@ public class CallsPanel extends JBPanel implements TunnelListener {
     if (lastIndex >= 0) {
       listCalls.ensureIndexIsVisible(lastIndex);
     }
+  }
+
+  /**
+   * Stops the refresh timer — it repeats forever otherwise — and releases the viewers' editors.
+   */
+  @Override
+  public void dispose() {
+    refreshTimer.stop();
+    callsWithNewData.clear();
+    panelViewers.dispose();
   }
 
   public void wrap() {

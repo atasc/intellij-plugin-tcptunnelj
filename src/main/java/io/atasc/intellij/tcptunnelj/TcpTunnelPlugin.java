@@ -72,10 +72,23 @@ public class TcpTunnelPlugin implements Disposable, AutoCloseable {
 //    }
 //  }
 
+  /**
+   * Called when the tool window goes away — see the {@code Disposer.register} in
+   * {@code TcpTunnelWindowFactory}. Closes the tunnel, releases the viewers' editors and persists the
+   * settings, none of which happened while nothing disposed this.
+   */
   @Override
   public void dispose() {
     this.closeTheTunnel();
-    this.tunnelPanel = null;
+
+    if (this.tunnelPanel != null) {
+      this.tunnelPanel.dispose();
+      this.tunnelPanel = null;
+    }
+
+    if (this.tunnelConfig != null) {
+      this.tunnelConfig.store();
+    }
   }
 
 //  @Override
@@ -93,8 +106,7 @@ public class TcpTunnelPlugin implements Disposable, AutoCloseable {
 
   @Override
   public void close() {
-    this.closeTheTunnel();
-    this.tunnelPanel = null;
+    this.dispose();
   }
 
   public synchronized void disposeComponent() {
