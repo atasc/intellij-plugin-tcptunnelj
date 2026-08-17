@@ -1,12 +1,14 @@
 package io.atasc.intellij.tcptunnelj.toolWindow;
 
 import com.intellij.openapi.Disposable;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Disposer;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowFactory;
 import com.intellij.ui.content.ContentFactory;
+import io.atasc.intellij.tcptunnelj.TcpTunnelConfig;
 import io.atasc.intellij.tcptunnelj.TcpTunnelPlugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -97,10 +99,28 @@ public class TcpTunnelWindowFactory implements ToolWindowFactory, Disposable {
 //    return ToolWindowFactory.super.isDoNotActivateOnStart();
 //  }
 
+  /**
+   * Called while the tool window is being registered, which happens as the project opens — unlike
+   * {@link #createToolWindowContent}, which the platform holds back until the user opens the panel.
+   * <p>
+   * That is why "Start on Boot" did nothing until then: the action that schedules the start is built
+   * with the panel. So when the flag is set, the content is built here and now. The tool window is not
+   * activated, it stays closed on its stripe button; only the tunnel comes up.
+   */
   @Override
   public void init(@NotNull ToolWindow toolWindow) {
     ToolWindowFactory.super.init(toolWindow);
     // Plugin instance creation moved to createToolWindowContent() to avoid sharing between projects
+
+    Project project = toolWindow.getProject();
+    if (!new TcpTunnelConfig(project.getName()).isStartOnBootEnabled()) {
+      return;
+    }
+
+    // getContentManager() is what triggers createToolWindowContent(). Building the UI has to happen on
+    // the EDT, and not at all if the project is closed before we get there.
+    ApplicationManager.getApplication().invokeLater(
+        toolWindow::getContentManager, project.getDisposed());
   }
 
 //  @Override

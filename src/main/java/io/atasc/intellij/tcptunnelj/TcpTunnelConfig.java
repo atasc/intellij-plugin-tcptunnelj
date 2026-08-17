@@ -61,11 +61,8 @@ public class TcpTunnelConfig {
 
   public synchronized void init() {
     if (PROPERTIES_FILE.exists()) {
-      try {
-        InputStream is = new FileInputStream(PROPERTIES_FILE);
+      try (InputStream is = new FileInputStream(PROPERTIES_FILE)) {
         properties.load(is);
-      } catch (FileNotFoundException e) {
-        e.printStackTrace();
       } catch (IOException e) {
         e.printStackTrace();
       }
@@ -84,8 +81,7 @@ public class TcpTunnelConfig {
   }
 
   public synchronized void store() {
-    try {
-      OutputStream os = new FileOutputStream(PROPERTIES_FILE);
+    try (OutputStream os = new FileOutputStream(PROPERTIES_FILE)) {
       properties.store(os, "TcpTunnelJ Plugin");
     } catch (IOException e) {
       e.printStackTrace();
